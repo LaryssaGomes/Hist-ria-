@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+    {% block content %}
+
+        Titulo:{{projeto.pro_titulo}}
+        Descrição:{{ projeto.pro_desc }}
+        <br>
+        <a href="add_arquivo/">add_arquivo</a>
+        {% for list_arquivos in list_arquivos %}
+               Nome do Arquivo:{{ list_arquivos.arq_nome }}
+               <br>
+        {% endfor %}
+    {% endblock %}
+    </body>
+</html>

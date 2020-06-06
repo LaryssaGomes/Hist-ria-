@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <style>
+            #cke_1_contents{
+                padding: 30px 20%;
+            }
+            
+        </style>
+        <meta charset="UTF-8">
+        <title>Adicionar Arquivo</title>
+    </head>
+    <body>  
+       <h2>Adicionar Arquivo</h2>
+       <form action="" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
+        {% csrf_token %}
+        Imagem:{{form_arq.arq_imagem}}
+        <br>
+        Nome:{{form_arq.arq_nome}}
+        <br>
+        Descrição:{{form_arq.arq_desc}}
+        <br>
+        Documento:{{form_arq.arq_localizacao_documento|safe}}
+        {{form_arq.media | safe}}
+        <button type="submit">Salvar</button>
+        <button type='submit'>Cancelar</button> <!--redirecionar para dashboard de projetos-->
+    </form>    
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Adicionar projeto</title>
+        <meta charset="utf-8">
+    </head>    
+
+    <body>
+         <h2>Adicionar projeto</h2>
+         
+        {% block content %}
+            <div>
+
+                <form action="{% url 'add_projetos' %}" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form_pro.as_p}}
+                    
+
+                    <button type="submit">Salvar</button>
+                    <button type='submit'>Cancelar</button> <!--redirecionar para dashboard de projetos-->
+                </form>    
+            </div>
+        {% endblock %}
+    </body>
+
+</html>

@@ -1,0 +1,44 @@
+{% load static %}
+<html>
+    <head>
+    </head>
+    <body>
+        <div class="container">
+            <h1>usuario</h1>
+            <div>
+                <ul>
+                    <li><a href="#">Perfil</a></li>
+                    <!-- <li><a href="#">Sair</a></li> -->
+                    <!-- Esta opção nunca vai acontecer, mas eu preciso dela aqui para o código rodar
+                    depois eu vou arrumar uma forma de melhorar isso. -->
+                    {% if user.is_anonymous %}
+                        <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+                    {% else %}
+                        <div class="alert alert-primary" role="alert">
+                            Seja bem-vindo(a) {{ user.nome }}!
+                        </div>
+                        <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                        <!-- Vou ter que deixar o nome logout por enquanto, pois ele esta ligado alguma coisa
+                        e eu ainda não sei oque é. -->
+                    {% endif %}
+                </ul>
+            </div>
+    {% block content %}
+            <div class="offset-1 col-10 list-div">
+                <h1>{{usuario.nome}}</h1>
+                {% if bolsistaOuPesquisador == 'Pesquisador' %}
+                <a href="{% url 'add_projetos' %}">add</a>
+                {% endif %}
+                {% for list_projetos in list_projetos %}
+               
+                Editar o projeto:<a href="edi_projetos/{{ list_projetos.id }}">{{list_projetos.pro_titulo}}</a>   
+                <a href="ver_projetos/{{ list_projetos.id }}">ver projeto</a>
+                Descrição:{{list_projetos.pro_desc}}
+
+                {% endfor %}
+                
+            </div>
+    {% endblock %}
+        </div>
+    </body>
+</html>

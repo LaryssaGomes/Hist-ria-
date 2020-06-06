@@ -1,0 +1,20 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>ProJetos edita</title>
+       
+    </head>
+    <body>
+        <div class="container">
+            <h1>Produto editando</h1>
+        </div>
+        <form  method="post" class="form"  enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="bnt bnt-primary">
+        </form>
+    </body>
+</html>
