@@ -6,7 +6,14 @@
     </head>
     <body>
     {% block content %}
-
+        <form action="submit" method="POST">{% csrf_token %}
+            <input name="nomeDoBolsista" type="text">
+            <button type="submit" >Busca</button>
+            {% for bolsista in lista_bolsista  %}
+                Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">
+                <br>
+            {% endfor %}
+        </form>
         Titulo:{{projeto.pro_titulo}}
         Descrição:{{ projeto.pro_desc }}
         <br>

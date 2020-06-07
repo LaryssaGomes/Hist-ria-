@@ -81,15 +81,25 @@ def edi_projetos(request, id):
 
 
 
+
+
 @login_required
 def ver_projetos(request, id):
     projeto = get_object_or_404(Projetos, pk=id)  # Pega as informações do projeto que tem o id passando pela url.
     # Esse o id de projeto tem algum arquivo salvo mande para a variavel arquivos.
     arquivos = Arquivo.objects.filter(arq_pro_id=id)
-    
+    nome = request.POST.get('nomeDoBolsista')
+    idDoBolsista = request.POST.get('id_bolsista')
     context = {
         'projeto': projeto 
     }
+    if nome :
+        list_bolsista = Bolsista.objects.filter(nome__icontains=nome)
+        if len(list_bolsista) > 0:
+            context['lista_bolsista'] = list_bolsista
+    if idDoBolsista :
+        bolsistaAdd = get_object_or_404(Bolsista, pk=idDoBolsista)
+        ProjetosDosUsuarios.objects.create(pdu_projetos=projeto, pdu_usuarios=bolsistaAdd)
     if len(arquivos) > 0: # Verificando
         context['list_arquivos'] = arquivos
         return render(request, 'projetos/ver_projetos.html', context) 
