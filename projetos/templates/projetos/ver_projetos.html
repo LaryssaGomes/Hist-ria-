@@ -6,6 +6,15 @@
     </head>
     <body>
     {% block content %}
+           
+            {% for usuario in lista %}
+                {% if Pesquisador == usuario.pdu_usuarios %}
+                    E Pesquisador
+                {% endif %}
+                
+                Nome do usuario:{{ usuario.pdu_usuarios  }}
+            <br>
+            {% endfor %}
         <form action="submit" method="POST">{% csrf_token %}
             <input name="nomeDoBolsista" type="text">
             <button type="submit" >Busca</button>

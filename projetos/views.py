@@ -81,26 +81,50 @@ def edi_projetos(request, id):
 
 
 
+def listaDosUsuarios(projeto):
+    listas = ProjetosDosUsuarios.objects.filter(pdu_projetos=projeto)
+    for usuario in listas:
+        qualEPesquisador = Pesquisador.objects.filter(id=usuario.pdu_usuarios.id)
+        if(qualEPesquisador):
+            Pesquisa = usuario.pdu_usuarios
+            return(listas, Pesquisa)
 
+def listaDosBolsista(nome):
+    if nome :
+        # Pesquise os bolsistas com esse nome
+        list_bolsista = Bolsista.objects.filter(nome__icontains=nome)
+        # Se tiver algum bolsista com esse nome
+        if len(list_bolsista) > 0:
+            # Mande a lista desses bolsistas
+            return list_bolsista
 
 @login_required
 def ver_projetos(request, id):
     projeto = get_object_or_404(Projetos, pk=id)  # Pega as informações do projeto que tem o id passando pela url.
     # Esse o id de projeto tem algum arquivo salvo mande para a variavel arquivos.
     arquivos = Arquivo.objects.filter(arq_pro_id=id)
-    nome = request.POST.get('nomeDoBolsista')
-    idDoBolsista = request.POST.get('id_bolsista')
+    
+    
+    # Id do bolsista pesquisado
+    idDoBolsista = request.POST.get('id_bolsista') 
     context = {
         'projeto': projeto 
     }
-    if nome :
-        list_bolsista = Bolsista.objects.filter(nome__icontains=nome)
-        if len(list_bolsista) > 0:
-            context['lista_bolsista'] = list_bolsista
+    # Lista de bolsistas e pesquisadores do projeto
+    context['lista'] ,context['Pesquisador'] = listaDosUsuarios(projeto) 
+    # Nome pesquisador 
+    nome = request.POST.get('nomeDoBolsista') 
+    # Retorna a lista de bolsistas pesquisada
+    context['lista_bolsista'] = listaDosBolsista(nome)
+    
+    # Se depois de manda a lista de usuarios o um dos bolsistas for selecionado
     if idDoBolsista :
+        # Pega os dados desse bolsista
         bolsistaAdd = get_object_or_404(Bolsista, pk=idDoBolsista)
+        # Salve os dados na tabela projeto dos usuarios
         ProjetosDosUsuarios.objects.create(pdu_projetos=projeto, pdu_usuarios=bolsistaAdd)
-    if len(arquivos) > 0: # Verificando
+    # Verifica se o projeto tem arquivos
+    if len(arquivos) > 0: 
         context['list_arquivos'] = arquivos
         return render(request, 'projetos/ver_projetos.html', context) 
     else:
