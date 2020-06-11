@@ -15,13 +15,27 @@
                 Nome do usuario:{{ usuario.pdu_usuarios  }}
             <br>
             {% endfor %}
+           
         <form action="submit" method="POST">{% csrf_token %}
-            <input name="nomeDoBolsista" type="text">
+            <input name="nomeDoBolsista" type="text" value="{{ request.POST.nomeDoBolsista }}">
             <button type="submit" >Busca</button>
             {% for bolsista in lista_bolsista  %}
                 Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">
                 <br>
             {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                 {% if lista_bolsista.has_previous %}
+                       <a href="?page={{ lista_bolsista.previous_page_number }}">Anterior</a>
+                 {% endif %}
+                       <span class="current"> 
+                             {{ lista_bolsista.number }} de {{ lista_bolsista.paginator.num_pages }}
+                       </span>
+                 {% if lista_bolsista.has_next %}
+                       <a href="?page={{ lista_bolsista.next_page_number }}">Proxima</a>
+                 {% endif %}
+           </span>
+          </div>
         </form>
         Titulo:{{projeto.pro_titulo}}
         Descrição:{{ projeto.pro_desc }}

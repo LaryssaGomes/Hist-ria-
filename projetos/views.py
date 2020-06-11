@@ -16,8 +16,9 @@ from .forms import (ProjetoForm,
 
 # Este próximo import vai importar modelos do app usuario.
 from usuario.models import Pessoa, Pesquisador, Bolsista
-
-
+'''
+    Corrigir a paginação, de ver projetos e de visualização comum
+'''
 @login_required
 def add_arquivo(request, id):
     if str(request.user) != 'AnonymousUser':
@@ -83,21 +84,27 @@ def edi_projetos(request, id):
 
 def listaDosUsuarios(projeto):
     listas = ProjetosDosUsuarios.objects.filter(pdu_projetos=projeto)
+
     for usuario in listas:
         qualEPesquisador = Pesquisador.objects.filter(id=usuario.pdu_usuarios.id)
         if(qualEPesquisador):
             Pesquisa = usuario.pdu_usuarios
             return(listas, Pesquisa)
 
-def listaDosBolsista(nome):
+def listaDosBolsista(nome, request):
+    
     if nome :
         # Pesquise os bolsistas com esse nome
-        list_bolsista = Bolsista.objects.filter(nome__icontains=nome)
+        lista = Bolsista.objects.filter(nome__icontains=nome)
+        
         # Se tiver algum bolsista com esse nome
-        if len(list_bolsista) > 0:
+        if len(lista) > 0:
+            paginator = Paginator(lista, 3)
+            page = request.GET.get('page')
+            list_bolsista = paginator.get_page(page)
             # Mande a lista desses bolsistas
             return list_bolsista
-
+    
 @login_required
 def ver_projetos(request, id):
     projeto = get_object_or_404(Projetos, pk=id)  # Pega as informações do projeto que tem o id passando pela url.
@@ -113,9 +120,11 @@ def ver_projetos(request, id):
     # Lista de bolsistas e pesquisadores do projeto
     context['lista'] ,context['Pesquisador'] = listaDosUsuarios(projeto) 
     # Nome pesquisador 
+    
     nome = request.POST.get('nomeDoBolsista') 
     # Retorna a lista de bolsistas pesquisada
-    context['lista_bolsista'] = listaDosBolsista(nome)
+    
+    context['lista_bolsista'] = listaDosBolsista(nome, request)
     
     # Se depois de manda a lista de usuarios o um dos bolsistas for selecionado
     if idDoBolsista :
