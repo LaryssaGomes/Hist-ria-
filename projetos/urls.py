@@ -10,6 +10,7 @@ from usuario import urls
 
 urlpatterns = [
     path('add_projetos/', views.add_projetos, name='add_projetos'),
+    path('edi_perfil/', views.edi_perfil, name='edi_perfil'),
     path('inicio_projeto/', views.inicio_projeto, name='inicio_projeto'),
     path('inicio', views.busca_comum, name='busca_comum'),
     path('inicio_projeto/edi_projetos/<int:id>/', views.edi_projetos, name='/edi_projetos'),

@@ -87,4 +87,29 @@ class BolsistaForm(UserCreationForm):
                 user.save()
             return user
 
+class Bolsista1Form(forms.ModelForm):
 
+    class Meta:
+        model = Bolsista
+        fields = ('nome',
+                  'cpf',
+                  'rg',
+                  'rg_expedidor',
+                  'lattes',
+                  'foto',
+                  'telefone',
+                  'email')
+
+class Pesquisador1Form(forms.ModelForm):
+
+    class Meta:
+        model = Pesquisador
+        fields = ('nome',
+                  'vinculacao',
+                  'cpf',
+                  'rg',
+                  'rg_expedidor',
+                  'lattes',
+                  'foto',
+                  'telefone',
+                  'email')

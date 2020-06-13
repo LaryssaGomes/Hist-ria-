@@ -3,7 +3,6 @@
 from django import forms
 from .models import Projetos, Arquivo
 
-
 class ProjetoForm(forms.ModelForm):
     class Meta:
         model = Projetos

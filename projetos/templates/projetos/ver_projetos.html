@@ -16,8 +16,8 @@
             <br>
             {% endfor %}
            
-        <form action="submit" method="POST">{% csrf_token %}
-            <input name="nomeDoBolsista" type="text" value="{{ request.POST.nomeDoBolsista }}">
+        <form action="submit" method="GET">{% csrf_token %}
+            <input name="nomeDoBolsista" type="text" >
             <button type="submit" >Busca</button>
             {% for bolsista in lista_bolsista  %}
                 Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">

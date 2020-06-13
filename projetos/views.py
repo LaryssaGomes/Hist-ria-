@@ -1,5 +1,16 @@
-""" Arquivo das funcionalidades da aplicação. Serão chamadas pelas urls.
-# Conecta models.py com os templates
+"""
+Tarefas
+    Exibir mensagem ação concluida com sucesso
+    Corrigir a tela de cadastro(Martinho)
+    Corrigir o login(Martinho)
+    Fazer um dialogo de confirmação
+    Excluir bolsista do projeto(Laryssa)
+    Separar bolsista e pesquisador
+        Notificação de alterações de bolsista para o pesquisador
+    Fazer a tela de admin
+        Comfirma o cadastro de um pesquisador
+    Filtros de busca(Falta informação)
+    Corrigir paginação(Laryssa)
 """
 from django.shortcuts import render, get_object_or_404, redirect  # get_object_or_404 para pega o objeto com o id x
 from django.utils import timezone
@@ -16,6 +27,7 @@ from .forms import (ProjetoForm,
 
 # Este próximo import vai importar modelos do app usuario.
 from usuario.models import Pessoa, Pesquisador, Bolsista
+from usuario.forms import Bolsista1Form, Pesquisador1Form
 '''
     Corrigir a paginação, de ver projetos e de visualização comum
 '''
@@ -66,8 +78,8 @@ def visualizacao_comum(request, id):  # Da uma olhada nesse argumento 'id' depoi
 
 @login_required
 def edi_projetos(request, id):
-    if urls.path.name == 'add_projetos':
-        print('Você esta adicionando um projeto agora')
+    #if urls.path.name == 'add_projetos':
+    #    print('Você esta adicionando um projeto agora')
     projeto = get_object_or_404(Projetos, pk=id)
     form = ProjetoForm(instance=projeto)  # Os dados de projeto para o form
     if request.method == 'POST':  # Verificando se tem dados
@@ -76,9 +88,9 @@ def edi_projetos(request, id):
             projeto.save()
             return redirect('/inicio_projeto/')
         else:
-            return render(request, 'projetos/edi_projetos.html', {'form': form, 'projeto': projeto})
+            return render(request, 'projetos/edi_projetos.html', {'form': form })
     else:
-        return render(request, 'projetos/edi_projetos.html', {'form': form, 'projeto': projeto})
+        return render(request, 'projetos/edi_projetos.html', {'form': form })
 
 
 
@@ -92,6 +104,7 @@ def listaDosUsuarios(projeto):
             return(listas, Pesquisa)
 
 def listaDosBolsista(nome, request):
+    
     
     if nome :
         # Pesquise os bolsistas com esse nome
@@ -121,7 +134,7 @@ def ver_projetos(request, id):
     context['lista'] ,context['Pesquisador'] = listaDosUsuarios(projeto) 
     # Nome pesquisador 
     
-    nome = request.POST.get('nomeDoBolsista') 
+    nome = request.GET.get('nomeDoBolsista') 
     # Retorna a lista de bolsistas pesquisada
     
     context['lista_bolsista'] = listaDosBolsista(nome, request)
@@ -186,4 +199,31 @@ def inicio_projeto(request):
         return render(request, 'projetos/inicio_projetos.html', context)
 
 
-    
+@login_required
+def edi_perfil(request):
+    pesquisador = Pesquisador.objects.filter(id=request.user.id)
+
+    if len(pesquisador) > 0:
+        pesquisado = Pesquisador.objects.get(id=request.user.id)
+        form = Pesquisador1Form(instance=pesquisado)
+        if request.method == 'POST':  
+            form = Pesquisador1Form(request.POST, request.FILES, instance=pesquisado)  
+            if form.is_valid():  
+                pesquisado.save()
+                return redirect('/inicio_projeto/')
+            else:
+                return render(request,'usuario/perfil.html', {'form': form, 'pesquisado': pesquisado })
+        else:
+            return render(request,'usuario/perfil.html', {'form': form, 'pesquisado': pesquisado } )
+    else:
+        bolsista = Bolsista.objects.get(id=request.user.id)
+        form = Bolsista1Form(instance=bolsista)
+        if request.method == 'POST':  
+            form = Bolsista1Form(request.POST, request.FILES, instance=bolsista)  
+            if form.is_valid():  
+                bolsista.save()
+                return redirect('/inicio_projeto/')
+            else:
+                return render(request,'usuario/perfil.html', {'form': form, 'pesquisado': bolsista })
+        else:
+            return render(request,'usuario/perfil.html', {'form': form, 'pesquisado': bolsista } )
