@@ -1,13 +1,18 @@
 {% load static %}
 <html>
     <head>
+        <link rel="stylesheet" href="../../static/css/inico_projetos.css">
+        <link rel="stylesheet" href="../../static/css/global.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div class="container">
-            <h1>usuario</h1>
-            <div>
-                <ul>
-                    <li><a href="{% url 'edi_perfil' %}">Perfil</a></li>
+        
+        <nav>
+            <!--Criando navbar-->
+            <div class="navbar">
+                <img width="200px" src="../../static/assets/logotipo.png">
+                            
+                <div class="profile">
                     <!-- <li><a href="#">Sair</a></li> -->
                     <!-- Esta opção nunca vai acontecer, mas eu preciso dela aqui para o código rodar
                     depois eu vou arrumar uma forma de melhorar isso. -->
@@ -15,30 +20,40 @@
                         <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
                     {% else %}
                         <div class="alert alert-primary" role="alert">
-                            Seja bem-vindo(a) {{ user.nome }}!
+                            Olá, {{ user.nome }}!
                         </div>
-                        <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                        <div class="options">
+                            <a href="{% url 'edi_perfil' %}">Atualizar dados</a>
+                            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                        </div>
                         <!-- Vou ter que deixar o nome logout por enquanto, pois ele esta ligado alguma coisa
                         e eu ainda não sei oque é. -->
                     {% endif %}
-                </ul>
+                </div>
             </div>
-    {% block content %}
-            <div class="offset-1 col-10 list-div">
-                <h1>{{usuario.nome}}</h1>
-                {% if bolsistaOuPesquisador == 'Pesquisador' %}
-                <a href="{% url 'add_projetos' %}">add</a>
-                {% endif %}
-                {% for list_projetos in list_projetos %}
-               
-                Editar o projeto:<a href="edi_projetos/{{ list_projetos.id }}">{{list_projetos.pro_titulo}}</a>   
-                <a href="ver_projetos/{{ list_projetos.id }}">ver projeto</a>
-                Descrição:{{list_projetos.pro_desc}}
+        </nav>
+        <div class="container-projects">
+            {% block content %}
+                <div class="offset-1 col-10 list-div">
+                    <h2>Projetos</h2>
+                    {% if bolsistaOuPesquisador == 'Pesquisador' %}
+                    <a href="{% url 'add_projetos' %}">add</a>
+                    {% endif %}
 
-                {% endfor %}
-                
-            </div>
-    {% endblock %}
+                    <ul class="projects">
+                    {% for list_projetos in list_projetos %}
+                        <li class="project">
+                            <h3>{{list_projetos.pro_titulo}}</h3>
+                            <p>{{list_projetos.pro_desc}}</p>
+                            <div class="links">
+                                <a href="edi_projetos/{{ list_projetos.id }}">Editar o projeto</a>   
+                                <a href="ver_projetos/{{ list_projetos.id }}">ver projeto</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endblock %}
         </div>
     </body>
 </html>
