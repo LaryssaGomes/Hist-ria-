@@ -1,0 +1,78 @@
+{% load bootstrap4 %}
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Hemeroteca | Cadastro Bolsista</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="../../static/css/global.css">
+    <link rel="stylesheet" href="../../static/css/grid.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-box">
+        <div class="background-img">
+        </div>
+        <div class="form-box">
+            <form class="form" action="{% url 'bolsista' %}" method="post" class="form" autocomplete="on" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3>Cadastre-se como Bolsista</h3>
+                {% bootstrap_messages %}
+
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    {{ form.nome }} 
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Orientador</label>
+                        {{ form.orientador }}
+                    </div>
+                    <div class="form-group col-md-6">
+                       <label>CPF</label>
+                       {{ form.cpf }} 
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                       <label>RG</label>
+                       {{ form.rg }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Orgão Expedidor</label>
+                        {{ form.rg_expedidor }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Lattes</label>
+                    {{ form.lattes }}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Telefone</label>
+                        {{ form.telefone }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Foto:</label>
+                        {{ form.foto }}
+                    </div>
+                </div>
+               
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>

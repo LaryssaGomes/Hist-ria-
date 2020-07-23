@@ -1,0 +1,263 @@
+{% load static %}
+<html>
+<head> 
+    <title>Hemeroteca</title>
+    <meta charset="utf-8">
+    <!-- link js -->
+    <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script>
+    <!-- links css -->
+    <link rel="stylesheet" href="../../static/css/busca.css">
+    <link rel="stylesheet" href="../../static/css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>    
+<body>
+    
+    {% block content %}  
+    <!-- Menu -->
+    {% include 'usuariocomum/nav.html' %}
+    <!-- Menu end -->
+    <section class="header">
+        <div class="container-search">
+            <h2 class="title">Buscar Arquivos</h2>
+            <!-- <h5 class="sub">Tenha acesso a documentos e arquivos históricos</h5> -->
+            
+            <div class="search-div">
+                
+                <div>
+                    <form method="GET" id="search-form">
+                        {% csrf_token %}
+                        <input class="form-input" type="text" id="search" name="search" placeholder="Ex.: negros escravidão mortes" value="{{ request.GET.search }}">
+                        <button>
+                            <i class="fas fa-search" id="search-btn"></i>
+                        </button>
+                        <label>Insira palavras-chaves sobre o que você procura</label>
+                        
+                    <section class="container-filters">
+                        <div class="filters">
+                            <strong>Filtros</strong>
+                            <div class="filter">
+                                <!-- <span>Tipo de Documento</span> -->
+                                <select name="arq_tipo_de_documento"  id="documentos">
+                                    <option value="" selected="">Tipo de documento</option>
+                                    
+                                    <optgroup label="Documentos Pessoais">
+                                        <option value="DPI">Identidade</option>
+                                        
+                                        <option value="DPCN">Certidão de nascimento</option>
+                                        
+                                        <option value="DPCB">Certidão de batismo</option>
+                                        
+                                        <option value="DPCC">Certidão de casamento</option>
+                                        
+                                        <option value="DPCO">Certidão de óbito</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Pessoais">
+                                        <option value="PC">Correspondência</option>
+                                        
+                                        <option value="PD">Diário</option>
+                                        
+                                        <option value="PA">Anotação</option>
+                                        
+                                        <option value="PRC">Receita de comida</option>
+                                        
+                                        <option value="PDM">Documento médico</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Jurídicos">
+                                        <option value="JP">Processo</option>
+                                        
+                                        <option value="JT">Testamento</option>
+                                        
+                                        <option value="JI">Inventário</option>
+                                        
+                                        <option value="JD">Depoimento</option>
+                                        
+                                        <option value="JDs">Despacho</option>
+                                        
+                                        <option value="JS">Sentença</option>
+                                        
+                                        <option value="JA">Acórdão</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Governamentais">
+                                        <option value="GR">Relatório</option>
+                                        
+                                        <option value="GA">Ata</option>
+                                        
+                                        <option value="GL">Lei</option>
+                                        
+                                        <option value="GR">Resolução</option>
+                                        
+                                        <option value="GD">Decreto</option>
+                                        
+                                        <option value="GC">Constituição</option>
+                                        
+                                        <option value="GLs">Listas</option>
+                                        
+                                        <option value="GRI">Registro de imóvel</option>
+                                        
+                                        <option value="GRA">Registro de cobrança</option>
+                                        
+                                        <option value="GRT">Registro de trabalho</option>
+                                        
+                                        <option value="GCA">Carta de alforria</option>
+                                        
+                                        <option value="GRCV">Recibo de compra e venda</option>
+                                        
+                                        <option value="GAp">Apólice</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Relatos">
+                                        <option value="RD">Depoimento</option>
+                                        
+                                        <option value="RE">Entrevista</option>
+                                        
+                                        <option value="RR">Relato</option>
+                                        
+                                        <option value="RM">Música</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Iconográficos">
+                                        <option value="IF">Fotografia</option>
+                                        
+                                        <option value="ID">Desenho</option>
+                                        
+                                        <option value="IM">Mapa</option>
+                                        
+                                        <option value="IP">Pintura</option>
+                                        
+                                        <option value="IC">Charge</option>
+                                        
+                                        <option value="IP">Planta</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Impressos">
+                                        <option value="IJ">Jornal</option>
+                                        
+                                        <option value="IB">Boletim</option>
+                                        
+                                        <option value="IPn">Panfleto</option>
+                                        
+                                        <option value="IPr">Propaganda</option>
+                                        
+                                        <option value="IR">Revista</option>
+                                        
+                                        <option value="IHQ">História em quadrinho</option>
+                                        
+                                        <option value="IL">Livro</option>
+                                        
+                                        <option value="IFl">Folder</option>
+                                        
+                                        <option value="ICr">Cardápio</option>
+                                        
+                                        <option value="IPs">Poesia</option>
+                                        
+                                    </optgroup>
+                                    <optgroup label="Vídeos">
+                                        <option value="VF">Filme</option>
+                                        
+                                        <option value="VD">Documentário</option>
+                                        
+                                        <option value="VP">Propaganda</option>
+                                        
+                                        <option value="VDs">Desenho</option>
+                                        
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <!-- <strong>Localização</strong> -->
+                            <div class="filter">
+                                <!-- <span>Estado</span> -->
+                                <input type="text" name="estado" id="estado" value="Selecione um estado" />   
+                            </div>
+                            <div class="filter"> 
+                                <!-- <span>Cidade</span> -->
+                                <input type="text" name="cidade" id="cidade" value="Selecione uma cidade" />
+                            </div>
+                        </div>
+                    </section>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    {% if arquivos %}
+    <table id="myTable" class="table">
+        <div class="container">
+                <h4>Resultados da busca</h4>
+                <ul class="projects-list">
+                    <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Assunto</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for arquivo in arquivos %}
+                        <li class="project-item">
+                            <tr>
+                               <img class="image" src="../../static/assets/olinda.png" />
+                            <div class="infos">
+                                <td><h4><a href="/arquivo/{{arquivo.id}}">{{arquivo.arq_nome}}</a></h4></td>
+                                <td><p><span>Descrição:</span> {{arquivo.arq_desc}}</p></td>
+                            </div> 
+                            </tr>                         
+                        </li>
+                        {% endfor %} 
+                      </tbody>
+                    
+                </ul>
+            </div>
+    </table>
+    
+    {% endif %}
+    
+    <!-- Slide -->
+    {% include 'usuariocomum/slider.html' %}
+    <!-- Slide end -->
+    
+    <div class="banner">
+        <h4>Acesse documentos históricos de qualquer lugar</h4>
+        <p>A Hemeroteca visa facilitar o acesso a arquivos históricos para pesquisadores e estudantes.</p>
+        <img src="../../static/assets/book_lover.svg" />
+    </div>
+    
+    <footer>
+        
+        <section>
+            <p>Instituto Federal de Alagoas &copy; {% now 'Y'%}</p>
+        </section>
+    </footer>
+    {% endblock %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function () {
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > 100) {
+                    $("#menu").addClass("menu-white");
+                    //    $("#menu").css('background-color', '#ffff');
+                } else {
+                    $("#menu").removeClass("menu-white");
+                    //    $("#menu").css('background-color', 'transparent');
+                }
+            });
+        });
+    </script>
+    <script language="JavaScript" type="text/javascript" charset="utf-8">
+        new dgCidadesEstados({
+            cidade: document.getElementById('cidade'),
+            estado: document.getElementById('estado'),
+            change: true
+        })
+    </script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{% static 'js/datas.js' %}"></script>
+</body>
+</html>

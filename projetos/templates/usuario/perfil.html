@@ -1,0 +1,32 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Hemeroteca | Editar Perfil</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="../../static/css/edit-profile.css">
+    <link rel="stylesheet" href="../../static/css/global.css">
+</head>
+<body>
+    <!-- Menu -->
+    {% include 'projetos/navbar.html' %}
+    <!-- Menu end -->
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-6">
+            <h1 class="align-center mb-5">Atualizar Dados</h1>
+            {% bootstrap_messages %}
+            <form id="edit-profile" class="form-group" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <!-- {{ form.as_p }} -->
+                
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                {% endbuttons %}
+            </form> 
+        </div>
+    </div>
+</body>
+</html> 

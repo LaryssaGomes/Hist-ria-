@@ -1,0 +1,13 @@
+/* NavBar */ 
+.navbar {
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #202020;
+}

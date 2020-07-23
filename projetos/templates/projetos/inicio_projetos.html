@@ -1,0 +1,38 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Hemeroteca | Projetos</title>
+        <link rel="stylesheet" href="../../static/css/inico_projetos.css">
+        <link rel="stylesheet" href="../../static/css/global.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Menu -->
+        {% include 'projetos/navbar.html' %}
+        <!-- Menu end -->
+        <div class="container-projects">
+            {% block content %}
+                <div class="offset-1 col-10 list-div">
+                    <h2>Projetos</h2>
+                    {% if bolsistaOuPesquisador == 'Pesquisador' %}
+                    <a href="{% url 'add_projetos' %}">add</a>
+                    {% endif %}
+
+                    <ul class="projects">
+                    {% for list_projetos in list_projetos %}
+                        <li class="project">
+                            <h3>{{list_projetos.pro_titulo}}</h3>
+                            <p>{{list_projetos.pro_desc}}</p>
+                            <div class="links">
+                                <a href="edi_projetos/{{ list_projetos.id }}">Editar o projeto</a>   
+                                <a href="ver_projetos/{{ list_projetos.id }}">ver projeto</a>
+                            </div>
+                        </li> 
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endblock %}
+        </div>
+    </body>
+</html>

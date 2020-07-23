@@ -1,0 +1,38 @@
+.container-box {
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+
+  display: flex;
+  align-items: stretch;
+}
+
+.container-box .background-img {
+  flex: 1;
+  background: url('../assets/login-background-img.jpg') no-repeat center;
+  background-size: cover;
+  position: relative;
+}
+
+/* .container-box .background-img img {
+  width: 100%;
+  height: 100%;
+  
+  overflow: hidden;
+} */
+
+.container-box .form-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 560px;
+}
+
+.container-box .form-box .form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 72% !important;
+}
