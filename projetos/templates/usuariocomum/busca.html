@@ -41,132 +41,16 @@
                                 <!-- <span>Tipo de Documento</span> -->
                                 <select name="arq_tipo_de_documento"  id="documentos">
                                     <option value="" selected="">Tipo de documento</option>
-                                    
-                                    <optgroup label="Documentos Pessoais">
-                                        <option value="DPI">Identidade</option>
-                                        
-                                        <option value="DPCN">Certidão de nascimento</option>
-                                        
-                                        <option value="DPCB">Certidão de batismo</option>
-                                        
-                                        <option value="DPCC">Certidão de casamento</option>
-                                        
-                                        <option value="DPCO">Certidão de óbito</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Pessoais">
-                                        <option value="PC">Correspondência</option>
-                                        
-                                        <option value="PD">Diário</option>
-                                        
-                                        <option value="PA">Anotação</option>
-                                        
-                                        <option value="PRC">Receita de comida</option>
-                                        
-                                        <option value="PDM">Documento médico</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Jurídicos">
-                                        <option value="JP">Processo</option>
-                                        
-                                        <option value="JT">Testamento</option>
-                                        
-                                        <option value="JI">Inventário</option>
-                                        
-                                        <option value="JD">Depoimento</option>
-                                        
-                                        <option value="JDs">Despacho</option>
-                                        
-                                        <option value="JS">Sentença</option>
-                                        
-                                        <option value="JA">Acórdão</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Governamentais">
-                                        <option value="GR">Relatório</option>
-                                        
-                                        <option value="GA">Ata</option>
-                                        
-                                        <option value="GL">Lei</option>
-                                        
-                                        <option value="GR">Resolução</option>
-                                        
-                                        <option value="GD">Decreto</option>
-                                        
-                                        <option value="GC">Constituição</option>
-                                        
-                                        <option value="GLs">Listas</option>
-                                        
-                                        <option value="GRI">Registro de imóvel</option>
-                                        
-                                        <option value="GRA">Registro de cobrança</option>
-                                        
-                                        <option value="GRT">Registro de trabalho</option>
-                                        
-                                        <option value="GCA">Carta de alforria</option>
-                                        
-                                        <option value="GRCV">Recibo de compra e venda</option>
-                                        
-                                        <option value="GAp">Apólice</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Relatos">
-                                        <option value="RD">Depoimento</option>
-                                        
-                                        <option value="RE">Entrevista</option>
-                                        
-                                        <option value="RR">Relato</option>
-                                        
-                                        <option value="RM">Música</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Iconográficos">
-                                        <option value="IF">Fotografia</option>
-                                        
-                                        <option value="ID">Desenho</option>
-                                        
-                                        <option value="IM">Mapa</option>
-                                        
-                                        <option value="IP">Pintura</option>
-                                        
-                                        <option value="IC">Charge</option>
-                                        
-                                        <option value="IP">Planta</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Impressos">
-                                        <option value="IJ">Jornal</option>
-                                        
-                                        <option value="IB">Boletim</option>
-                                        
-                                        <option value="IPn">Panfleto</option>
-                                        
-                                        <option value="IPr">Propaganda</option>
-                                        
-                                        <option value="IR">Revista</option>
-                                        
-                                        <option value="IHQ">História em quadrinho</option>
-                                        
-                                        <option value="IL">Livro</option>
-                                        
-                                        <option value="IFl">Folder</option>
-                                        
-                                        <option value="ICr">Cardápio</option>
-                                        
-                                        <option value="IPs">Poesia</option>
-                                        
-                                    </optgroup>
-                                    <optgroup label="Vídeos">
-                                        <option value="VF">Filme</option>
-                                        
-                                        <option value="VD">Documentário</option>
-                                        
-                                        <option value="VP">Propaganda</option>
-                                        
-                                        <option value="VDs">Desenho</option>
-                                        
-                                    </optgroup>
-                                </select>
+                                    {% for tipo in listas_categorias %}  
+                                        <optgroup label="{{tipo}}">
+                                            {% for especifico in listas_tipos_de_arquivo %} 
+                                                {% if tipo == especifico.tdd_geral %}
+                                                    <option value="{{especifico.id}}">{{ especifico.tdd_especifico }}</option>
+                                                {% endif %}
+                                            {% endfor %} 
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>  
                             </div>
                             <!-- <strong>Localização</strong> -->
                             <div class="filter">
@@ -180,7 +64,7 @@
                         </div>
                     </section>
                     </form>
-                    
+                   
                 </div>
             </div>
         </div>

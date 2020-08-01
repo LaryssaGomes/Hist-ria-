@@ -81,7 +81,19 @@
                 <option value="00">-------</option>
             </select>
             <br>
-            Tipo de documento:{{form_arq.arq_tipo_de_documento}}
+            Tipo de documento:
+            <select name="arq_tipo_de_documento"  id="documentos">
+                <option value="" selected="">Tipo de documento</option>
+                {% for tipo in listas_categorias %}  
+                    <optgroup label="{{tipo}}">
+                        {% for especifico in listas_tipos_de_arquivo %} 
+                            {% if tipo == especifico.tdd_geral %}
+                                <option value="{{especifico.id}}">{{ especifico.tdd_especifico }}</option>
+                            {% endif %}
+                        {% endfor %} 
+                    </optgroup>
+                {% endfor %}
+            </select>  
             <br>
             Selecione o formato:
             <select id="id_arq_tipo_de_formato" name="tipoDeDocumento"onChange="update()">

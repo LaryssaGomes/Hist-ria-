@@ -9,7 +9,6 @@ from django.conf import settings
 from usuario import urls
 
 urlpatterns = [
-    path('testando/', views.testando, name='testando'),
     path('add_projetos/', views.add_projetos, name='add_projetos'),
     path('edi_perfil/', views.edi_perfil, name='edi_perfil'),
     path('inicio_projeto/', views.inicio_projeto, name='inicio_projeto'),

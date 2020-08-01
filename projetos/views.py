@@ -1,9 +1,4 @@
-"""
-    Telas editadas
-        add_arquivo.js
-        busca.js
-        busca.html
-"""
+
 from django.shortcuts import render, get_object_or_404, redirect  # get_object_or_404 para pega o objeto com o id x
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required  # permitir acesso
@@ -12,7 +7,7 @@ from django.core.paginator import Paginator  # Para poder realizar a paginação
 from django.contrib import messages
 import usuario.templates
 
-from .models import Projetos, Arquivo, ProjetosDosUsuarios, PalavrasChave
+from .models import Projetos, Arquivo, ProjetosDosUsuarios, PalavrasChave, TiposDeDocumento
 from . import urls
 from .forms import (ProjetoForm,
                     ArquivoForm,
@@ -27,9 +22,10 @@ from usuario.forms import Bolsista1Form, Pesquisador1Form
 from collections import Counter
 
 
-def salvandoArquivo(request, id, form_arq, estado, cidade):
+def salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento):
     arquivo = form_arq.save()
     textoNao = request.POST.get('opcao')
+    arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
     if arquivo.arq_texto and textoNao == 0:
         arquivo.arq_texto = ' '
     dia = request.POST.get('dia')
@@ -48,18 +44,6 @@ def salvandoArquivo(request, id, form_arq, estado, cidade):
     arquivo.arq_pro_id = get_object_or_404(Projetos, pk=id)  # Colocando a chave Estrangeira (Projeto)
     return(arquivo)
 
-def testando(request):
-    search = request.GET.get('search')
-    if search:
-        search = search.lower()  
-        palavrasBuscadas = search.split(' ')
-        encontrado = PalavrasChave.objects.filter(pc_palavras_chaves__in=palavrasBuscadas).values_list('pc_arq',flat=True)
-        arquivo = Arquivo.objects.filter(pk__in=encontrado, arq_nivel_de_acesso='PU')
-        context={}
-        context['person_list'] = arquivo
-        return render(request, 'arquivos/index.html', context)
-    else:
-        return render(request, 'arquivos/index.html')
 
 def salvandoPalavrasChave(arquivo, Palavras):
     for palavra in Palavras:
@@ -77,13 +61,14 @@ def add_arquivo(request, id):
             form_foto = FotosForm(request.POST, request.FILES)
             estado = request.POST.get('estado') 
             cidade = request.POST.get('cidade')
+            categoriaDeDocumento = request.POST.get('arq_tipo_de_documento')
             palavrasChaves = request.POST.get('PalavraChave') 
             Palavras = palavrasChaves.split(); 
             # Sistema de bloqueio  
             tipoDeArquivo = request.POST.get('tipoDeDocumento')  
             if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'V':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade)
+                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 video = form_video.save()
@@ -94,7 +79,7 @@ def add_arquivo(request, id):
 
             elif form_arq.is_valid() and len(Palavras) < 6 and form_documento.is_valid() and tipoDeArquivo =='D':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade)
+                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 documento = form_documento.save()
@@ -104,7 +89,7 @@ def add_arquivo(request, id):
 
             elif form_arq.is_valid() and len(Palavras) < 6 and form_foto.is_valid() and tipoDeArquivo =='F':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade)
+                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 foto = form_foto.save()
@@ -114,7 +99,7 @@ def add_arquivo(request, id):
 
             elif form_arq.is_valid() and len(Palavras) < 6 and form_audio.is_valid() and tipoDeArquivo =='A':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade)
+                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 audio = form_audio.save()
@@ -129,35 +114,46 @@ def add_arquivo(request, id):
             form_documento = DocumentoForm()
             form_audio = AudioForm()
             form_foto = FotosForm()
+            listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+            listas_categorias = set(listas_categorias_reptidas)
+            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_geral')
         return render(request, 'arquivos/add_arquivo.html', {'form_arq': form_arq,
                                                              'form_video': form_video,
                                                              'form_documento':form_documento,
                                                              'form_audio':form_audio,
-                                                             'form_foto':form_foto,},
+                                                             'form_foto':form_foto,
+                                                             'listas_categorias':listas_categorias,
+                                                             'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
+                                                             },
                                                              )      
-    
+
 
 
 def busca_comum(request):
     search = request.GET.get('search') 
     estado = request.GET.get('estado')
     cidade = request.GET.get('cidade')
-    # Tipo de documento 
-    # Ano do documento
+    listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+    listas_categorias = set(listas_categorias_reptidas)
+    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_geral')
     
     if search:
+        tipoDeDocumento = request.GET.get('arq_tipo_de_documento')
         search = search.lower()  
         palavrasBuscadas = search.split(' ')
         encontrado = PalavrasChave.objects.filter(pc_palavras_chaves__in=palavrasBuscadas).values_list('pc_arq',flat=True)
         arquivo = Arquivo.objects.filter(pk__in=encontrado, arq_nivel_de_acesso='PU')
+        if tipoDeDocumento:
+            arquivo = arquivo.filter(arq_tdd_id=tipoDeDocumento)
         if estado:
             arquivo = arquivo.filter(arq_estado=estado)
             if cidade:
                 arquivo = arquivo.filter(arq_cidade=cidade)
     else: 
-        return render(request, 'usuariocomum/busca.html')
+       
+        return render(request, 'usuariocomum/busca.html', {'listas_categorias':listas_categorias,'listas_tipos_de_arquivo': listas_tipos_de_arquivo})
    
-    return render(request, 'usuariocomum/busca.html', {'arquivos': arquivo,'search':search})
+    return render(request, 'usuariocomum/busca.html', {'arquivos': arquivo,'search':search, 'listas_categorias':listas_categorias,'listas_tipos_de_arquivo': listas_tipos_de_arquivo})
    
 
 def visualizacao_comum(request, id):  # Da uma olhada nesse argumento 'id' depois

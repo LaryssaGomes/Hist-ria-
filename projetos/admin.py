@@ -8,7 +8,12 @@ from .models import (Instituicao,
                      Fotos, 
                      Video, 
                      Documento,
-                     PalavrasChave)
+                     PalavrasChave,
+                     TiposDeDocumento)
+
+class TiposDeDocumentoAdmin(admin.ModelAdmin): 
+    list_display = ('tdd_geral',
+                    'tdd_especifico')
 
 class PalavrasChaveAdmin(admin.ModelAdmin):
     list_display = ('pc_arq',
@@ -54,6 +59,7 @@ admin.site.register(ProjetosDosUsuarios)
 # decidi retirar a tabela do administrador, já que o modelo não tem nenhuma aplicação util ainda
 admin.site.register(Arquivo, ArquivoAdmin)
 admin.site.register(Video, VideoAdmin)
+admin.site.register(TiposDeDocumento, TiposDeDocumentoAdmin)
 admin.site.register(PalavrasChave, PalavrasChaveAdmin)
 admin.site.register(Documento, DocumentoAdmin)
 admin.site.register(Projetos, ProjetoAdmin)

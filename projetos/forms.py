@@ -43,7 +43,6 @@ class ArquivoForm(forms.ModelForm):
                   'arq_desc',
                   'arq_assunto',
                   'arq_numero_de_caixa',
-                  'arq_tipo_de_documento',
                   'arq_nivel_de_acesso',
                   'arq_destinatario',
                   'arq_emitente',

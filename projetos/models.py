@@ -15,6 +15,26 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 # Este próximo import vai importar modelos do app usuario.
 from usuario.models import Pessoa
+import uuid
+
+def user_directory_path_video_file(instance, filename):
+    video = 'video'
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return '{0}/{1}'.format(video, filename)
+
+def user_directory_path_documento_file(instance, filename):
+    documento = 'documento'
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return '{0}/{1}'.format(documento, filename)
+
+def user_directory_path_audio_file(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    audio = 'audio'
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return '{0}/{1}'.format(audio, filename)
 
 
 class Instituicao(models.Model):
@@ -52,9 +72,12 @@ class ProjetosDosUsuarios(models.Model):
     pdu_projetos = models.ForeignKey(Projetos, on_delete=models.CASCADE)
     pdu_usuarios = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
 
+class TiposDeDocumento(models.Model):
+    tdd_geral = models.CharField('Tipo de Documento Geral:', max_length=100, null=True)
+    tdd_especifico = models.CharField('Tipo de Documento Especifico:', max_length=100, null=True)
+
 class Arquivo(models.Model):
-    # Tipos de Documentos
-    # Palavras chaves
+    arq_tdd_id = models.ForeignKey(TiposDeDocumento, on_delete=models.CASCADE, null=True)
     arq_pro_id = models.ForeignKey(Projetos, on_delete=models.CASCADE, null=True)  # Pegando o id da tabela Projetos
     arq_usu_id = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True)  # Pegando o id da tabela Usuarios
     arq_colecao = models.CharField('Colecao:', max_length=100, null=True)
@@ -64,6 +87,7 @@ class Arquivo(models.Model):
     )
     arq_nivel_de_acesso = models.CharField('Nivel de acesso:',max_length=2, choices=NIVEL_DE_ACESSO, null=True)
     arq_assunto = models.CharField('Assunto:', max_length=100, null=True)
+    '''
     TIPO_DE_DOCUMENTO = (
         ('Documentos Pessoais', (
             ('DPI', 'Identidade'),
@@ -145,9 +169,9 @@ class Arquivo(models.Model):
         ),
    
     )
+    '''
     arq_destinatario = models.CharField('Destinatario:',max_length=200, null=True, blank=True)
     arq_emitente = models.CharField('Emitente:',max_length=200, null=True, blank=True)
-    arq_tipo_de_documento = models.CharField('Tipo de Documento',max_length=20, choices=TIPO_DE_DOCUMENTO, null=True)
     arq_estado = models.CharField('Estado',max_length=5, null=True)
     arq_cidade = models.CharField('Cidade',max_length=5, null=True)
     arq_numero_de_caixa = models.CharField('Numero de caixa::',null=True, blank=True,max_length=1000)
@@ -164,7 +188,7 @@ class PalavrasChave(models.Model):
 class Audio(models.Model):
     aud_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
     aud_duracao = models.DurationField('Duração:', null=True, blank=True)
-    aud_audio = models.FileField('Audio',upload_to='Audio/',null=True, blank=True)
+    aud_audio = models.FileField('Audio',upload_to=user_directory_path_audio_file,null=True, blank=True)
 
 class Fotos(models.Model):
     fot_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
@@ -172,10 +196,10 @@ class Fotos(models.Model):
 
 class Video(models.Model):
     vid_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
-    vid_video = models.FileField('Video:',upload_to='Video/',null=True, blank=True)
+    vid_video = models.FileField('Video:',upload_to=user_directory_path_video_file,null=True, blank=True)
     vid_duracao = models.DurationField('Duração:', null=True, blank=True)
     
 class Documento(models.Model):
     doc_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
-    doc_documento = models.FileField('Documento',upload_to='Documento/',null=True, blank=True)
+    doc_documento = models.FileField('Documento',upload_to=user_directory_path_documento_file,null=True, blank=True)
     doc_numero_de_paginas = models.DecimalField('Numero de Paginas:', max_digits=3000, decimal_places=0, blank=True, null=True,)
