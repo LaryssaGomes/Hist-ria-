@@ -3,48 +3,58 @@
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
+        <title>Hemeroteca | Projetos</title>
+        <link rel="stylesheet" href="../../../static/css/navbar-profile.css">
+        <link rel="stylesheet" href="../../../static/css/global.css">
+        <link rel="stylesheet" href="../../../static/css/ver_projetos.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     </head>
     <body>
-    {% block content %}
+        <!-- Menu -->
+        {% include 'projetos/navbar.html' %}
+        <!-- Menu end -->
            
-            {% for usuario in lista %}
-                {% if Pesquisador == usuario.pdu_usuarios or Pesquisador == 1 %}
-                    E Pesquisador
-                {% endif %}
-                
-                Nome do usuario:{{ usuario.pdu_usuarios  }}
-            <br>
-            {% endfor %}
-           
-        <form action="submit" method="GET">{% csrf_token %}
-            <input name="nomeDoBolsista" type="text" >
-            <button type="submit" >Busca</button>
-            {% for bolsista in lista_bolsista  %}
-                Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">
-                <br>
-            {% endfor %}
-            <div class="pagination">
-                <span class="step-links">
-                 {% if lista_bolsista.has_previous %}
-                       <a href="?page={{ lista_bolsista.previous_page_number }}">Anterior</a>
-                 {% endif %}
-                       <span class="current"> 
-                             {{ lista_bolsista.number }} de {{ lista_bolsista.paginator.num_pages }}
-                       </span>
-                 {% if lista_bolsista.has_next %}
-                       <a href="?page={{ lista_bolsista.next_page_number }}">Proxima</a>
-                 {% endif %}
-           </span>
-          </div>
-        </form>
-        Titulo:{{projeto.pro_titulo}}
-        Descrição:{{ projeto.pro_desc }}
-        <br>
-        <a href="add_arquivo/">add_arquivo</a>
-        {% for list_arquivos in list_arquivos %}
-               Nome do Arquivo:{{ list_arquivos.arq_nome }}
-               <br>
-        {% endfor %}
-    {% endblock %}
+        <!-- {% for usuario in lista %}
+            {% if Pesquisador == usuario.pdu_usuarios or Pesquisador == 1 %}
+                E Pesquisador
+            {% endif %}
+            
+            Nome do usuario:{{ usuario.pdu_usuarios  }}
+        {% endfor %} -->
+        <section class="container">
+           <h2>Projeto: {{projeto.pro_titulo}}</h2>
+
+            <div class="description">
+                <h3>Descrição</h3>
+                <p>{{ projeto.pro_desc }}</p>
+            </div>
+
+            <div class="participants">
+                <h3>Participantes</h3>
+                <form action="submit" method="GET">{% csrf_token %}
+                    <input name="nomeDoBolsista" type="text" >
+                    <button type="submit">Busca</button>
+                    {% for bolsista in lista_bolsista  %}
+                        Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">
+                        <br>
+                    {% endfor %}
+                </form>
+            </div>
+            
+            <div class="files">
+                <header>
+                    <h3>Arquivos</h3>
+                    <a href="add_arquivo/">Novo arquivo</a>  
+                </header>
+                <ul>
+                    {% for list_arquivos in list_arquivos %}
+                        <li>
+                            Nome do Arquivo: {{ list_arquivos.arq_nome }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
     </body>
 </html>
