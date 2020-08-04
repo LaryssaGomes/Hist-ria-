@@ -1,5 +1,5 @@
 $(document).ready( function () {
    
-    $('#myTable').DataTable({ "filter": false});
+    $('#myTable').DataTable();
   
   });

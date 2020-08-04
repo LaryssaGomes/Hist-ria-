@@ -46,4 +46,10 @@ class ArquivoForm(forms.ModelForm):
                   'arq_nivel_de_acesso',
                   'arq_destinatario',
                   'arq_emitente',
-                  'arq_texto')
+                  'arq_texto',
+                  'arq_cargo_des',
+                  'arq_cargo_emi',
+                  'arq_cdd',
+                  'arq_idioma',
+                  'arq_custodia',
+                  'arq_local_emissao')

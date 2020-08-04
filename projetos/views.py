@@ -61,7 +61,7 @@ def add_arquivo(request, id):
             form_foto = FotosForm(request.POST, request.FILES)
             estado = request.POST.get('estado') 
             cidade = request.POST.get('cidade')
-            categoriaDeDocumento = request.POST.get('arq_tipo_de_documento')
+            categoriaDeDocumento = request.POST.get('arq_documento_especifico')
             palavrasChaves = request.POST.get('PalavraChave') 
             Palavras = palavrasChaves.split(); 
             # Sistema de bloqueio  
@@ -116,7 +116,7 @@ def add_arquivo(request, id):
             form_foto = FotosForm()
             listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
             listas_categorias = set(listas_categorias_reptidas)
-            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_geral')
+            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
         return render(request, 'arquivos/add_arquivo.html', {'form_arq': form_arq,
                                                              'form_video': form_video,
                                                              'form_documento':form_documento,
@@ -135,7 +135,7 @@ def busca_comum(request):
     cidade = request.GET.get('cidade')
     listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
     listas_categorias = set(listas_categorias_reptidas)
-    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_geral')
+    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
     
     if search:
         tipoDeDocumento = request.GET.get('arq_tipo_de_documento')

@@ -71,14 +71,39 @@ for(a=1;a<32;a++){
 
 // Populando o select ano
 var selectAno = document.getElementById("ano");
-var data = new Date();
-var ano = data.getFullYear();
-ano = ano+1;
-for(b=1200;b<ano;b++){
-    if(b<10){
-        selectAno.options[selectAno.options.length] = new Option("0"+b, "0"+b);
-    }else{
-        selectAno.options[selectAno.options.length] = new Option(b, b);
+
+function anoMaximo(){
+    var data = new Date();
+    var ano = data.getFullYear();
+    ano = ano+1;
+    return ano;
+}
+document.getElementById('espeficos').style.display="none";
+
+function esconderEspeficos(){
+    var myOpts = document.getElementById('generico').options;
+    for (x=1;x<myOpts.length;x++){
+        var aux = myOpts[x].value
+        document.getElementById(aux).style.display="none";
+}
+}
+esconderEspeficos();
+function tipo(){
+    var tipo = document.getElementById('generico')
+    if(tipo){
+        if(tipo.value=='vazio'){
+                document.getElementById('espeficos').style.display="none";
+        }else{
+            document.getElementById('espeficos').style.display=""; 
+            document.getElementById(tipo.value).style.display=""; 
+            var myOpts = document.getElementById('generico').options;
+            for (x=1;x<myOpts.length;x++){
+                var aux = myOpts[x].value
+                if(aux!=tipo.value){
+                    document.getElementById(aux).style.display="none";
+                }
+                
+            }
+        } 
     }
 }
-

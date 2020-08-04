@@ -74,7 +74,7 @@ class ProjetosDosUsuarios(models.Model):
 
 class TiposDeDocumento(models.Model):
     tdd_geral = models.CharField('Tipo de Documento Geral:', max_length=100, null=True)
-    tdd_especifico = models.CharField('Tipo de Documento Especifico:', max_length=100, null=True)
+    tdd_especifico = models.CharField('Tipo de Documento Especifico:', max_length=100, null=True, blank=True)
 
 class Arquivo(models.Model):
     arq_tdd_id = models.ForeignKey(TiposDeDocumento, on_delete=models.CASCADE, null=True)
@@ -87,6 +87,12 @@ class Arquivo(models.Model):
     )
     arq_nivel_de_acesso = models.CharField('Nivel de acesso:',max_length=2, choices=NIVEL_DE_ACESSO, null=True)
     arq_assunto = models.CharField('Assunto:', max_length=100, null=True)
+    arq_cargo_des = models.CharField('Cargo de Destinatario:', max_length=100, null=True)
+    arq_cargo_emi = models.CharField('Cargo de Emitente:', max_length=100, null=True)
+    arq_local_emissao = models.CharField('Local Emissao:', max_length=200, blank=True, null=True)
+    arq_custodia = models.CharField('Custodia:', max_length=100, blank=True, null=True)
+    arq_idioma = models.CharField('Idioma:', max_length=100, blank=True, null=True)
+    arq_cdd = models.DecimalField('Numero de CDD:', max_digits=6, decimal_places=0, blank=True, null=True,)
     '''
     TIPO_DE_DOCUMENTO = (
         ('Documentos Pessoais', (
