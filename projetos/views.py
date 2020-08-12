@@ -18,9 +18,11 @@ from .forms import (ProjetoForm,
 
 # Este próximo import vai importar modelos do app usuario.
 
+
 from usuario.forms import UsuarioForm
 from collections import Counter
 from usuario.models import UsuarioComum
+
 
 
 def salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento):
@@ -178,6 +180,7 @@ def edi_projetos(request, id):
         return render(request, 'projetos/edi_projetos.html', {'form': form })
 
 
+
 '''
 def listaDosBolsista(nome, request):
     if nome :
@@ -189,6 +192,7 @@ def listaDosBolsista(nome, request):
             paginator = Paginator(lista, 3)
             page = request.GET.get('page')
             list_bolsista = paginator.get_page(page)
+
              # Mande a lista desses bolsistas
         return list_bolsista
 '''
@@ -248,7 +252,9 @@ def add_projetos(request):
                 projetos.pro_datetime = timezone.now()
                 projetos.save()
                 # salvando dos forenkey
+
                 projetos_use = ProjetosDosUsuarios.objects.create(pdu_projetos=projetos, pdu_usuarios= UsuarioComum.objects.get(id=request.user.id))
+
                 return redirect('/inicio_projeto/')  # rediredionando para lista
         else:
             form_pro = ProjetoForm()
@@ -285,3 +291,4 @@ def edi_perfil(request):
             return render(request,'usuario/perfil.html', {'form': form })
     else:
         return render(request,'usuario/perfil.html', {'form': form })
+

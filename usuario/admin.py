@@ -12,3 +12,4 @@ class InstituicoesAdmin(admin.ModelAdmin):
 
 admin.site.register(UsuarioComum, UsuarioComumAdmin)
 admin.site.register(Instituicoes, InstituicoesAdmin)
+

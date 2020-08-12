@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404
 from .forms import UsuarioComumForm, ValidarCadastroUsuario
 from django.contrib import messages
@@ -5,10 +6,12 @@ from .models import UsuarioComum, Instituicoes
 
 
 def usuario(request):
+
     """
     # View do pesquisador, responsável por verificar se o formulario está vazio
     # ou não, validar os dados e salvar no banco.
     """
+
 
     if str(request.method) == 'POST':  # Verifica se é o formulário ja tem dados a serem submetidos.
         form = UsuarioComumForm(request.POST, request.FILES)
@@ -54,8 +57,10 @@ def validar_email_usuario(request):
             messages.error(request, 'Erro ao confirma o e-mail')
     else:
         form = ValidarCadastroUsuario()  # Senão tiver dados, fica esperando o cliente informa os  dados.
-
+   
     context = {
         'form': form
     }
+
     return render(request, 'validar_email_usuario.html', context)
+

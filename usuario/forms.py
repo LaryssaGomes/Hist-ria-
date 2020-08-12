@@ -1,3 +1,4 @@
+
 from typing import Dict
 
 from django import forms
@@ -10,9 +11,11 @@ from pycpfcnpj import cpf
 from django.shortcuts import render
 
 
+
 class CustomUsuarioCreateForm(UserCreationForm):  # Esse é o formulario para adicionar novos usuários
 
     class Meta:
+
         model = UsuarioComum
         fields = ('nome',
                   'cpf',
@@ -35,6 +38,7 @@ class CustomUsuarioCreateForm(UserCreationForm):  # Esse é o formulario para ad
 
 class CustomUsuarioChangeForm(UserChangeForm):
 
+
     # cpf = BRCPFField()
 
     class Meta:
@@ -47,6 +51,7 @@ class CustomUsuarioChangeForm(UserChangeForm):
                   'foto',
                   'telefone',
                   'email')
+
 
 
 class UsuarioComumForm(UserCreationForm):
@@ -98,3 +103,4 @@ class UsuarioForm(forms.ModelForm):
                   'foto',
                   'telefone',
                   'email',)
+

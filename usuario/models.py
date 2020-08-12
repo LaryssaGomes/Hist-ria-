@@ -2,7 +2,9 @@ from django.db import models
 from stdimage.models import StdImageField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+
 from django.conf import settings
+
 
 
 class UsuarioManager(BaseUserManager):  # Essa é a classe é responsável pela administração dos usuários
@@ -38,6 +40,7 @@ class UsuarioManager(BaseUserManager):  # Essa é a classe é responsável pela 
             raise ValueError('Superuser precisa ter is_staff=True')
 
         return self._create_user(email, password, **extra_fields)
+
 
 
 class Instituicoes(models.Model):
@@ -79,10 +82,12 @@ class Usuario(AbstractUser):
     # Estes seguintes dados serão passados para gerar o formulário.
     REQUIRED_FIELDS = ['nome']
 
+
     def __str__(self):
         return self.email  # Retorna o email pois usaremos ele para fazer o login
 
     objects = UsuarioManager()  # Basicamente esta usando o adminstrador de usuários criado acima.
+
 
 
 class UsuarioComum(Usuario):
@@ -117,3 +122,4 @@ class Vinculacao(models.Model):
     curso = models.CharField('Curso', max_length=100)
     instituicao = models.ForeignKey(Instituicoes, on_delete=models.PROTECT)
     usuario = models.ForeignKey(UsuarioComum, on_delete=models.PROTECT)
+

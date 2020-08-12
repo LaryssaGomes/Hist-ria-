@@ -39,13 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'projetos',
     'usuario',
-    'cadastro',
     'bootstrap4',
     'stdimage',
     'ckeditor',
     'ckeditor_uploader',
+
     # 'pycpfcnpj',
     # 'django.contrib.localflavor.br.forms',
+
 ]
 CKEDITOR_UPLOAD_PATH ='uploadsDeArquivos/'
 MIDDLEWARE = [
@@ -131,6 +132,7 @@ STATIC_ROOT = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Usado durante a produção
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 AUTH_USER_MODEL = 'usuario.Usuario'
 
