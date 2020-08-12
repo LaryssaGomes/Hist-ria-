@@ -1,0 +1,153 @@
+/* Menu */
+#menu {
+    width: 100%;
+    top: 0;
+    z-index: 100;
+
+    padding: 20px 80px;
+
+    background-color: rgba(255, 255, 255, 0.959);
+    /* box-shadow: 0px 3px 14px 0px rgba(134, 157, 175, 0.438); */
+
+    transition: all 0.2s;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu .logo img {
+    max-width: 200px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+
+    text-align: right;
+    align-items: center;
+}
+
+.profile button {
+    width: 42px;
+    height: 42px;
+    margin-right: 32px;
+
+    font-size: 18px;
+    border-radius: 8px;
+
+    color: #252525;
+    background: #EBEAF3;
+    border: 0;
+}
+
+.profile span {
+    margin-right: 8px;
+}
+
+.profile span strong {
+    display: block;
+    color: #252525;
+}
+
+.profile span a {
+    text-decoration: none;
+    color: #3476E2;
+    font-weight: 500;
+}
+
+.profile img {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 8px;
+    border: 1px solid #EBEAF3;
+}
+
+.notifications {
+    position: absolute;
+    right: 40px;
+    top: 78px;
+
+    width: 400px;
+    padding: 18px;
+    border-radius: 8px;
+    border: 1px solid #EBEAF3;
+    background: #FAFAFA;
+
+    z-index: 999;
+}
+
+.hidden {
+    display: none;
+}
+
+.notifications header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#close {
+    background: transparent;
+    border: 0;
+    font-size: 16px;
+    color: #ACACAC;
+}
+
+.notifications label {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ACACAC;
+}
+
+.notification {
+    margin-top: 8px;
+    width: 100%;
+    border-radius: 8px;
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+
+    background: #fff;
+}
+
+.notification img {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50px;
+}
+
+.notification .aside {
+    margin-left: 8px;
+}
+
+.notification p {
+    font-size: 14px;
+    line-height: 16px;
+    color: #4B4B4B;
+    margin-bottom: 4px;
+}
+
+.notification .accept, .deny {
+    border: 0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.notification .accept {
+    background: #0FDC86;
+}
+
+.notification .deny {
+    background: #D94A37;
+}
+
+.notification .accept:hover, .deny:hover {
+    opacity: 0.9;
+}

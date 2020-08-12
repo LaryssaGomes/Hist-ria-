@@ -1,0 +1,35 @@
+{% load bootstrap4 %}
+{% load static %}
+<html>
+    <head>
+        <title>Hemeroteca | Adicionar projeto</title>
+        <meta charset="utf-8">
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="../../static/css/edit-profile.css">
+        <link rel="stylesheet" href="../../static/css/global.css">
+        <link rel="stylesheet" href="../../static/css/navbar-profile.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <!-- Menu -->
+        {% include 'projetos/navbar.html' %}
+        <!-- Menu end -->
+        <div class="d-flex justify-content-center mt-5 mb-5">
+            <div class="col-6">
+                <h2>Adicionar projeto</h2>
+
+                <form action="{% url 'add_projetos' %}" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- {{form_pro.as_p}} -->
+                    {% bootstrap_form form_pro %}
+
+                    <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
+                    <button type="button" class="btn btn-outline-danger">Cancelar</button> <!--redirecionar para dashboard de projetos-->
+                </form>
+            </div>
+        </div>
+    </body>
+
+</html>

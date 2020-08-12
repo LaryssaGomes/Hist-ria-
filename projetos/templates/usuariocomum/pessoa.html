@@ -1,0 +1,28 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Usuário</title>
+        {% bootstrap_css %}
+    </head>
+    <body>
+        {% include 'usuariocomum/nav.html' %}
+        <div class="container">
+            <h1>Usuário</h1>
+            {% bootstrap_messages %}
+
+            <form action="{% url 'pessoa' %}" method="post" class="form" autocomplete="on" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+
+    {% bootstrap_javascript jquery='full' %}
+    </body>
+</html>

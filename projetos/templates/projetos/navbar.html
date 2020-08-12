@@ -1,0 +1,55 @@
+{% load static %}
+<nav id="menu">
+    <!--Criando navbar-->
+    <div class="menu">
+        <a class="logo" href="#">
+            <img src="../../../static/assets/Hemerotecalogo.png" alt="Hemeroteca">
+        </a>
+        <div class="profile">
+            {% if user.is_anonymous %}
+                <a href="{% url 'login' %}">Login</a>
+            {% else %}
+                <button id="open">
+                    <i class="far fa-bell"></i>
+                </button>
+                <span>
+                    <strong>{{ user.nome }}</strong>
+                    <a href="{% url 'logout' %}">sair</a>
+                </span>
+                <a href="{% url 'edi_perfil' %}">
+                    <img src="../../../media/{{user.foto}}" />
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="notifications hidden" id="notifications">
+    <header>
+        <label>Notificações</label>
+        <button id="close">
+            <i class="far fa-times-circle"></i>
+        </button>
+    </header>
+    <ul>
+        <li class="notification">
+            <img src="../../../media/pesquisador/Bruna-Marquezine-6.jpg" />
+            <div class="aside">
+                <p>
+                    <b>Bruna</b> solicitou acesso ao acervo do projeto <b>"Projeto X"</b>
+                </p>
+                <button class="accept">Aceitar</button>
+                <button class="deny">Rejeitar</button>
+            </div>
+        </li>
+    </ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $("#open").click(function () {
+        $("#notifications").removeClass("hidden");
+    });
+    $("#close").click(function () {
+        $("#notifications").addClass("hidden");
+    });
+</script>

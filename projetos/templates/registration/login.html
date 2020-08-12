@@ -1,0 +1,44 @@
+{% load bootstrap4 %}
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Hemeroteca | Login</title>
+        <link rel="stylesheet" href="../../static/css/global.css">
+        <link rel="stylesheet" href="../../static/css/login.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        {% bootstrap_css %}
+    </head>
+    <body>
+        <div class="container-box">
+            <div class="form-box">
+                <form class="form" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <!-- <img class="mb-4" src="../../static/assets/Hemerotecalogo.png" alt="Hemeroteca"> -->
+                    <h3 class="mb-3 font-weight-bold">Bem-vindo(a) de volta!</h3>
+                    <label>Faça seu login para continuar</label>
+
+                    <div class="form-group mt-3 w-100">
+                        <label for="username">E-mail</label>
+                        <input type="email" id="username" name="username" class="form-control form-control-lg" placeholder="fulano@email.com" required autofocus>
+                    </div>
+
+                    <div class="form-group w-100">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="***********" required>
+                    </div>
+                    
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+                    <a href="cadastro/bolsista" class="mt-4" type="submit">Criar conta</a>
+                    <p class="mt-5 mb-3 text-muted">&copy; {% now 'Y'%}</p>
+                </form>
+            </div>
+            <div class="background-img">
+                <!-- <img src="../../static/assets/penedo.png" /> -->
+                <!--<img src="../../static/assets/olinda.png" />
+                <img src="../../static/assets/sao_joao.png" />
+                <img src="../../static/assets/sao_miguel.png" /> -->
+            </div>
+        </div>
+    </body>
+</html>

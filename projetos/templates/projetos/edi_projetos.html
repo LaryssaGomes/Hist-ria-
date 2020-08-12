@@ -1,0 +1,30 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hemeroteca | Editar Projeto</title>
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="../../static/css/edit-profile.css">
+        <link rel="stylesheet" href="../../static/css/global.css">
+    </head>
+    <body>
+        <!-- Menu -->
+        {% include 'projetos/navbar.html' %}
+        <!-- Menu end -->
+        <div class="d-flex justify-content-center mt-5">
+            <div class="col-6">
+                <h1>Editar Projeto</h1>
+                <form  method="post" class="form"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                    {% endbuttons %}
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

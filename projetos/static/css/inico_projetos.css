@@ -1,0 +1,110 @@
+body {
+    background: #F2F2F2;
+}
+
+/* Banner */
+.banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    max-width: 1200px;
+    height: 280px;
+    margin: 32px auto;
+    border-radius: 8px;
+
+    padding: 48px 80px;
+
+    color: #fff;
+    background: linear-gradient(90deg, rgba(95, 48, 225, 0.82) 0%, rgba(89, 40, 255, 0.81) 100%);
+}
+
+.banner label {
+    max-width: 600px;
+    display: block;
+}
+
+.banner button, .banner a {
+    width: 160px;
+    height: 44px;
+
+    border-radius: 8px;
+    border: 0;
+    background: #fff;
+    color: #6C63FF;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+/* Content */
+.container-projects {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+
+    margin: 0px auto;
+    margin-bottom: 64px;
+}
+
+.container-projects h2 {
+    color: #453860;
+    font-weight: 500;
+    font-size: 26px;
+}
+
+.container-projects .projects {
+    margin-top: 16px;
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    list-style: none;
+}
+
+.container-projects .project {
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+    padding: 20px;
+
+    margin: 8px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.container-projects .project h3 {
+    font-size: 14px;
+    color: #323232;
+    text-transform: uppercase;
+}
+
+.container-projects .project p, span {
+    color: #585858;
+    margin-top: 6px;
+}
+
+.container-projects .project .links {
+    margin-top: 6px;
+}
+
+.container-projects .project a {
+    color: #fff;
+    background: #023589;
+    margin-top: 6px;
+    padding: 4px 8px;
+    text-decoration: none;
+    border-radius: 4px;
+
+    transition: all 0.2s;
+}
+
+.container-projects .project a + a {
+    margin-left: 6px;
+}
+
+.container-projects .project a:hover {
+    background-color: #012d74;
+}
