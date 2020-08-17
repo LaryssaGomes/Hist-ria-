@@ -19,6 +19,7 @@
     <body>  
        
        <h2>Adicionar Arquivo</h2>
+       
         
        <h3>1. Cadastro do Documento</h3>
        {% bootstrap_messages %}
@@ -192,6 +193,7 @@
             <button type='submit'>Cancelar</button>
         
         </form>    
+        {% if user.usuariocomum.tipo_de_usuario == 'PE' %}
         <form method="post" action="{% url 'novosTiposDeDocumentos' %}">
             {% csrf_token %}
             <br>
@@ -223,6 +225,8 @@
             <br>
             <button type="submit">Salvar</button>
         </form>
+        {% endif %}
+       
    
     <script type="text/javascript" src="{% static 'js/addArquivo.js' %}"></script>    
     </body>
