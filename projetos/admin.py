@@ -9,7 +9,12 @@ from .models import (Instituicao,
                      Video, 
                      Documento,
                      PalavrasChave,
-                     TiposDeDocumento)
+                     TiposDeDocumento,
+                     PatrimonioCultura,)
+
+class PatrimonioCulturaAdmin(admin.ModelAdmin):
+    list_display = ('pc_oficio', 
+                    'pc_expressao')
 
 class TiposDeDocumentoAdmin(admin.ModelAdmin): 
     list_display = ('tdd_geral',
@@ -31,13 +36,12 @@ class VideoAdmin(admin.ModelAdmin):
 
 class ArquivoAdmin(admin.ModelAdmin):
     list_display = ('arq_pro_id',
-                    'arq_desc',
                     'arq_data',
                     'arq_nome',
                     'arq_estado',
-                    'arq_numero_de_caixa',
                     'arq_data_de_registro',
                     'arq_destinatario',
+                    'arq_autenticacao',
                     'arq_emitente',
                     'arq_texto')
                     
@@ -58,6 +62,7 @@ admin.site.register(ProjetosDosUsuarios)
 # decidi retirar a tabela do administrador, já que o modelo não tem nenhuma aplicação util ainda
 admin.site.register(Arquivo, ArquivoAdmin)
 admin.site.register(Video, VideoAdmin)
+admin.site.register(PatrimonioCultura, PatrimonioCulturaAdmin)
 admin.site.register(TiposDeDocumento, TiposDeDocumentoAdmin)
 admin.site.register(PalavrasChave, PalavrasChaveAdmin)
 admin.site.register(Documento, DocumentoAdmin)

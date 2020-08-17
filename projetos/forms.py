@@ -1,5 +1,14 @@
 from django import forms
-from .models import Projetos, Arquivo, Audio, Fotos, Video, Documento
+from .models import Projetos, Arquivo, Audio, Fotos, Video, Documento, PatrimonioCultura
+
+class PatrimonioCulturaForm(forms.ModelForm):
+    class Meta:
+        model = PatrimonioCultura
+        fields = ('pc_oficio',
+                  'pc_expressao',
+                  'pc_lugares',
+                  'pc_edificacoes',
+                  'pc_celebracoes',)
 
 class AudioForm(forms.ModelForm):
     class Meta:
@@ -10,7 +19,8 @@ class AudioForm(forms.ModelForm):
 class FotosForm(forms.ModelForm):
     class Meta:
         model = Fotos
-        fields = ('fot_imagem',)
+        fields = ('fot_imagem',
+                  'fot_tamanho')
 
 class VideoForm(forms.ModelForm):
     class Meta:
@@ -39,10 +49,8 @@ class ArquivoForm(forms.ModelForm):
     class Meta:
         model = Arquivo
         fields = ('arq_colecao',
-                  'arq_nome',
-                  'arq_desc',
                   'arq_assunto',
-                  'arq_numero_de_caixa',
+                  'arq_nome',
                   'arq_nivel_de_acesso',
                   'arq_destinatario',
                   'arq_emitente',
@@ -52,4 +60,9 @@ class ArquivoForm(forms.ModelForm):
                   'arq_cdd',
                   'arq_idioma',
                   'arq_custodia',
-                  'arq_local_emissao')
+                  'arq_autenticacao',
+                  'arq_localizacao_do_acervo',
+                  'arq_local_emissao',
+                  'arq_tipo_de_formato',
+                  'arq_estado',
+                  'arq_cidade')

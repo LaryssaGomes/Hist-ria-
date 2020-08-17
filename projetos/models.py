@@ -86,18 +86,18 @@ class TiposDeDocumento(models.Model):
 class Arquivo(models.Model):
     arq_tdd_id = models.ForeignKey(TiposDeDocumento, on_delete=models.CASCADE, null=True)
     arq_pro_id = models.ForeignKey(Projetos, on_delete=models.CASCADE, null=True)  # Pegando o id da tabela Projetos
-    arq_colecao = models.CharField('Colecao:', max_length=100, null=True)
+    arq_colecao = models.CharField('Colecao:', max_length=100, null=True, blank=True)
     NIVEL_DE_ACESSO = (
         ('PU', 'Publico'),
         ('PR', 'Privado'),
     )
     arq_nivel_de_acesso = models.CharField('Nivel de acesso:',max_length=2, choices=NIVEL_DE_ACESSO, null=True)
     arq_assunto = models.CharField('Assunto:', max_length=100, null=True)
-    arq_cargo_des = models.CharField('Cargo de Destinatario:', max_length=100, null=True)
-    arq_cargo_emi = models.CharField('Cargo de Emitente:', max_length=100, null=True)
+    arq_cargo_des = models.CharField('Cargo de Destinatario:', max_length=100, null=True, blank=True)
+    arq_cargo_emi = models.CharField('Cargo de Emitente:', max_length=100, null=True, blank=True)
     arq_local_emissao = models.CharField('Local Emissao:', max_length=200, blank=True, null=True)
-    arq_custodia = models.CharField('Custodia:', max_length=100, blank=True, null=True)
-    arq_idioma = models.CharField('Idioma:', max_length=100, blank=True, null=True)
+    arq_custodia = models.CharField('Instituição de Custodia:', max_length=100, null=True)
+    arq_idioma = models.CharField('Idioma:', max_length=100, null=True)
     arq_cdd = models.DecimalField('Numero de CDD:', max_digits=6, decimal_places=0, blank=True, null=True,)
     '''
     TIPO_DE_DOCUMENTO = (
@@ -184,13 +184,18 @@ class Arquivo(models.Model):
     '''
     arq_destinatario = models.CharField('Destinatario:',max_length=200, null=True, blank=True)
     arq_emitente = models.CharField('Emitente:',max_length=200, null=True, blank=True)
-    arq_estado = models.CharField('Estado',max_length=5, null=True)
-    arq_cidade = models.CharField('Cidade',max_length=5, null=True)
-    arq_numero_de_caixa = models.CharField('Numero de caixa::',null=True, blank=True,max_length=1000)
-    arq_data = models.CharField('Data', null=True, blank=True,max_length=10)
+    arq_estado = models.CharField('Estado',max_length=20, null=True, blank=True)
+    arq_cidade = models.CharField('Cidade',max_length=20, null=True, blank=True)
+    arq_data = models.CharField('Data', null=True, blank=True, max_length=10)
     arq_data_de_registro = models.DateTimeField('Data de publicação:', blank=True, null=True)
-    arq_desc = models.TextField('Descrição:')
-    arq_nome = models.CharField('Nome:', max_length=100, null=True)
+    arq_nome = models.CharField('Titulo:', max_length=100, null=True)
+    arq_localizacao_do_acervo = models.CharField('Localização do acervo:', max_length=100, null=True)
+    AUTENTICACAO = (
+        ('O', 'Original'),
+        ('C', 'Copia'),
+    )
+    arq_autenticacao = models.CharField('Autenticação:',max_length=1, choices=AUTENTICACAO, null=True)
+    arq_tipo_de_formato = models.CharField('Tipo de Formato:',max_length=10, null=True)
     arq_texto = RichTextUploadingField( null=True, max_length=1000, blank=True) 
     
 class PalavrasChave(models.Model):
@@ -204,6 +209,7 @@ class Audio(models.Model):
 
 class Fotos(models.Model):
     fot_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
+    fot_tamanho = models.CharField('Tamanho:',null=True, blank=True, max_length=100)
     fot_imagem = StdImageField('Imagem:', upload_to='imagem_projeto_arq', null=True, blank=True)
 
 class Video(models.Model):
@@ -213,5 +219,13 @@ class Video(models.Model):
     
 class Documento(models.Model):
     doc_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
-    doc_documento = models.FileField('Documento',upload_to=user_directory_path_documento_file,null=True, blank=True)
+    doc_documento = models.FileField('Documento',upload_to=user_directory_path_documento_file,null=True,blank=True)
     doc_numero_de_paginas = models.DecimalField('Numero de Paginas:', max_digits=3000, decimal_places=0, blank=True, null=True,)
+
+class PatrimonioCultura(models.Model):
+    pc_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True, blank=True)
+    pc_oficio = models.TextField('Oficio:', max_length=100, null=True, blank=True)
+    pc_expressao = models.TextField('Formas de expressão:', max_length=100, null=True, blank=True)
+    pc_lugares = models.TextField('Lugares:', max_length=100, null=True, blank=True)
+    pc_celebracoes = models.TextField('Celebrações', max_length=100, null=True, blank=True)
+    pc_edificacoes = models.TextField('Edificações', max_length=100, null=True, blank=True)

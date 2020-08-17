@@ -1,58 +1,66 @@
-esconderElementos();
-document.getElementById('texto').style.display="none";
-function esconderElementos(){
-    document.getElementById('A').style.display="none";
-    document.getElementById('V').style.display="none";
+esconde()
+function esconde(){
     document.getElementById('F').style.display="none";
+    document.getElementById('V').style.display="none";
     document.getElementById('D').style.display="none";
-    document.getElementById('T').style.display="none";
+    document.getElementById('A').style.display="none";
+    document.getElementById('uploadV').style.display="none";
+    document.getElementById('uploadA').style.display="none";
+    document.getElementById('uploadF').style.display="none";
+    document.getElementById('uploadD').style.display="none";
 }
-function update() {
-    var select = document.getElementById('id_arq_tipo_de_formato');
-    var option = select.options[select.selectedIndex];
-    var elementosDiv = {0: "V", 1: "D", 2: "F", 3:"A"};
-    if (option.value == ''){
-        document.getElementById('nada').style.display="";
-        esconderElementos();
-    }else{
-        for (var cont = 0; cont in elementosDiv; cont++){
-            if (option.value == elementosDiv[cont]){
-                esconderTexto();
-                radio = document.getElementById('1')
-                radio2 = document.getElementById('0')
-                radio.checked = false
-                radio2.checked = false
-                document.getElementById(option.value).style.display="";
-                document.getElementById('nada').style.display="none";
 
-                if(option.value == 'F'){
-                    document.getElementById('T').style.display="none";
-                }else{
-                    document.getElementById('T').style.display="";
-                }
-                for (var cont0 = 0; cont in elementosDiv; cont0++){
-                    if(elementosDiv[cont]!=elementosDiv[cont0]){
-                        document.getElementById(elementosDiv[cont0]).style.display="none";
-                    }
-                }
-            }
-    
+function esconderElementos(tipoSelecionado){
+    var lista = ["V","D", "F", "A"];
+    var listaUpload = ['uploadV','uploadD','uploadF','uploadA']
+    for(i=0;i<lista.length;i++){
+        if(tipoSelecionado!=lista[i]){
+            document.getElementById(lista[i]).style.display="none";
+            document.getElementById(listaUpload[i]).style.display="none";
+            
         }
     }
+}
+function tiposDeDocumento(){
+    
+    tipo = document.getElementById('id_arq_tipo_de_formato');
+    tipoSelecionado = tipo.value
+    if(tipoSelecionado == 'nada'){
+        esconde()
+        document.getElementById('nada').style.display="";
 
-   
-       
+    }else if(tipoSelecionado=='Video' ){
+    
+        document.getElementById('nada').style.display="none";
+        document.getElementById('V').style.display="";
+        document.getElementById('uploadV').style.display="";
+        esconderElementos('V');
+    }else if(tipoSelecionado=='Audio' ){
+        document.getElementById('nada').style.display="none";
+        document.getElementById('A').style.display="";
+        document.getElementById('uploadA').style.display="";
+        esconderElementos('A');
+    }else if(tipoSelecionado=='Fotografia'||tipo.value=='Mapa' || tipo.value=='Pintura' || tipo.value=='Gravura' ){
+        esconderElementos('F');
+        document.getElementById('nada').style.display="none";
+        document.getElementById('F').style.display="";
+        document.getElementById('uploadF').style.display="";
         
+    }else if(tipoSelecionado=='Impresso' || tipo.value=='Manuscrito' ){
+        
+        document.getElementById('nada').style.display="none";
+        document.getElementById('D').style.display="";
+        document.getElementById('uploadD').style.display="";
+        esconderElementos('D');
+    }else{
+        document.getElementById('nada').style.display="none";
+        esconde()
+        
+    }
 }
 
-update();
-// Restrição de mostrar elementos Transcrição
-function mostrarTexto(){
-    document.getElementById('texto').style.display="";
-}
-function esconderTexto(){
-    document.getElementById('texto').style.display="none";
-}
+
+
 
 // Adicionar restrição nos input type files
 document.getElementById('id_vid_video').accept="video/*";
@@ -78,6 +86,7 @@ function anoMaximo(){
     ano = ano+1;
     return ano;
 }
+// Tipo espeficos
 document.getElementById('espeficos').style.display="none";
 
 function esconderEspeficos(){
@@ -88,7 +97,7 @@ function esconderEspeficos(){
 }
 }
 esconderEspeficos();
-function tipo(){
+function tipoGenerico(){
     var tipo = document.getElementById('generico')
     if(tipo){
         if(tipo.value=='vazio'){

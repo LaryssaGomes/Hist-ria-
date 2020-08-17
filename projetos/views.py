@@ -14,7 +14,8 @@ from .forms import (ProjetoForm,
                     VideoForm,
                     DocumentoForm,
                     AudioForm,
-                    FotosForm)
+                    FotosForm,
+                    PatrimonioCulturaForm)
 
 # Este próximo import vai importar modelos do app usuario.
 
@@ -23,14 +24,24 @@ from usuario.forms import UsuarioForm
 from collections import Counter
 from usuario.models import UsuarioComum
 
+@login_required
+def novosTiposDeDocumentos(request):
+    selecionaGenerico = request.POST.get('selecionaGenerico')
+    novoElemento = request.POST.get('novoElemento') 
+    novoGenerico = request.POST.get('novoGenerico') 
+    novoEspecifico = request.POST.get('novoEspecifico')
+    if novoElemento  and selecionaGenerico  :
+        TiposDeDocumento.objects.create(tdd_geral=selecionaGenerico, tdd_especifico=novoElemento)
 
+    if novoGenerico  and novoEspecifico  :
+        TiposDeDocumento.objects.create(tdd_geral=novoGenerico, tdd_especifico=novoEspecifico)
+        TiposDeDocumento.objects.create(tdd_geral=novoGenerico)
+        
+    return redirect('/inicio_projeto/')
 
-def salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento):
+def salvandoArquivo(request, id, form_arq, categoriaDeDocumento):
     arquivo = form_arq.save()
-    textoNao = request.POST.get('opcao')
     arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
-    if arquivo.arq_texto and textoNao == 0:
-        arquivo.arq_texto = ' '
     dia = request.POST.get('dia')
     mes = request.POST.get('mes')
     ano = request.POST.get('ano')
@@ -39,13 +50,17 @@ def salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
     else:
         data = dia+"/"+mes+"/"+ano
         arquivo.arq_data = data
-    
-    arquivo.arq_estado = estado
-    arquivo.arq_cidade = cidade
     arquivo.arq_data_de_registro = timezone.now()
     arquivo.arq_pro_id = get_object_or_404(Projetos, pk=id)  # Colocando a chave Estrangeira (Projeto)
     return(arquivo)
 
+def salvandoPatrimonioCultural(arquivo, form_patrimonio):
+    if form_patrimonio.is_valid():
+        patrimonioCultura = form_patrimonio.save(commit=False)
+        if patrimonioCultura.pc_oficio or patrimonioCultura.pc_expressao or patrimonioCultura.pc_lugares or patrimonioCultura.pc_celebracoes or patrimonioCultura.pc_edificacoes:
+            patrimonioCultura.pc_arq = arquivo
+            patrimonioCultura.save()
+    
 
 def salvandoPalavrasChave(arquivo, Palavras):
     for palavra in Palavras:
@@ -55,58 +70,63 @@ def salvandoPalavrasChave(arquivo, Palavras):
 def add_arquivo(request, id):
     if str(request.user) != 'AnonymousUser':
         if str(request.method) == 'POST':
-            
+            listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+            listas_categorias = set(listas_categorias_reptidas)
+            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
+            form_patrimonio = PatrimonioCulturaForm(request.POST, request.FILES)
             form_arq = ArquivoForm(request.POST, request.FILES)
             form_video = VideoForm(request.POST, request.FILES)
             form_documento = DocumentoForm(request.POST, request.FILES)
             form_audio = AudioForm(request.POST, request.FILES)
             form_foto = FotosForm(request.POST, request.FILES)
-            estado = request.POST.get('estado') 
-            cidade = request.POST.get('cidade')
             categoriaDeDocumento = request.POST.get('arq_documento_especifico')
             palavrasChaves = request.POST.get('PalavraChave') 
-            Palavras = palavrasChaves.split(); 
+            Palavras = palavrasChaves.split(','); 
             # Sistema de bloqueio  
-            tipoDeArquivo = request.POST.get('tipoDeDocumento')  
-            if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'V':
+            tipoDeArquivo = request.POST.get('arq_tipo_de_formato') 
+            
+            if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'Video':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
+                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 video = form_video.save()
                 video.vid_arq = arquivo
                 video.save()
-                
+                salvandoPatrimonioCultural(arquivo, form_patrimonio)
                 return redirect('/inicio_projeto/')  # rediredionando para lista
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_documento.is_valid() and tipoDeArquivo =='D':
+            elif form_arq.is_valid() and len(Palavras) < 6 and form_documento.is_valid() and (tipoDeArquivo=='Impresso' or tipoDeArquivo=='Manuscrito'):
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
+                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 documento = form_documento.save()
                 documento.doc_arq = arquivo
                 documento.save()
+                salvandoPatrimonioCultural(arquivo, form_patrimonio)
                 return redirect('/inicio_projeto/')
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_foto.is_valid() and tipoDeArquivo =='F':
+            elif form_arq.is_valid() and len(Palavras) < 6 and form_foto.is_valid() and (tipoDeArquivo =='Fotografia' or tipoDeArquivo =='Gravura' or tipoDeArquivo =='Mapa' or tipoDeArquivo =='Pintura'):
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
+                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 foto = form_foto.save()
                 foto.fot_arq = arquivo
                 foto.save()
+                salvandoPatrimonioCultural(arquivo, form_patrimonio)
                 return redirect('/inicio_projeto/')
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_audio.is_valid() and tipoDeArquivo =='A':
+            elif form_arq.is_valid() and len(Palavras) < 6 and form_audio.is_valid() and tipoDeArquivo =='Audio':
 
-                arquivo = salvandoArquivo(request, id, form_arq, estado, cidade, categoriaDeDocumento)
+                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
                 salvandoPalavrasChave(arquivo, Palavras)
                 audio = form_audio.save()
                 audio.aud_arq = arquivo
                 audio.save()
+                salvandoPatrimonioCultural(arquivo, form_patrimonio)
                 return redirect('/inicio_projeto/')
             else:
                 messages.error(request, 'Erro ao salvar arquivo')
@@ -116,18 +136,20 @@ def add_arquivo(request, id):
             form_documento = DocumentoForm()
             form_audio = AudioForm()
             form_foto = FotosForm()
+            form_patrimonio = PatrimonioCulturaForm()
             listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
             listas_categorias = set(listas_categorias_reptidas)
             listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
         return render(request, 'arquivos/add_arquivo.html', {'form_arq': form_arq,
-                                                             'form_video': form_video,
-                                                             'form_documento':form_documento,
-                                                             'form_audio':form_audio,
-                                                             'form_foto':form_foto,
-                                                             'listas_categorias':listas_categorias,
-                                                             'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
+                                                            'form_video': form_video,
+                                                            'form_documento':form_documento,
+                                                            'form_audio':form_audio,
+                                                            'form_foto':form_foto,
+                                                            'listas_categorias':listas_categorias,
+                                                            'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
+                                                            'form_patrimonio':form_patrimonio,
                                                              },
-                                                             )      
+                                                             )     
 
 
 
