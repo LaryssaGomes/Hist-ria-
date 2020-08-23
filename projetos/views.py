@@ -153,31 +153,16 @@ def add_arquivo(request, id):
 
 
 
-def busca_comum(request):
-    search = request.GET.get('search') 
-    estado = request.GET.get('estado')
-    cidade = request.GET.get('cidade')
-    listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
-    listas_categorias = set(listas_categorias_reptidas)
-    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
     
-    if search:
-        tipoDeDocumento = request.GET.get('arq_tipo_de_documento')
-        search = search.lower()  
-        palavrasBuscadas = search.split(' ')
-        encontrado = PalavrasChave.objects.filter(pc_palavras_chaves__in=palavrasBuscadas).values_list('pc_arq',flat=True)
-        arquivo = Arquivo.objects.filter(pk__in=encontrado, arq_nivel_de_acesso='PU')
-        if tipoDeDocumento:
-            arquivo = arquivo.filter(arq_tdd_id=tipoDeDocumento)
-        if estado:
-            arquivo = arquivo.filter(arq_estado=estado)
-            if cidade:
-                arquivo = arquivo.filter(arq_cidade=cidade)
+def busca_comum(request):
+    arquivo = Arquivo.objects.filter(arq_nivel_de_acesso='PU')
+    if arquivo.exists():
+        return render(request, 'usuariocomum/busca.html', {'arquivos': arquivo})
     else: 
        
-        return render(request, 'usuariocomum/busca.html', {'listas_categorias':listas_categorias,'listas_tipos_de_arquivo': listas_tipos_de_arquivo})
+        return render(request, 'usuariocomum/busca.html', )
    
-    return render(request, 'usuariocomum/busca.html', {'arquivos': arquivo,'search':search, 'listas_categorias':listas_categorias,'listas_tipos_de_arquivo': listas_tipos_de_arquivo})
+    
    
 
 def visualizacao_comum(request, id):  # Da uma olhada nesse argumento 'id' depois
@@ -300,7 +285,7 @@ def inicio_projeto(request):
 @login_required
 def edi_perfil(request):
     usuario = UsuarioComum.objects.get(id=request.user.id)
-    print(usuario)
+    
     
     form = UsuarioForm(instance=usuario)
     

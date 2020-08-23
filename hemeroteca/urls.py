@@ -28,3 +28,6 @@ urlpatterns = [
     path('contas/', include('django.contrib.auth.urls')),
     path('teste/', include('usuario.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+admin.site.site_header = 'Header'
+admin.site.site_title = 'Title'
+admin.site.index_title = 'Index Title'
