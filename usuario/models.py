@@ -2,9 +2,7 @@ from django.db import models
 from stdimage.models import StdImageField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-
 from django.conf import settings
-
 
 
 class UsuarioManager(BaseUserManager):  # Essa é a classe é responsável pela administração dos usuários
@@ -40,7 +38,6 @@ class UsuarioManager(BaseUserManager):  # Essa é a classe é responsável pela 
             raise ValueError('Superuser precisa ter is_staff=True')
 
         return self._create_user(email, password, **extra_fields)
-
 
 
 class Instituicoes(models.Model):
@@ -82,12 +79,10 @@ class Usuario(AbstractUser):
     # Estes seguintes dados serão passados para gerar o formulário.
     REQUIRED_FIELDS = ['nome']
 
-
     def __str__(self):
         return self.email  # Retorna o email pois usaremos ele para fazer o login
 
     objects = UsuarioManager()  # Basicamente esta usando o adminstrador de usuários criado acima.
-
 
 
 class UsuarioComum(Usuario):
@@ -95,14 +90,14 @@ class UsuarioComum(Usuario):
     # O models.PROTECT Cancela a exclusão do registro relacionado se houver relacionamento.
     # instituicao = models.OneToOneField(Instituicoes, on_delete=models.PROTECT)
     salvar_instituicao = models.CharField('Instituição', max_length=100)
-    cpf = models.CharField('CPF', max_length=11)
-    rg = models.CharField('RG', max_length=11)
+    cpf = models.CharField('CPF', max_length=15, unique=True)
+    rg = models.CharField('RG', max_length=13)
     rg_expedidor = models.CharField('Orgão expedidor', max_length=4)
-    lattes = models.TextField('Lattes')
+    lattes = models.FileField('Curriculo lattes', upload_to='documents/%Y/%m/%d')
     foto = StdImageField('Foto', upload_to='pesquisador', variations={'thumb': (124, 124)})
     telefone = models.CharField('Telefone', max_length=11)
-    validar_email = models.EmailField('E-mail')
     campo = models.BooleanField('Validar E-mail', default=False)
+    codigo = models.CharField('codigo', max_length=12)
     TIPO_DE_USUARIO = (
         ('PE', 'Pesquisador'),
         ('BO', 'Bolsista')
@@ -113,7 +108,7 @@ class UsuarioComum(Usuario):
     # Estes seguintes dados serão passados para gerar o formulário.
     REQUIRED_FIELDS = ['nome', 'salvar_instituição',
                        'cpf', 'rg', 'rg_expedidor', 'lattes', 'foto',
-                       'telefone', 'validar_email', 'campo', 'tipo_usuario']
+                       'telefone', 'validar_email', 'campo', 'codigo', 'tipo_usuario']
 
 
 class Vinculacao(models.Model):
@@ -122,4 +117,3 @@ class Vinculacao(models.Model):
     curso = models.CharField('Curso', max_length=100)
     instituicao = models.ForeignKey(Instituicoes, on_delete=models.PROTECT)
     usuario = models.ForeignKey(UsuarioComum, on_delete=models.PROTECT)
-

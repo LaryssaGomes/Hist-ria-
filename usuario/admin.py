@@ -3,7 +3,7 @@ from .models import UsuarioComum, Instituicoes
 
 
 class UsuarioComumAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'email', 'campo', 'salvar_instituicao', 'pk')
+    list_display = ('nome', 'email', 'campo', 'salvar_instituicao', 'pk', 'codigo')
 
 
 class InstituicoesAdmin(admin.ModelAdmin):
@@ -12,4 +12,3 @@ class InstituicoesAdmin(admin.ModelAdmin):
 
 admin.site.register(UsuarioComum, UsuarioComumAdmin)
 admin.site.register(Instituicoes, InstituicoesAdmin)
-

@@ -20,7 +20,7 @@ from .forms import (ProjetoForm,
 # Este próximo import vai importar modelos do app usuario.
 
 
-from usuario.forms import UsuarioForm
+from usuario.forms import UsuarioComumForm
 from collections import Counter
 from usuario.models import UsuarioComum
 
