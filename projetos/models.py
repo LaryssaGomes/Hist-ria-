@@ -1,6 +1,7 @@
 """ Arquivo para criar as classes que persistem no banco de dados.
 
 P/ FAZER:
+https://downloadcursos.net/categorias/programacao/page/5/
             Ver uma forma de apresentar o campo pro_financiadora (precisa analisar)
             Ver uma forma de apresentar os nomes das instituições e não os ids no formulário de cadastro
 """
@@ -43,7 +44,6 @@ def user_directory_path_audio_file(instance, filename):
 class Instituicao(models.Model):
     inst_nome = models.CharField(max_length=100)
 
-
 class Projetos(models.Model):
     FINANCIAMENTO_CHOICES = (
         ("S", "Sim"),
@@ -71,13 +71,15 @@ class Projetos(models.Model):
 
     def __str__(self):
         return self.pro_titulo
-
+        
+class Notificacao(models.Model):
+    noti_bolsista = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE, null=True, related_name='bolsista')
+    noti_pesquisador = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE, null=True, related_name='pesquisador')
+    noti_arquivo = models.ForeignKey(Projetos, on_delete=models.CASCADE, null=True)
 
 class ProjetosDosUsuarios(models.Model):
     pdu_projetos = models.ForeignKey(Projetos, on_delete=models.CASCADE)
-
     pdu_usuarios = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE)
-
 
 class TiposDeDocumento(models.Model):
     tdd_geral = models.CharField('Tipo de Documento Geral:', max_length=100, null=True)

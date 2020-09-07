@@ -22,7 +22,6 @@
             <form id="edit-profile" class="form-group" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form form %}
-                <!-- {{ form.as_p }} -->
                 
                 {% buttons %}
                     <button type="submit" class="btn btn-primary">Salvar alterações</button>

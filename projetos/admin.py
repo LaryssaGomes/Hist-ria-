@@ -10,7 +10,12 @@ from .models import (Instituicao,
                      Documento,
                      PalavrasChave,
                      TiposDeDocumento,
-                     PatrimonioCultura,)
+                     PatrimonioCultura,
+                     Notificacao,)
+
+class NotificacaoAdmin(admin.ModelAdmin):
+    list_display =('noti_bolsista',
+                   'noti_pesquisador')
 
 class PatrimonioCulturaAdmin(admin.ModelAdmin):
     list_display = ('pc_oficio', 
@@ -66,4 +71,5 @@ admin.site.register(PatrimonioCultura, PatrimonioCulturaAdmin)
 admin.site.register(TiposDeDocumento, TiposDeDocumentoAdmin)
 admin.site.register(PalavrasChave, PalavrasChaveAdmin)
 admin.site.register(Documento, DocumentoAdmin)
+admin.site.register(Notificacao, NotificacaoAdmin)
 admin.site.register(Projetos, ProjetoAdmin)

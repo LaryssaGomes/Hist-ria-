@@ -30,6 +30,24 @@
             <h2>Seus projetos</h2>
 
             <ul class="projects">
+                {%if projeto %}
+                <li class="project">
+                        <h3>{{projeto.pro_titulo}}</h3>
+                        <p>{{projeto.pro_desc}}</p>
+                        <span>
+                            <i class="far fa-calendar-alt"></i>
+                            <label>09/06/2020</label>
+                        </span>
+                        <div class="links">
+                            <a href="{%  url 'edi_projetos' projeto.id %}">
+                                Editar
+                            </a>
+                            <a href="{%  url 'ver_projetos' projeto.id %}">
+                                ver projeto
+                            </a>
+                        </div>
+                    </li>
+                {% else %}
                 {% for list_projetos in list_projetos %}
                     <li class="project">
                         <h3>{{list_projetos.pro_titulo}}</h3>
@@ -39,15 +57,16 @@
                             <label>09/06/2020</label>
                         </span>
                         <div class="links">
-                            <a href="edi_projetos/{{ list_projetos.id }}">
+                            <a href="{%  url 'edi_projetos' list_projetos.id %}}">
                                 Editar
                             </a>
-                            <a href="ver_projetos/{{ list_projetos.id }}">
+                            <a href="{%  url 'ver_projetos' list_projetos.id %}">
                                 ver projeto
                             </a>
                         </div>
                     </li>
                 {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </body>

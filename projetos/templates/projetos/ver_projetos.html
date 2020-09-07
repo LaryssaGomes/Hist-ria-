@@ -15,7 +15,7 @@
         {% include 'projetos/navbar.html' %}
         <!-- Menu end -->
         {% if apenasUmUsuario == 1 %}
-            Nome :{{ listaDeUsuarios.nome  }}
+            Nome :{{ request.user.nome }}
             Tipo : Pesquisador
              
         {% else %}
@@ -24,8 +24,10 @@
                 Tipo :
                 {% if usuario.tipo_de_usuario  == 'PE'%}
                 Pesquisador
+                <br>
                 {% else %}
                 Bolsista
+                <br>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -37,18 +39,24 @@
                 <h3>Descrição</h3>
                 <p>{{ projeto.pro_desc }}</p>
             </div>
-
+            {% if user.usuariocomum.tipo_de_usuario == 'PE' %}
+            {% for p in pendentes %}
+                Nome:{{ p.noti_bolsista.usuariocomum.nome }}
+                <a href='deletar_pedido/{{p.id}}'>Cancelar</a>
+                <button value="cancelar"> cancelar </button>
+            {% endfor %}
             <div class="participants">
                 <h3>Participantes</h3>
                 <form action="submit" method="GET">{% csrf_token %}
                     <input name="nomeDoBolsista" type="text" >
                     <button type="submit">Busca</button>
                     {% for bolsista in lista_bolsista  %}
-                        Nome do Bolsista:{{ bolsista.nome }}<input type="submit" name="id_bolsista" value="{{ bolsista.id }}">
+                        Nome do Bolsista:{{ bolsista.nome }}<a href="adicionarBolsista/{{ bolsista.id}}">add_Bolsista</a>
                         <br>
                     {% endfor %}
                 </form>
             </div>
+            {% endif %}
             
             <div class="files">
                 <header>
