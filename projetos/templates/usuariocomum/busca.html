@@ -28,18 +28,18 @@
             <!-- <h5 class="sub">Tenha acesso a documentos e arquivos históricos</h5> -->
             
             <div class="search-div">
-                
-                <div>
-                    <form method="GET" id="search-form">
+                <form method="GET" id="search-form">
+                    <div>
                         {% csrf_token %}
                         <input class="form-input" type="text" id="search" name="search" placeholder="Ex.: negros escravidão mortes" value="{{ request.GET.search }}">
                         <button>
                             <i class="fas fa-search" id="search-btn"></i>
                         </button>
-                    
-                    <label>Insira palavras-chaves sobre o que você procura</label>
-                        
+                    </div>
+                                        
                     <section class="container-filters">
+                        <label>Insira palavras-chaves sobre o que você procura</label>
+
                         <div class="filters">
                             <strong>Filtros</strong>
                             <div class="filter">
@@ -68,8 +68,7 @@
                             </div>
                         </div>
                     </section>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </section>

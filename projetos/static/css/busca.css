@@ -52,6 +52,12 @@
 
 #search-form {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#search-form > div {
+  display: flex;
   flex-direction: row;
   width: 100%;
 }
@@ -98,6 +104,7 @@
 }
 
 .container-filters {
+
   margin-top: 8px;
 }
 

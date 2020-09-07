@@ -1,233 +1,298 @@
-{% load bootstrap4 %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <style>
-            #cke_1_contents{
-                padding: 30px 20%;
-            }
-            
-        </style>
         <meta charset="UTF-8">
         <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script> 
         <script language="JavaScript" type="text/javascript" src="{% static 'js/tipoEspecificoGenerico.js' %}"></script>
+        <link rel="stylesheet" href="../../../../static/css/global.css">
+        <link rel="stylesheet" href="../../../../static/css/navbar-profile.css">
+        <link rel="stylesheet" href="../../../../static/css/add-arquivo.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
         <title>Adicionar Arquivo</title>
-        {% bootstrap_css %}
     </head>
     <body>  
-       
-       <h2>Adicionar Arquivo</h2>
-       
+        {% include 'arquivos/navbar.html' %}
+        <section class="add-container">
         
-       <h3>1. Cadastro do Documento</h3>
-       {% bootstrap_messages %}
-       <form action="" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
-            {% csrf_token %}
-            Instituição de Custodia:{{form_arq.arq_custodia}}
-            <br>
-            Localização no Acervo:{{form_arq.arq_localizacao_do_acervo}}
-            <br>
-            Coleção:{{form_arq.arq_colecao}}
-            <br>
-            Nivel de acesso:{{form_arq.arq_nivel_de_acesso}}
-            <br>
-            Autenticação:{{form_arq.arq_autenticacao}}
-            <br>
-            Idima:{{form_arq.arq_idioma}}
-            <br>
-            Tipo de documento generico:
-            <select name="arq_tipo_de_documento"  id="generico" onchange="tipoGenerico()" >
-                <option value="vazio">------------</option>
-                {% for tipo in listas_categorias %}  
-                <option value="{{tipo}}">{{ tipo }}</option>
-                {% endfor %}
-            </select>  
-            <br>
-            <div id="espeficos" style="display: none;">
-                Tipo de documento especifico:
-                {% for tipo in listas_categorias %}  
-                <div id={{tipo}}>
-                    <select name="arq_documento_especifico"  id="arq_documento_especifico">
-                        {% for especifico in listas_tipos_de_arquivo %} 
-                            {% if tipo == especifico.tdd_geral %} 
-                                <option value="{{especifico.id}}">
-                                    {% if especifico.tdd_especifico %}
-                                    {{ especifico.tdd_especifico }}
-                                    {% else %}
-                                    -----------
-                                    {% endif %}
-                                </option>
-                            {% endif %}
-                        {% endfor %} 
-                    </select>
-                </div>
-                  {% endfor %}
+            <div class="container-add-form">
+                <h1>Adicionar Arquivo</h1>
+                <form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h3>1. Cadastro do Documento</h3>
+                    <div class="box">
+                        Instituição de Custodia:{{form_arq.arq_custodia}}
+                    </div>
+                    <div class="box">
+                        Localização no Acervo:{{form_arq.arq_localizacao_do_acervo}}
+                    </div>
+                    <div class="box">
+                        Coleção:{{form_arq.arq_colecao}}
+                    </div>
+                    <div class="box">
+                        Nivel de acesso:{{form_arq.arq_nivel_de_acesso}}
+                    </div>
+                    <div class="box">
+                        Autenticação:{{form_arq.arq_autenticacao}}  
+                    </div>
+                    <div class="box">
+                        Idioma:{{form_arq.arq_idioma}}
+                    </div>
+                    <div class="box">
+                        Tipo de documento generico:
+                        <select name="arq_tipo_de_documento"  id="generico" onchange="tipoGenerico()" >
+                            <option value="vazio">------------</option>
+                            {% for tipo in listas_categorias %}  
+                            <option value="{{tipo}}">{{ tipo }}</option>
+                            {% endfor %}
+                        </select> 
+                    </div>
+                    <div class="box">
+                        <div id="espeficos" style="display: none;">
+                            Tipo de documento especifico:
+                            {% for tipo in listas_categorias %}  
+                            <div id={{tipo}}>
+                                <select name="arq_documento_especifico"  id="arq_documento_especifico">
+                                    {% for especifico in listas_tipos_de_arquivo %} 
+                                        {% if tipo == especifico.tdd_geral %} 
+                                            <option value="{{especifico.id}}">
+                                                {% if especifico.tdd_especifico %}
+                                                {{ especifico.tdd_especifico }}
+                                                {% else %}
+                                                -----------
+                                                {% endif %}
+                                            </option>
+                                        {% endif %}
+                                    {% endfor %} 
+                                </select>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="box">
+                        Selecione o formato:
+                        <select id="id_arq_tipo_de_formato" name="arq_tipo_de_formato" onchange="tiposDeDocumento()" >
+                            <option value="nada">----------</option>
+                            <option value="Video">Video</option>
+                            <option value="Audio">Áudio</option>
+                            <option value="Impresso">Impresso</option>
+                            <option value="Manuscrito">Manuscrito</option>
+                            <option value="Fotografia">Fotografia</option>
+                            <option value="Pintura">Pintura</option>
+                            <option value="Gravura">Gravura</option>
+                            <option value="Mapa">Mapa</option>
+                        </select>
+                    </div>
+                    <div class="box">
+                        <div id="nada">
+                            Selecione o tipo de documento
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div id="F">
+                            Tamanho:{{form_foto.fot_tamanho}}
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div id="V">
+                            Duração:
+                            {{form_video.vid_duracao}}
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div id="D">
+                            Numero de Paginas:
+                            {{form_documento.doc_numero_de_paginas}}
+                        </div>
+                    </div>
+                    <div class="box">
+                    <div id="A">
+                            Tempo de audio:
+                            {{form_audio.aud_duracao}}
+                        </div> 
+                    </div>
+                    <div class="box">
+                        CDD:
+                        {{form_arq.arq_cdd}}
+                    </div>
+                    
+                    <h3>2. Dados do Documento</h3>
+
+                    <div class="box">
+                        Palavras Chave:
+                        <input name="PalavraChave" type="text"/>
+                        <span>adicione no máximo 5 Palavras</span>
+                        <span>exemplo: alagoas, escravidão, mortes</span>
+                    </div>
+                    <div class="box">
+                        Título:{{form_arq.arq_nome}}
+                    </div>
+                    <div class="box">
+                        Estado:
+                        <input type="text" name="arq_estado" id="id_arq_estado" value="Selecione um estado" />
+                    </div>
+                    <div class="box">
+                        Cidade:
+                        <input type="text" name="arq_cidade" id="id_arq_cidade" value="Selecione uma cidade" />
+                    </div>
+
+                    <script language="JavaScript" type="text/javascript" charset="utf-8">
+                        new dgCidadesEstados({
+                            cidade: document.getElementById('id_arq_cidade'),
+                            estado: document.getElementById('id_arq_estado'),
+                            change: true
+                        })
+                    </script>
+                    <div class="box">
+                        Nome Emitente:
+                        {{form_arq.arq_emitente}}
+                    </div>
+                    <div class="box">
+                        Cargo de Emitente:
+                        {{form_arq.arq_cargo_emi}}
+                    </div>
+                    <div class="box">
+                        Nome Destinatario:
+                        {{form_arq.arq_destinatario}} 
+                    </div>
+                    <div class="box">
+                        Cargo de Destinatario:
+                        {{form_arq.arq_cargo_des}}
+                    </div>
+                    <div class="box">
+                        Local de Assinatura:
+                        {{form_arq.arq_local_emissao}} 
+                    </div>
+                    <div class="box">
+                        Assunto:
+                        {{form_arq.arq_assunto}}
+                    </div>
+                    <div class="box-date">
+                        <div class="box">
+                          Dia:
+                            <select id="dia" name="dia">
+                                <option value="00">-------</option>
+                            </select>  
+                        </div>
+                        <div class="box">
+                            Mês:
+                            <select id="mes" name="mes">
+                                <option value="00">-------</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div class="box">
+                            Ano:
+                            <input type="text" name="ano" id="ano" pattern="[?0-9?]{1,5}" />
+                        </div>
+                    </div>
+                    <div class="box">
+                        Upload do Documento:
+                        <div id='uploadD'>
+                        {{form_documento.doc_documento}}
+                        </div>
+                        <div id='uploadA'>
+                            {{form_audio.aud_audio}}
+                        </div>
+                        <div id='uploadV'>
+                            {{form_video.vid_video}}
+                        </div>
+                        <div id='uploadF'>
+                            {{form_foto.fot_imagem}}
+                        </div>
+                    </div>
+                    <div class="box">
+                        Transcrição:
+                        {{form_arq.arq_texto}}
+                    </div>
+                    <div class="box">
+                        {{form_arq.media}}
+                    </div>
+                    
+                    <h3>3. Categorias do Patrimônio Cultural Imaterial</h3>
+
+                    <div class="box">
+                        Oficio:
+                        {{form_patrimonio.pc_oficio}}
+                    </div>
+                    <div class="box">
+                        Expressão:
+                        {{form_patrimonio.pc_expressao}}  
+                    </div>
+                    <div class="box">
+                        Lugares:
+                        {{form_patrimonio.pc_lugares}}
+                    </div>
+                    <div class="box">
+                        Celebrações:
+                        {{form_patrimonio.pc_celebracoes}} 
+                    </div>
+                    <div class="box">
+                        Edificações:
+                        {{form_patrimonio.pc_edificacoes}}
+                    </div>
+
+                    <button type="submit">Salvar</button>
+                    <button type="button">Cancelar</button>    
+                </form>    
+                {% if user.usuariocomum.tipo_de_usuario == 'PE' %}
+                <form method="post" action="{% url 'novosTiposDeDocumentos' %}">
+                    {% csrf_token %}
+                    <h3>Deseja adicionar o algum dado nos tipos de documento?</h3>
+
+                    <div class="box">
+                        <button class="btn">Adicionar Elementos</button>
+                        <span>Adicionar documento especifico a uma categoria Generica já existente</span>
+                    </div>
+
+                    <div class="box">
+                        Tipo de documento generico:
+                        <select id="selecionaGenerico" name="selecionaGenerico">
+                            <option value="">----------------</option>
+                            {% for tipo in listas_categorias %}  
+                            <option value="{{tipo}}">{{ tipo }}</option>
+                            {% endfor %}
+                        </select>  
+                        <span>selecione a categoria generica</span> 
+                    </div>
+                    <div class="box">
+                        <strong>Digite a nova categoria especifica</strong>
+                        Novo Tipo Especifico:
+                        <input type="text" id="novoElemento" name="novoElemento">
+                    </div>
+                    <div class="box">
+                        <p>Criar uma nova categoria</p>
+                    </div>
+                    <div class="box">
+                        Novo Generico:
+                        <input type="text" id="novoGenerico" name="novoGenerico">  
+                    </div>
+                    <div class="box">
+                        Novo Especifico:
+                        <input type="text" id="novoEspecifico" name="novoEspecifico"> 
+                    </div>
+
+                    <button type="submit">Salvar</button>
+                </form>
+                {% endif %}
             </div>
 
-            <br>
-            Selecione o formato:
-            <select id="id_arq_tipo_de_formato" name="arq_tipo_de_formato" onchange="tiposDeDocumento()" >
-                <option value="nada">----------</option>
-                <option value="Video">Video</option>
-                <option value="Audio">Áudio</option>
-                <option value="Impresso">Impresso</option>
-                <option value="Manuscrito">Manuscrito</option>
-                <option value="Fotografia">Fotografia</option>
-                <option value="Pintura">Pintura</option>
-                <option value="Gravura">Gravura</option>
-                <option value="Mapa">Mapa</option>
-            </select>
-            <br>
-            <div id="nada">
-                Selecine o tipo de documento
-            </div>
-            <div id="F">
-                Tamanho:{{form_foto.fot_tamanho}}
-            </div>
-            <div id="V">
-                Duração:{{form_video.vid_duracao}}
-                <br>
-            </div>
-            <div id="D">
-                Numero de Paginas:{{form_documento.doc_numero_de_paginas}}
-                <br>
-            </div>
-            <div id="A">
-                Tempo de audio:{{form_audio.aud_duracao}}
-                <br>
-            </div>
-            
-            <br>
-            CDD:{{form_arq.arq_cdd}}
-            <h3>2. Dados do Documento</h3>
-            <br>
-            Palavras Chave:<input name="PalavraChave" type="text" >
-            <br>
-            adicione no maximo 5 Palavras
-            <br>
-            exemplo: alagoas, escravidão ,mortes , São Paulo
-            <br>
-            Título:{{form_arq.arq_nome}}
-            <br>
-            Estado:<input type="text" name="arq_estado" id="id_arq_estado" value="Selecione um estado" />
-            <br>
-            Cidade:<input type="text" name="arq_cidade" id="id_arq_cidade" value="Selecione uma cidade" />
-            <script language="JavaScript" type="text/javascript" charset="utf-8">
-            new dgCidadesEstados({
-                cidade: document.getElementById('id_arq_cidade'),
-                estado: document.getElementById('id_arq_estado'),
-                change: true
-            })
-            </script>
-            <br>
-            Nome Emitente:{{form_arq.arq_emitente}}
-            <br>
-            Cargo de Emitente:{{form_arq.arq_cargo_emi}}
-            <br>
-            Nome Destinatario:{{form_arq.arq_destinatario}}
-            <br>
-            Cargo de Destinatario:{{form_arq.arq_cargo_des}}
-            <br>
-            Local de Assinatura:{{form_arq.arq_local_emissao}}
-            <br>
-            Assunto:{{form_arq.arq_assunto}}ok
-            <br>
-            Dia:
-            <select id="dia" name="dia">
-                <option value="00">-------</option>
-            </select>
-            <br>
-            Mês:
-            <select id="mes" name="mes">
-                <option value="00">-------</option>
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
-            </select>
-            <br>
-            Ano:<input type="text" name="ano" id="ano" pattern="[?0-9?]{1,5}">
-            <br>
-            Upload do Documento:
-          
-                <div id='uploadD'>
-                   {{form_documento.doc_documento}}
-                </div>
-                <div id='uploadA'>
-                    {{form_audio.aud_audio}}
-                </div>
-                <div id='uploadV'>
-                    {{form_video.vid_video}}
-                </div>
-                <div id='uploadF'>
-                    {{form_foto.fot_imagem}}
-                </div>
-         
-            <br>
-            Transcrição:{{form_arq.arq_texto}}ok
-            {{form_arq.media}}
-            <br>
-            <h3>3. Categorias do Patrimônio Cultural Imaterial</h3>
-            <br>
-            Oficio:{{form_patrimonio.pc_oficio}}
-            <br>
-            Expressão:{{form_patrimonio.pc_expressao}}
-            <br>
-            Lugares:{{form_patrimonio.pc_lugares}}
-            <br>
-            Celebrações:{{form_patrimonio.pc_celebracoes}}
-            <br>
-            Edificações:{{form_patrimonio.pc_edificacoes}}
-            <br>
-            <button type="submit">Salvar</button>
-            <button type='submit'>Cancelar</button>
-        
-        </form>    
-        {% if user.usuariocomum.tipo_de_usuario == 'PE' %}
-        <form method="post" action="{% url 'novosTiposDeDocumentos' %}">
-            {% csrf_token %}
-            <br>
-            Deseja adicionar o algum dado nos tipos de documento?
-            <br>
-            <button>Adiconar Elementos </button>
-            Adicionar documento especifico a uma categoria Generica já existente
-            <br>
-            selecione a categoria generica
-            <br>
-            Tipo de documento generico:
-            <select id="selecionaGenerico" name="selecionaGenerico">
-                <option value="">----------------</option>
-                {% for tipo in listas_categorias %}  
-                <option value="{{tipo}}">{{ tipo }}</option>
-                {% endfor %}
-            </select>  
-            <p>Digite a nova categoria especifica</p>
-            <br>
-            Novo Tipo Especifico:<input type="text" id="novoElemento" name="novoElemento">
-            <br>
-            <p>Criar uma nova categoria<p>
-            <br>
-            Novo Generico:
-            <input type="text" id="novoGenerico" name="novoGenerico">
-            <br>
-            Novo Especifico:
-            <input type="text" id="novoEspecifico" name="novoEspecifico">
-            <br>
-            <button type="submit">Salvar</button>
-        </form>
-        {% endif %}
+        </section>
        
-   
-    <script type="text/javascript" src="{% static 'js/addArquivo.js' %}"></script>    
+        <script type="text/javascript" src="{% static 'js/addArquivo.js' %}"></script>    
     </body>
 </html>
