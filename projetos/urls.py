@@ -2,7 +2,9 @@ from django.urls import path, include
 from .views.restante_views import *
 from .views.usuariocomum_views import *
 # Criei outra importação, porque essa de cima não estava chamando a views pessoa.
+
 from django.conf.urls.static import static  # Para poder acessar os arquivos dentro de static
+
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf import settings
@@ -23,4 +25,6 @@ urlpatterns = [
     path('inicio_projeto/ver_projetos/<int:id>/add_arquivo/', add_arquivo, name='add_arquivo'),
     path('arquivo/<int:id>', visualizacao_comum, name='visualizacao_comum,'),
     path('cadastro/', include(urls))
+
 ]
+

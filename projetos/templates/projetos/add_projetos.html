@@ -20,12 +20,31 @@
             <div class="col-6">
                 <h2>Adicionar projeto</h2>
 
-                <form action="{% url 'add_projetos' %}" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
+
+                <form method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- {{form_pro.as_p}} -->
-                    {% bootstrap_form form_pro %}
+                    Titulo:{{ form_pro.pro_titulo }}
+                    <br>
+                    Imagem:{{ form_pro.pro_imagem }}
+                    <br>
+                    Descrição:{{ form_pro.pro_desc }}
+                    <br>
+                    Instituição:{{ form_pro.pro_inst }}
+                    <br>
+                    Financiamento:{{ form_pro.pro_financiamento }}
+                    <br>
+                    Financiadora:{{ form_pro.pro_financiadora }}
+                    
 
-                    <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
+                    <button type="submit" class="btn btn-primary">
+                    {% if edi %}
+                    Editar
+                    {% else %}
+                    Adicionar Projeto
+                    {% endif %}
+                    </button>
+
                     <button type="button" class="btn btn-outline-danger">Cancelar</button> <!--redirecionar para dashboard de projetos-->
                 </form>
             </div>

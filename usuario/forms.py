@@ -94,6 +94,7 @@ class ValidarCadastroUsuario(forms.ModelForm):
         model = UsuarioComum
         fields = ('codigo',)
 
+
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = UsuarioComum
@@ -105,3 +106,4 @@ class UsuarioForm(forms.ModelForm):
                   'foto',
                   'telefone',
                   'email')
+

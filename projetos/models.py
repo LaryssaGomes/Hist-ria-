@@ -1,6 +1,7 @@
 """ Arquivo para criar as classes que persistem no banco de dados.
 
 P/ FAZER:
+
             Ver uma forma de apresentar o campo pro_financiadora (precisa analisar)
             Ver uma forma de apresentar os nomes das instituições e não os ids no formulário de cadastro
 """
@@ -79,8 +80,8 @@ class Notificacao(models.Model):
 
 class ProjetosDosUsuarios(models.Model):
     pdu_projetos = models.ForeignKey(Projetos, on_delete=models.CASCADE)
-
     pdu_usuarios = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE)
+
 
 
 class TiposDeDocumento(models.Model):

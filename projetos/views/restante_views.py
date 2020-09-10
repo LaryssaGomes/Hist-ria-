@@ -186,6 +186,7 @@ def edi_projetos(request, id):
 
 
 def listaDosBolsista(request, lista, id):
+
     # Pesquise os bolsistas com esse nome
     lista = UsuarioComum.objects.filter(tipo_de_usuario='BO').exclude(pk__in=lista)
     lista_de_notificacao = Notificacao.objects.filter(noti_arquivo=id).values('noti_bolsista')
@@ -201,7 +202,6 @@ def listaDosBolsista(request, lista, id):
     else:
         return False
        
-    
 
 '''
     Verificando se o usuario Bolsista logado tem alguma notificação
@@ -303,7 +303,6 @@ def aceito_projeto(aceito, request, recusado):
 def inicio_projeto(request):
 # Verifica se o usuario tem algum projeto
     projetos = ProjetosDosUsuarios.objects.filter(pdu_usuarios=request.user).values('pdu_projetos')
-    print(request.user.id)
     context = {
        'usuario': UsuarioComum.objects.get(id=request.user.id)
        }

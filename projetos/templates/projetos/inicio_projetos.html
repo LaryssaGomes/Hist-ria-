@@ -29,8 +29,7 @@
         <div class="container-projects">
             <h2>Seus projetos</h2>
 
-            <ul class="projects">
-                
+            <ul class="projects">                        
                 {% for list_projetos in list_projetos %}
                     <li class="project">
                         <h3>{{list_projetos.pro_titulo}}</h3>
@@ -40,15 +39,19 @@
                             <label>09/06/2020</label>
                         </span>
                         <div class="links">
-                            <a href="edi_projetos/{{ list_projetos.id }}">
+
+                      <a href="edi_projetos/{{ list_projetos.id }}">
                                 Editar
                             </a>
                             <a href="ver_projetos/{{ list_projetos.id }}">
+
                                 ver projeto
                             </a>
                         </div>
                     </li>
                 {% endfor %}
+
+
             </ul>
         </div>
     </body>

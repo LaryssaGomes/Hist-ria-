@@ -25,8 +25,8 @@ SECRET_KEY = '#0yb=&osupu4y7q!q3=stguez2@@#5jqbs9^4o&40dds4*&*mu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # Ao publicar a aplicação, trocar para false 
 
-ALLOWED_HOSTS = ['*'] # Especificar domínio quando DEBUG = False
 
+ALLOWED_HOSTS = ['*'] # Especificar domínio quando DEBUG = False
 
 # Application definition
 

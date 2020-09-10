@@ -25,6 +25,7 @@
 </nav>
 
 
+
 <div class="notifications hidden" id="notifications">
     <header>
         <label>Notificações</label>
@@ -37,6 +38,7 @@
         <li class="notification">
         {% if notificacoes %}
             {% for item in notificacoes %}
+
                 <img src='{{item.noti_pesquisador.foto.url}}'/>
                 <div class="aside">
                 <p>
