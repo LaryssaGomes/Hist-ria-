@@ -1,0 +1,43 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Hemeroteca | Editar Perfil</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="../../static/css/edit-profile.css">
+    <link rel="stylesheet" href="../../static/css/global.css">
+    <link rel="stylesheet" href="../../static/css/navbar-profile.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Menu -->
+    {% include 'projetos/navbar.html' %}
+    <!-- Menu end -->
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-6">
+            <h1 class="align-center mb-5">Atualizar Dados</h1>
+            {% bootstrap_messages %}
+            <form id="edit-profile" class="form-group" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <!-- {{ form.as_p }} -->
+                
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                {% endbuttons %}
+            </form> 
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("#open").click(function () {
+            $("#notifications").removeClass("hidden");
+        });
+        $("#close").click(function () {
+            $("#notifications").addClass("hidden");
+        });
+    </script>
+</body>
+</html> 

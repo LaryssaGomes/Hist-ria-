@@ -1,0 +1,169 @@
+{% load static %}
+<html>
+<head> 
+    <title>Hemeroteca</title>
+    <meta charset="utf-8">
+  
+    <!-- link js -->
+    <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script>
+    <!-- links css -->
+    <link rel="stylesheet" href="../../static/css/busca.css">
+    <link rel="stylesheet" href="../../static/css/navbar.css">
+    <link rel="stylesheet" href="../../static/css/global.css">
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>    
+<body>
+    
+    {% block content %}  
+    <!-- Menu -->
+    {% include 'usuariocomum/nav.html' %}
+    <!-- Menu end -->
+    <section class="header">
+        <div class="container-search">
+            <h2 class="title">Buscar Arquivos</h2>
+            <!-- <h5 class="sub">Tenha acesso a documentos e arquivos históricos</h5> -->
+            
+            <div class="search-div">
+                <form method="GET" id="search-form">
+                    <div>
+                        {% csrf_token %}
+                        <input class="form-input" type="text" id="search" name="search" placeholder="Ex.: negros escravidão mortes" value="{{ request.GET.search }}">
+                        <button>
+                            <i class="fas fa-search" id="search-btn"></i>
+                        </button>
+                    </div>
+                                        
+                    <section class="container-filters">
+                        <label>Insira palavras-chaves sobre o que você procura</label>
+
+                        <div class="filters">
+                            <strong>Filtros</strong>
+                            <div class="filter">
+                                <!-- <span>Tipo de Documento</span> -->
+                                <select name="arq_tipo_de_documento"  id="documentos">
+                                    <option value="" selected="">Tipo de documento</option>
+                                    {% for tipo in listas_categorias %}  
+                                        <optgroup label="{{tipo}}">
+                                            {% for especifico in listas_tipos_de_arquivo %} 
+                                                {% if tipo == especifico.tdd_geral %}
+                                                    <option value="{{especifico.id}}">{{ especifico.tdd_especifico }}</option>
+                                                {% endif %}
+                                            {% endfor %} 
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>  
+                            </div>
+                            <!-- <strong>Localização</strong> -->
+                            <div class="filter">
+                                <!-- <span>Estado</span> -->
+                                <input type="text" name="estado" id="estado" value="Selecione um estado" />   
+                            </div>
+                            <div class="filter"> 
+                                <!-- <span>Cidade</span> -->
+                                <input type="text" name="cidade" id="cidade" value="Selecione uma cidade" />
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% if semResultado %}
+            Sem resultado encontrado
+    {% endif %}
+    {% if arquivos %}
+    <div class="container">
+        <h4>Resultados da busca</h4>
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Titulo</th>
+                    <th>Dados do Documento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for arquivo  in arquivos %}
+                    <tr class="project-item">
+                        <td>
+                            <img class="image" src="../../static/assets/olinda.png" />
+                        </td>
+                        <td><h4><a href="/arquivo/{{arquivo.id}}">{{arquivo.arq_nome}}</a></h4></td>
+                        <td><span>Instituição de custodia:</span>{{arquivo.arq_custodia}}
+                        <br>
+                        <span>Caixa:</span>{{arquivo.arq_cdd}}
+                        <br>
+                        <span>Tipo de arquivo:{{arquivo.arq_tipo_de_formato}}</span>
+                        <br>
+                        <span>Emitente Nome:</span>{{arquivo.arq_emitente}}
+                        <br>
+                        <span>Emitente Cargo:</span>{{arquivo.arq_cargo_emi}}
+                        <br>
+                        <span>Destinatario Nome:</span>{{arquivo.arq_destinatario}}
+                        <br>
+                        <span>Destinatario Cargo:</span>{{arquivo.arq_cargo_des}}
+                        <br>
+                        <span>Assunto:</span> {{arquivo.arq_assunto}}
+                        <br>
+                        <span>Local:</span>{{arquivo.arq_local_emissao}}
+                        <br>
+                        <span>Data:</span>{{arquivo.arq_data}}
+                        <br>
+                        <span>Idioma:</span>{{arquivo.arq_idioma}}
+                        </td>
+                    </tr>
+                {% endfor %} 
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+    <!-- Slide -->
+    {% include 'usuariocomum/slider.html' %}
+    <!-- Slide end -->
+    
+    <div class="banner">
+        <h4>Acesse documentos históricos de qualquer lugar</h4>
+        <p>A Hemeroteca visa facilitar o acesso a arquivos históricos para pesquisadores e estudantes.</p>
+        <img src="../../static/assets/book_lover.svg" />
+    </div>
+    
+    <footer>
+        
+        <section>
+            <p>Instituto Federal de Alagoas &copy; {% now 'Y'%}</p>
+        </section>
+    </footer>
+    {% endblock %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function () {
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > 100) {
+                    $("#menu").addClass("menu-white");
+                    //    $("#menu").css('background-color', '#ffff');
+                } else {
+                    $("#menu").removeClass("menu-white");
+                    //    $("#menu").css('background-color', 'transparent');
+                }
+            });
+        });
+    </script>
+    <script language="JavaScript" type="text/javascript" charset="utf-8">
+        new dgCidadesEstados({
+            cidade: document.getElementById('cidade'),
+            estado: document.getElementById('estado'),
+            change: true
+        })
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/datas.js' %}"></script>
+</body>
+</html>

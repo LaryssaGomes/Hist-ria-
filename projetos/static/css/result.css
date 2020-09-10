@@ -1,0 +1,16 @@
+#menu {
+  background-color: #fff;
+}
+
+.container {
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+
+  padding: 0px 60px;
+  margin-top: 160px;
+  
+  width: 100%;
+}
+

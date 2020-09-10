@@ -1,0 +1,96 @@
+.add-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-container form {
+  padding: 8px;
+}
+
+#cke_id_arq_texto {
+  max-width: 700px;
+}
+
+.add-container h1 {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.add-container input {
+  padding: 8px 16px;
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgb(149, 149, 149);
+}
+
+.add-container select {
+  width: 100%;
+  min-width: 200px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgb(149, 149, 149);
+}
+
+.add-container textarea {
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid rgb(149, 149, 149);
+}
+
+.container-add-form span {
+  font-size: 14px;
+  color: rgb(59, 58, 58);
+  margin-left: 8px;
+}
+
+.box {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+}
+
+.box-date {
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.add-container button[type='submit'] {
+  border-radius: 8px;
+  color: #ffffff;
+  background-color: #126aa5;
+  border: 0;
+  width: 200px;
+  height: 48px;
+  
+  transition: all 0.2s;
+}
+
+.add-container button[type='button'] {
+  border-radius: 8px;
+  color: #ffffff;
+  background-color: #c8500b;
+  border: 0;
+  width: 200px;
+  height: 48px;
+  
+  transition: all 0.2s;
+}
+
+.add-container button.btn {
+  border-radius: 8px;
+  color: #ffffff;
+  background-color: #747474;
+  border: 0;
+  width: 200px;
+  height: 48px;
+  
+  transition: all 0.2s;
+}
+}
