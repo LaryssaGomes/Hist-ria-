@@ -17,7 +17,7 @@
                     <a href="{% url 'logout' %}">sair</a>
                 </span>
                 <a href="{% url 'edi_perfil' %}">
-                    <img src="../../../media/{{user.foto}}" />
+                    <img src={{user.usuariocomum.foto.url}} />
                 </a>
             {% endif %}
         </div>
@@ -35,9 +35,10 @@
         </button>
     </header>
     <ul>
-        <li class="notification">
         {% if notificacoes %}
-            {% for item in notificacoes %}
+        {% for item in notificacoes %}
+        <li class="notification">
+    
 
                 <img src='{{item.noti_pesquisador.foto.url}}'/>
                 <div class="aside">

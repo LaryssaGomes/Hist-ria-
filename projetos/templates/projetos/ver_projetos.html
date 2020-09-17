@@ -72,6 +72,7 @@
                     {% for list_arquivos in list_arquivos %}
                         <li>
                             Nome do Arquivo: {{ list_arquivos.arq_nome }}
+                            <a href="adt_arquivo/{{ list_arquivos.id }}">Editar projeto</a>  
                         </li>
                     {% endfor %}
                 </ul>

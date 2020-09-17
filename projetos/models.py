@@ -80,9 +80,7 @@ class Notificacao(models.Model):
 
 class ProjetosDosUsuarios(models.Model):
     pdu_projetos = models.ForeignKey(Projetos, on_delete=models.CASCADE)
-    pdu_usuarios = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE)
-
-
+    pdu_usuarios = models.ForeignKey(UsuarioComum, on_delete=models.CASCADE, null=True)
 
 class TiposDeDocumento(models.Model):
     tdd_geral = models.CharField('Tipo de Documento Geral:', max_length=100, null=True)
@@ -104,89 +102,6 @@ class Arquivo(models.Model):
     arq_custodia = models.CharField('Instituição de Custodia:', max_length=100, null=True)
     arq_idioma = models.CharField('Idioma:', max_length=100, null=True)
     arq_cdd = models.DecimalField('Numero de CDD:', max_digits=6, decimal_places=0, blank=True, null=True,)
-    '''
-    TIPO_DE_DOCUMENTO = (
-        ('Documentos Pessoais', (
-            ('DPI', 'Identidade'),
-            ('DPCN', 'Certidão de nascimento'),
-            ('DPCB', 'Certidão de batismo'),
-            ('DPCC', 'Certidão de casamento'),
-            ('DPCO', 'Certidão de óbito'),
-        )
-        ),
-        ('Pessoais', (
-                ('PC', 'Correspondência'),
-                ('PD', 'Diário'),
-                ('PA', 'Anotação'),
-                ('PRC', 'Receita de comida'),
-                ('PDM', 'Documento médico'),
-            )
-        ),
-        ('Jurídicos', (
-                ('JP', 'Processo'),
-                ('JT', 'Testamento'),
-                ('JI', 'Inventário'),
-                ('JD', 'Depoimento'),
-                ('JDs', 'Despacho'),
-                ('JS', 'Sentença'),
-                ('JA', 'Acórdão'),
-            )
-        ),
-        ('Governamentais', (
-                ('GR', 'Relatório'),
-                ('GA', 'Ata'),
-                ('GL', 'Lei'),
-                ('GR', 'Resolução'),
-                ('GD', 'Decreto'),
-                ('GC', 'Constituição'),
-                ('GLs', 'Listas'),
-                ('GRI', 'Registro de imóvel'),
-                ('GRA', 'Registro de cobrança'),
-                ('GRT', 'Registro de trabalho'),
-                ('GCA', 'Carta de alforria'),
-                ('GRCV', 'Recibo de compra e venda'),
-                ('GAp', 'Apólice'),
-            )
-        ),
-        ('Relatos', (
-                ('RD', 'Depoimento'),
-                ('RE', 'Entrevista'),
-                ('RR', 'Relato'),
-                ('RM', 'Música'),
-            )
-        ),
-        ('Iconográficos', (
-                ('IF', 'Fotografia'),
-                ('ID', 'Desenho'),
-                ('IM', 'Mapa'),
-                ('IP', 'Pintura'),
-                ('IC', 'Charge'),
-                ('IP', 'Planta'),
-            )
-        ),
-        ('Impressos', (
-                ('IJ', 'Jornal'),
-                ('IB', 'Boletim'),
-                ('IPn', 'Panfleto'),
-                ('IPr', 'Propaganda'),
-                ('IR', 'Revista'),
-                ('IHQ', 'História em quadrinho'),
-                ('IL', 'Livro'),
-                ('IFl', 'Folder'),
-                ('ICr', 'Cardápio'),
-                ('IPs', 'Poesia'),
-            )
-        ),
-        ('Vídeos', (
-                ('VF', 'Filme'),
-                ('VD', 'Documentário'),
-                ('VP', 'Propaganda'),
-                ('VDs', 'Desenho'),
-            )
-        ),
-   
-    )
-    '''
     arq_destinatario = models.CharField('Destinatario:',max_length=200, null=True, blank=True)
     arq_emitente = models.CharField('Emitente:',max_length=200, null=True, blank=True)
     arq_estado = models.CharField('Estado',max_length=20, null=True, blank=True)
@@ -195,6 +110,7 @@ class Arquivo(models.Model):
     arq_data_de_registro = models.DateTimeField('Data de publicação:', blank=True, null=True)
     arq_nome = models.CharField('Titulo:', max_length=100, null=True)
     arq_localizacao_do_acervo = models.CharField('Localização do acervo:', max_length=100, null=True)
+    arq_palavras_chaves = models.CharField('Palavras chaves:', max_length=225, null=True)
     AUTENTICACAO = (
         ('O', 'Original'),
         ('C', 'Copia'),
@@ -202,13 +118,9 @@ class Arquivo(models.Model):
     arq_autenticacao = models.CharField('Autenticação:',max_length=1, choices=AUTENTICACAO, null=True)
     arq_tipo_de_formato = models.CharField('Tipo de Formato:',max_length=10, null=True)
     arq_texto = RichTextUploadingField( null=True, max_length=1000, blank=True) 
-    
-class PalavrasChave(models.Model):
-    pc_arq = models.ForeignKey(Arquivo, on_delete=models.CASCADE, null=True )
-    pc_palavras_chaves = models.CharField('Palavras chaves:',max_length=200, null=True)
 
 class Audio(models.Model):
-    aud_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True)
+    aud_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE,related_name='audio', null=True)
     aud_duracao = models.DurationField('Duração:', null=True, blank=True)
     aud_audio = models.FileField('Audio',upload_to=user_directory_path_audio_file,null=True, blank=True)
 
@@ -228,7 +140,7 @@ class Documento(models.Model):
     doc_numero_de_paginas = models.DecimalField('Numero de Paginas:', max_digits=3000, decimal_places=0, blank=True, null=True,)
 
 class PatrimonioCultura(models.Model):
-    pc_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, null=True, blank=True)
+    pc_arq = models.OneToOneField(Arquivo, on_delete=models.CASCADE, related_name='patrimoniocultura',null=True, blank=True)
     pc_oficio = models.TextField('Oficio:', max_length=100, null=True, blank=True)
     pc_expressao = models.TextField('Formas de expressão:', max_length=100, null=True, blank=True)
     pc_lugares = models.TextField('Lugares:', max_length=100, null=True, blank=True)
