@@ -151,3 +151,14 @@
 .notification .accept:hover, .deny:hover {
     opacity: 0.9;
 }
+
+@media (max-width: 576px) {
+    #menu {
+      padding: 18px 20px;
+    }
+
+    .notifications {
+        max-width: 380px;
+        right: 16px;
+    }
+}

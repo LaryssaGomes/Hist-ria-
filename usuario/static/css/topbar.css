@@ -1,0 +1,40 @@
+#topbar {
+  width: 100%;
+  top: 0;
+  padding: 18px 60px;
+  transition: all 0.2s;
+  background-color: #fff;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu img {
+  max-width: 200px;
+}
+
+.menu .btn-login {
+  font-weight: 500;
+  text-decoration: none;
+  color: #202020;
+  padding: 14px 40px;
+  border-radius: 5px;
+  color: #fa9e0a;
+  border: 2px solid #fa9e0a;
+
+  transition: all 0.2s;
+}
+
+.menu .btn-login:hover {
+  color: #da8b0d; 
+  border-color: #da8b0d; 
+}
+
+@media (max-width: 576px) {
+  #topbar {
+    padding: 18px 20px;
+  }
+}
