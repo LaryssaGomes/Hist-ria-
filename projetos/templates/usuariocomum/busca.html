@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <!-- link js -->
     <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script>
-    <!-- links css -->
-    <link rel="stylesheet" href="../../static/css/busca.css">
-    <link rel="stylesheet" href="../../static/css/navbar.css">
-    <link rel="stylesheet" href="../../static/css/global.css">
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!-- links css -->
+    <link rel="stylesheet" href="../../static/css/busca.css">
+    <link rel="stylesheet" href="../../static/css/navbar.css">
+    <link rel="stylesheet" href="../../static/css/global.css">
 </head>    
 <body>
     
@@ -23,53 +23,9 @@
     {% include 'usuariocomum/nav.html' %}
     <!-- Menu end -->
     <section class="header">
-        <div class="container-search">
-            <h2 class="title">Buscar Arquivos</h2>
-            <!-- <h5 class="sub">Tenha acesso a documentos e arquivos históricos</h5> -->
-            
-            <div class="search-div">
-                <form method="GET" id="search-form">
-                    <div>
-                        {% csrf_token %}
-                        <input class="form-input" type="text" id="search" name="search" placeholder="Ex.: negros escravidão mortes" value="{{ request.GET.search }}">
-                        <button>
-                            <i class="fas fa-search" id="search-btn"></i>
-                        </button>
-                    </div>
-                                        
-                    <section class="container-filters">
-                        <label>Insira palavras-chaves sobre o que você procura</label>
-
-                        <div class="filters">
-                            <strong>Filtros</strong>
-                            <div class="filter">
-                                <!-- <span>Tipo de Documento</span> -->
-                                <select name="arq_tipo_de_documento"  id="documentos">
-                                    <option value="" selected="">Tipo de documento</option>
-                                    {% for tipo in listas_categorias %}  
-                                        <optgroup label="{{tipo}}">
-                                            {% for especifico in listas_tipos_de_arquivo %} 
-                                                {% if tipo == especifico.tdd_geral %}
-                                                    <option value="{{especifico.id}}">{{ especifico.tdd_especifico }}</option>
-                                                {% endif %}
-                                            {% endfor %} 
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>  
-                            </div>
-                            <!-- <strong>Localização</strong> -->
-                            <div class="filter">
-                                <!-- <span>Estado</span> -->
-                                <input type="text" name="estado" id="estado" value="Selecione um estado" />   
-                            </div>
-                            <div class="filter"> 
-                                <!-- <span>Cidade</span> -->
-                                <input type="text" name="cidade" id="cidade" value="Selecione uma cidade" />
-                            </div>
-                        </div>
-                    </section>
-                </form>
-            </div>
+        <div class="container-main">
+            <h2 class="title">Hemeroteca Virtual</h2>
+            <h5 class="sub">Sua plataforma de pesquisa e acesso a arquivos históricos</h5>
         </div>
     </section>
     {% if semResultado %}
@@ -77,7 +33,7 @@
     {% endif %}
     {% if arquivos %}
     <div class="container">
-        <h4>Resultados da busca</h4>
+        <h3>Buscar Arquivos</h3>
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -121,11 +77,7 @@
         </table>
     </div>
     {% endif %}
-    
-    <!-- Slide -->
-    {% include 'usuariocomum/slider.html' %}
-    <!-- Slide end -->
-    
+
     <div class="banner">
         <h4>Acesse documentos históricos de qualquer lugar</h4>
         <p>A Hemeroteca visa facilitar o acesso a arquivos históricos para pesquisadores e estudantes.</p>
