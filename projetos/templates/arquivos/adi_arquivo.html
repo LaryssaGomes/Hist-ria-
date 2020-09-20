@@ -41,15 +41,23 @@
                     </div>
                     <div class="box">
                         Tipo de documento generico:
+        
+                        <select name="arq_tipo_de_documento"  id="generico" onchange="tipoGenerico()">
+                        
+                        </select> 
                        
                     </div>
                     <div class="box">
-                        <div id="espeficos" style="display: none;">
+                        <div id="espeficos">
                             Tipo de documento especifico:
                             
-                                      
                         </div>
                     </div>
+                    <div class="box">
+                        Selecione o formato:
+                         <input type="text" id='id_arq_tipo_de_formato' value="{{form_arq.arq_tipo_de_formato.value}}" />
+                    </div>
+        
                     <div class="box">
                         CDD:
                         {{form_arq.arq_cdd}}

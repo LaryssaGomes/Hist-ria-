@@ -69,109 +69,115 @@ def salvandoPatrimonioCultural(arquivo, form_patrimonio):
 
 @login_required
 def add_arquivo(request, id):
-    
-    if str(request.user) != 'AnonymousUser':
-        if str(request.method) == 'POST':
-            '''
-            context = {}
-            context['notificacoes'] = Noti(request)
-            '''
-            listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
-            listas_categorias = set(listas_categorias_reptidas)
-            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
-            form_patrimonio = PatrimonioCulturaForm(request.POST, request.FILES)
-            form_arq = ArquivoForm(request.POST, request.FILES)
-            form_video = VideoForm(request.POST, request.FILES)
-            form_documento = DocumentoForm(request.POST, request.FILES)
-            form_audio = AudioForm(request.POST, request.FILES)
-            form_foto = FotosForm(request.POST, request.FILES)
-            categoriaDeDocumento = request.POST.get('arq_documento_especifico')
-            palavrasChaves = request.POST.get('arq_palavras_chaves') 
-            Palavras = palavrasChaves.split(','); 
-            tipoDeArquivo = request.POST.get('arq_tipo_de_formato') 
+    projeto_do_usuarios = ProjetosDosUsuarios.objects.filter(pdu_projetos=id)
+    for projeto_do_usuario in projeto_do_usuarios:
+        if projeto_do_usuario.pdu_usuarios.id == request.user.id:
 
-            if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'Video':
+            if str(request.user) != 'AnonymousUser':
+                context = {}
+                context['notificacoes'] = Noti(request)
+                if str(request.method) == 'POST':
+                
+                
+                    listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+                    listas_categorias = set(listas_categorias_reptidas)
+                    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
+                    form_patrimonio = PatrimonioCulturaForm(request.POST, request.FILES)
+                    form_arq = ArquivoForm(request.POST, request.FILES)
+                    form_video = VideoForm(request.POST, request.FILES)
+                    form_documento = DocumentoForm(request.POST, request.FILES)
+                    form_audio = AudioForm(request.POST, request.FILES)
+                    form_foto = FotosForm(request.POST, request.FILES)
+                    categoriaDeDocumento = request.POST.get('arq_documento_especifico')
+                    palavrasChaves = request.POST.get('arq_palavras_chaves') 
+                    Palavras = palavrasChaves.split(','); 
+                    tipoDeArquivo = request.POST.get('arq_tipo_de_formato') 
 
-                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
-                arquivo.save()
-                video = form_video.save()
-                video.vid_arq = arquivo
-                video.save()
-                salvandoPatrimonioCultural(arquivo, form_patrimonio)
-                return redirect('/inicio_projeto/')  # rediredionando para lista
+                    if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'Video':
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_documento.is_valid() and (tipoDeArquivo=='Impresso' or tipoDeArquivo=='Manuscrito'):
+                        arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
+                        arquivo.save()
+                        video = form_video.save()
+                        video.vid_arq = arquivo
+                        video.save()
+                        salvandoPatrimonioCultural(arquivo, form_patrimonio)
+                        return redirect('/inicio_projeto/')  # rediredionando para lista
 
-                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
-                arquivo.save()
-                documento = form_documento.save()
-                documento.doc_arq = arquivo
-                documento.save()
-                salvandoPatrimonioCultural(arquivo, form_patrimonio)
-                return redirect('/inicio_projeto/')
+                    elif form_arq.is_valid() and len(Palavras) < 6 and form_documento.is_valid() and (tipoDeArquivo=='Impresso' or tipoDeArquivo=='Manuscrito'):
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_foto.is_valid() and (tipoDeArquivo =='Fotografia' or tipoDeArquivo =='Gravura' or tipoDeArquivo =='Mapa' or tipoDeArquivo =='Pintura'):
+                        arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
+                        arquivo.save()
+                        documento = form_documento.save()
+                        documento.doc_arq = arquivo
+                        documento.save()
+                        salvandoPatrimonioCultural(arquivo, form_patrimonio)
+                        return redirect('/inicio_projeto/')
 
-                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
-                arquivo.save()
-                foto = form_foto.save()
-                foto.fot_arq = arquivo
-                foto.save()
-                salvandoPatrimonioCultural(arquivo, form_patrimonio)
-                return redirect('/inicio_projeto/')
+                    elif form_arq.is_valid() and len(Palavras) < 6 and form_foto.is_valid() and (tipoDeArquivo =='Fotografia' or tipoDeArquivo =='Gravura' or tipoDeArquivo =='Mapa' or tipoDeArquivo =='Pintura'):
 
-            elif form_arq.is_valid() and len(Palavras) < 6 and form_audio.is_valid() and tipoDeArquivo =='Audio':
+                        arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
+                        arquivo.save()
+                        foto = form_foto.save()
+                        foto.fot_arq = arquivo
+                        foto.save()
+                        salvandoPatrimonioCultural(arquivo, form_patrimonio)
+                        return redirect('/inicio_projeto/')
 
-                arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
-                arquivo.save()
-                audio = form_audio.save()
-                audio.aud_arq = arquivo
-                audio.save()
-                salvandoPatrimonioCultural(arquivo, form_patrimonio)
-                return redirect('/inicio_projeto/')
-            else:
-                messages.error(request, 'Erro ao salvar arquivo')
-        else:
-            form_arq = ArquivoForm()
-            form_video = VideoForm()
-            form_documento = DocumentoForm()
-            form_audio = AudioForm()
-            form_foto = FotosForm()
-            form_patrimonio = PatrimonioCulturaForm()
-            listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
-            listas_categorias = set(listas_categorias_reptidas)
-            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
-        return render(request, 'arquivos/add_arquivo.html',{'form_arq': form_arq,
-                                                            'form_video': form_video,
-                                                            'form_documento':form_documento,
-                                                            'form_audio':form_audio,
-                                                            'form_foto':form_foto,
-                                                            'listas_categorias':listas_categorias,
-                                                            'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
-                                                            'form_patrimonio':form_patrimonio,
-                                                             },
-                                                             )     
+                    elif form_arq.is_valid() and len(Palavras) < 6 and form_audio.is_valid() and tipoDeArquivo =='Audio':
+
+                        arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
+                        arquivo.save()
+                        audio = form_audio.save()
+                        audio.aud_arq = arquivo
+                        audio.save()
+                        salvandoPatrimonioCultural(arquivo, form_patrimonio)
+                        return redirect('/inicio_projeto/')
+                    else:
+                        messages.error(request, 'Erro ao salvar arquivo')
+                else:
+                    form_arq = ArquivoForm()
+                    form_video = VideoForm()
+                    form_documento = DocumentoForm()
+                    form_audio = AudioForm()
+                    form_foto = FotosForm()
+                    form_patrimonio = PatrimonioCulturaForm()
+                    listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+                    listas_categorias = set(listas_categorias_reptidas)
+                    listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
+                return render(request, 'arquivos/add_arquivo.html',{'form_arq': form_arq,
+                                                                    'form_video': form_video,
+                                                                    'form_documento':form_documento,
+                                                                    'form_audio':form_audio,
+                                                                    'form_foto':form_foto,
+                                                                    'listas_categorias':listas_categorias,
+                                                                    'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
+                                                                    'form_patrimonio':form_patrimonio,
+                                                                    },
+                                                                    )     
 
 @login_required
 def edi_projetos(request, id):
     #if urls.path.name == 'add_projetos':
-    projeto = get_object_or_404(Projetos, pk=id)
-    form = ProjetoForm(instance=projeto)  # Os dados de projeto para o form
-    editado = True
-    context = {
-        'form_pro': form,
-        'edi': editado
-    }
-    context['notificacoes'] = Noti(request)
-    if request.method == 'POST':  # Verificando se tem dados
-        form = ProjetoForm(request.POST, request.FILES, instance=projeto)  # Passando esses dados para form
-        if form.is_valid():  # Verificando se ta tudo preenchido
-            projeto.save()
-            return redirect('/inicio_projeto/')
-        else:
-            return render(request, 'projetos/add_projetos.html', context)
-    else:
-        return render(request, 'projetos/add_projetos.html', context)
+    projeto_do_usuarios = ProjetosDosUsuarios.objects.filter(pdu_projetos=id)
+    for projeto_do_usuario in projeto_do_usuarios:
+        if projeto_do_usuario.pdu_usuarios.id == request.user.id:
+            projeto = get_object_or_404(Projetos, pk=id)
+            form = ProjetoForm(instance=projeto)  # Os dados de projeto para o form
+            editado = True
+            context = {
+                'form_pro': form,
+                'edi': editado
+            }
+            context['notificacoes'] = Noti(request)
+            if request.method == 'POST':  # Verificando se tem dados
+                form = ProjetoForm(request.POST, request.FILES, instance=projeto)  # Passando esses dados para form
+                if form.is_valid():  # Verificando se ta tudo preenchido
+                    projeto.save()
+                    return redirect('/inicio_projeto/')
+                else:
+                    return render(request, 'projetos/add_projetos.html', context)
+            else:
+                return render(request, 'projetos/add_projetos.html', context)
 
 
 
@@ -209,41 +215,43 @@ def pedidos_pendentos(request, projetos):
 
 @login_required
 def ver_projetos(request, id):
-    
-    projeto = get_object_or_404(Projetos, pk=id)  # Pega as informações do projeto que tem o id passando pela url.
-    # Esse o id de projeto tem algum arquivo salvo mande para a variavel arquivos.
-    arquivos = Arquivo.objects.filter(arq_pro_id=id)
-    # Id do bolsista pesquisado
-    context = {
-       'projeto': projeto
-    }
-    context['pendentes'] = pedidos_pendentos(request, projeto)
-    # Lista de bolsistas e pesquisadores do projeto
-    
-    listas = ProjetosDosUsuarios.objects.filter(pdu_projetos=projeto).values('pdu_usuarios')
-    
-    if len(listas) == 1:
-        context['apenasUmUsuario'] = 1
-    else:
-        context['listaDeUsuarios'] =  UsuarioComum.objects.filter(pk__in=listas)
-        
-   # Nome pesquisador
+    projeto_do_usuarios = ProjetosDosUsuarios.objects.filter(pdu_projetos=id)
+    for projeto_do_usuario in projeto_do_usuarios:
+        if projeto_do_usuario.pdu_usuarios.id == request.user.id:
+            projeto = get_object_or_404(Projetos, pk=id)  # Pega as informações do projeto que tem o id passando pela url.
+            # Esse o id de projeto tem algum arquivo salvo mande para a variavel arquivos.
+            arquivos = Arquivo.objects.filter(arq_pro_id=id)
+            # Id do bolsista pesquisado
+            context = {
+            'projeto': projeto
+            }
+            context['pendentes'] = pedidos_pendentos(request, projeto)
+            # Lista de bolsistas e pesquisadores do projeto
+            
+            listas = ProjetosDosUsuarios.objects.filter(pdu_projetos=projeto).values('pdu_usuarios')
+            
+            if len(listas) == 1:
+                context['apenasUmUsuario'] = 1
+            else:
+                context['listaDeUsuarios'] =  UsuarioComum.objects.filter(pk__in=listas)
+                
+        # Nome pesquisador
 
-    # Retorna a lista de bolsistas pesquisada
-    context['lista_bolsista'] = listaDosBolsista(request, listas, id)
-    context['notificacoes'] = Noti(request)
-    aceito = request.POST.get('button_aceito') 
-    recusado = request.POST.get('button_recusado')
-    
-    if aceito or recusado:
-       aceito_projeto(aceito, request, recusado)
-   # Verifica se o projeto tem arquivos
-   
-    if len(arquivos) > 0:
-        context['list_arquivos'] = arquivos
-        return render(request, 'projetos/ver_projetos.html', context)
-    else:
-        return render(request, 'projetos/ver_projetos.html', context)
+            # Retorna a lista de bolsistas pesquisada
+            context['lista_bolsista'] = listaDosBolsista(request, listas, id)
+            context['notificacoes'] = Noti(request)
+            aceito = request.POST.get('button_aceito') 
+            recusado = request.POST.get('button_recusado')
+            
+            if aceito or recusado:
+                aceito_projeto(aceito, request, recusado)
+        # Verifica se o projeto tem arquivos
+        
+            if len(arquivos) > 0:
+                context['list_arquivos'] = arquivos
+                return render(request, 'projetos/ver_projetos.html', context)
+            else:
+                return render(request, 'projetos/ver_projetos.html', context)
 
 
 @login_required
@@ -340,79 +348,91 @@ def edi_perfil(request):
         return render(request,'usuario/perfil.html', context)
 # Tipo de documento
 def edi_arquivo(request, id_arquivo, id):
-    arquivo = get_object_or_404(Arquivo, pk=id_arquivo)
-   
-    form_arq = ArquivoForm(instance=arquivo)
-    
-    context ={
-        'form_arq': form_arq
-    }
-    
-    patrimonio_cultura = PatrimonioCultura.objects.filter(pc_arq=id_arquivo).first()
-    palavras_chaves = request.POST.get('arq_palavras_chaves') 
-    palavras = palavras_chaves.split(','); 
-    if patrimonio_cultura:
-        if request.method == 'POST' and len(palavras)<6:
-            form_patrimonio_cultura = PatrimonioCulturaForm(request.POST, request.FILES, instance=patrimonio_cultura)
-            if form_patrimonio_cultura.is_valid():
-                patrimonio_cultura.save()
-        form_patrimonio_cultura =  PatrimonioCulturaForm(instance=patrimonio_cultura)
-        context['form_patrimonio_cultura'] = form_patrimonio_cultura
-    else:
-        if request.method == 'POST' and len(palavras)<6:
-            form_patrimonio_cultura =  PatrimonioCulturaForm(request.POST, request.FILES)
-            if form_patrimonio_cultura.is_valid():
-                patrimonio_cultura = form_patrimonio_cultura.save()
-                patrimonio_cultura.pc_arq = arquivo
-                patrimonio_cultura.save() 
-        else:
-            context['form_patrimonio_cultura'] = PatrimonioCulturaForm()
-        
-    documento = Documento.objects.filter(doc_arq=id_arquivo).first()
-    if documento:  
-        if request.method == 'POST' and len(palavras)<6:
-            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
-            form = DocumentoForm(request.POST, request.FILES, instance=documento)
-            if form.is_valid():
-                arquivo.save()
-                documento.save()
-                return redirect('/inicio_projeto/')
-        form_documento = DocumentoForm(instance=documento)
-        context['form'] = form_documento
-        return render(request, 'arquivos/adi_arquivo.html',context)
-    foto = Fotos.objects.filter(fot_arq=id_arquivo).first()
-    if foto:
-        if request.method == 'POST' and len(palavras)<6:
-            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
-            form = FotosForm(request.POST, request.FILES, instance=foto)
-            if form.is_valid():
-                arquivo.save()
-                foto.save()
-                return redirect('/inicio_projeto/')
-        form_foto = FotosForm(instance=foto)
-        context['form'] = form_foto
-        return render(request, 'arquivos/adi_arquivo.html',context)
-    video = Video.objects.filter(vid_arq=id_arquivo).first()
-    if video:
-        if request.method == 'POST' and len(palavras)<6:
-            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
-            form = VideoForm(request.POST, request.FILES, instance=video)
-            if form.is_valid():
-                arquivo.save()
-                video.save()
-                return redirect('/inicio_projeto/')
-        form_video = VideoForm(instance=video)
-        context['form'] = form_video
-        return render(request, 'arquivos/adi_arquivo.html',context)
-    else:
-        audio = Audio.objects.filter(aud_arq=id_arquivo).first()
-        if request.method == 'POST' and len(palavras)<6:
-            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
-            form = AudioForm(request.POST, request.FILES, instance=audio)
-            if form.is_valid():
-                arquivo.save()
-                audio.save()
-                return redirect('/inicio_projeto/')
-        form_audio = VideoForm(instance=audio)
-        context['form'] = form_audio
-        return render(request, 'arquivos/adi_arquivo.html',context)
+    projeto_do_usuarios = ProjetosDosUsuarios.objects.filter(pdu_projetos=id)
+    for projeto_do_usuario in projeto_do_usuarios:
+        if projeto_do_usuario.pdu_usuarios.id == request.user.id:
+            arquivo = get_object_or_404(Arquivo, pk=id_arquivo)
+           
+            form_arq = ArquivoForm(instance=arquivo)
+            listas_categorias = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+            listas_categorias = set(listas_categorias)
+            apenas_um = False
+
+            context ={
+                'form_arq': form_arq,
+                'listas_categoria': listas_categorias,
+            }
+            if(len(listas_categorias) == 1):
+                apenas_um = True
+            else:
+                apenas_um = False
+            context['apenas_um'] = apenas_um
+            patrimonio_cultura = PatrimonioCultura.objects.filter(pc_arq=id_arquivo).first()
+            palavras_chaves = request.POST.get('arq_palavras_chaves') 
+            if palavras_chaves:
+                palavras = palavras_chaves.split(','); 
+            if patrimonio_cultura:
+                if request.method == 'POST' and len(palavras)<6:
+                    form_patrimonio_cultura = PatrimonioCulturaForm(request.POST, request.FILES, instance=patrimonio_cultura)
+                    if form_patrimonio_cultura.is_valid():
+                        patrimonio_cultura.save()
+                form_patrimonio_cultura =  PatrimonioCulturaForm(instance=patrimonio_cultura)
+                context['form_patrimonio_cultura'] = form_patrimonio_cultura
+            else:
+                if request.method == 'POST' and len(palavras)<6:
+                    form_patrimonio_cultura =  PatrimonioCulturaForm(request.POST, request.FILES)
+                    if form_patrimonio_cultura.is_valid():
+                        patrimonio_cultura = form_patrimonio_cultura.save()
+                        patrimonio_cultura.pc_arq = arquivo
+                        patrimonio_cultura.save() 
+                else:
+                    context['form_patrimonio_cultura'] = PatrimonioCulturaForm()
+                
+            documento = Documento.objects.filter(doc_arq=id_arquivo).first()
+            if documento:  
+                if request.method == 'POST' and len(palavras)<6:
+                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    form = DocumentoForm(request.POST, request.FILES, instance=documento)
+                    if form.is_valid():
+                        arquivo.save()
+                        documento.save()
+                        return redirect('/inicio_projeto/')
+                form_documento = DocumentoForm(instance=documento)
+                context['form'] = form_documento
+                return render(request, 'arquivos/adi_arquivo.html',context)
+            foto = Fotos.objects.filter(fot_arq=id_arquivo).first()
+            if foto:
+                if request.method == 'POST' and len(palavras)<6:
+                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    form = FotosForm(request.POST, request.FILES, instance=foto)
+                    if form.is_valid():
+                        arquivo.save()
+                        foto.save()
+                        return redirect('/inicio_projeto/')
+                form_foto = FotosForm(instance=foto)
+                context['form'] = form_foto
+                return render(request, 'arquivos/adi_arquivo.html',context)
+            video = Video.objects.filter(vid_arq=id_arquivo).first()
+            if video:
+                if request.method == 'POST' and len(palavras)<6:
+                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    form = VideoForm(request.POST, request.FILES, instance=video)
+                    if form.is_valid():
+                        arquivo.save()
+                        video.save()
+                        return redirect('/inicio_projeto/')
+                form_video = VideoForm(instance=video)
+                context['form'] = form_video
+                return render(request, 'arquivos/adi_arquivo.html',context)
+            else:
+                audio = Audio.objects.filter(aud_arq=id_arquivo).first()
+                if request.method == 'POST' and len(palavras)<6:
+                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    form = AudioForm(request.POST, request.FILES, instance=audio)
+                    if form.is_valid():
+                        arquivo.save()
+                        audio.save()
+                        return redirect('/inicio_projeto/')
+                form_audio = VideoForm(instance=audio)
+                context['form'] = form_audio
+                return render(request, 'arquivos/adi_arquivo.html',context)

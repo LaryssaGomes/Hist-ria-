@@ -27,23 +27,37 @@
 <div class="notifications hidden" id="notifications">
     <header>
         <label>Notificações</label>
+        
         <button id="close">
             <i class="far fa-times-circle"></i>
         </button>
     </header>
+    {% if notificacoes %}
+        {% for item in notificacoes %}
     <ul>
         <li class="notification">
-            <img src="../../../media/pesquisador/Bruna-Marquezine-6.jpg" />
-            <div class="aside">
+       
+
+                <img src='{{item.noti_pesquisador.foto.url}}'/>
+                <div class="aside">
                 <p>
-                    <b>Bruna</b> solicitou acesso ao acervo do projeto <b>"Projeto X"</b>
+                    <b>Pesquisador:{{item.noti_pesquisador.nome}}</b> solicitou sua participação ao acervo do projeto <b>"Projeto:{{item.noti_arquivo.pro_titulo}}"</b>
                 </p>
-                <button class="accept">Aceitar</button>
-                <button class="deny">Rejeitar</button>
-            </div>
+                <form action="" method="POST">
+                {% csrf_token %}
+                    <button value={{item.id}} id='button_aceito' name='button_aceito'class="accept">Aceitar</button>
+                    <button value={{item.id}} name='button_recusado' class="deny">Rejeitar</button>
+                </form>
+            </div>  
         </li>
+    
     </ul>
+        {% endfor %}
+    {%else%}
+         Sem Notificações
+    {%endif%}
 </div>
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     $("#open").click(function () {

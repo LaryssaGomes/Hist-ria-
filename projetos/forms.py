@@ -1,5 +1,6 @@
-from django import forms
-from .models import Projetos, Arquivo, Audio, Fotos, Video, Documento, PatrimonioCultura
+from django import forms 
+from django.forms import widgets
+from .models import Projetos, Arquivo, Audio, Fotos, Video, Documento, PatrimonioCultura, TiposDeDocumento
 
 class PatrimonioCulturaForm(forms.ModelForm):
     class Meta:
@@ -67,4 +68,7 @@ class ArquivoForm(forms.ModelForm):
                   'arq_estado',
                   'arq_cidade',
                   'arq_palavras_chaves',
+                  'arq_tdd_id',
 )
+
+    
