@@ -253,13 +253,17 @@
 }
 
 footer {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
   position: relative;
   margin-top: 32px;
   color: #fff;
   background-color: #081870;
   
   width: 100%;
-  height: 300px;
+  min-height: 200px;
 }
 
 footer section {
@@ -269,13 +273,26 @@ footer section {
   width: 100%;
   font-size: 16px;
   text-align: center;
-  padding: 4px 0px;
   
   background-color: #07135c;
 }
 
 footer section p {
   margin: 0;
+  padding: 4px 0px;
+}
+
+footer div {
+  width: 100%;
+  padding: 20px 8px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+footer .logo {
+  max-width: 200px;
 }
 
 @media (max-width: 650px) {
@@ -284,5 +301,6 @@ footer section p {
   }
   .banner {
     flex-direction: column;
+    margin: 0 20px;
   }
 }

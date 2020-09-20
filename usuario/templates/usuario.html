@@ -3,35 +3,46 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo usuário</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="../../static/css/global.css">
+    <link rel="stylesheet" href="../../static/css/topbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- TopBar -->
+    {% include 'topbar.html' %}
+    <!-- TopBar end -->
     <div class="container">
-        <h1>Cadastro</h1>
-        {% bootstrap_messages %}
+        <div class="row justify-content-md-center mt-4 mb-2">
+           <h1 class="col-md-8">Cadastre-se</h1> 
+        </div>
+        <div class="row justify-content-md-center">
+            {% bootstrap_messages %}
+            <form action="{% url 'usuario' %}" method="post" class="form col-md-8" autocomplete="on" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <form action="{% url 'usuario' %}" method="post" class="form" autocomplete="on" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            {% bootstrap_form form %}
-            Instituição
-                <select name="nome_instituicao" id="nome_instituicao">
-                    <div>
-                        {% for inst in instituicoes %}
-                            <option value="{{inst.nome}}">
-                                {{inst.nome}}
-                            </option>
-                        {% endfor %}
-                    </div>
-                </select>
-            <br>
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
-            {% endbuttons %}
-        </form>
+                {% bootstrap_form form %}
+                Instituição
+                    <select class="form-control" name="nome_instituicao" id="nome_instituicao">
+                        <div>
+                            {% for inst in instituicoes %}
+                                <option value="{{inst.nome}}">
+                                    {{inst.nome}}
+                                </option>
+                            {% endfor %}
+                        </div>
+                    </select>
+                <br>
+                <br>
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Cadastrar</button>
+                {% endbuttons %}
+            </form>
+        </div>
     </div>
 
-{% bootstrap_javascript jquery='full' %}
+    {% bootstrap_javascript jquery='full' %}
 </body>
 </html>

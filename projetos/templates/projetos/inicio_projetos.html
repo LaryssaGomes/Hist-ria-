@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hemeroteca | Projetos</title>
         <link rel="stylesheet" href="../../static/css/inico_projetos.css">
         <link rel="stylesheet" href="../../static/css/navbar-profile.css">
@@ -15,7 +16,7 @@
         <!-- Menu end -->
         <div class="banner">
             <h1>Olá, Bem-vindo!</h1>
-            <label>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</label>
+            <label>A Hemeroteca visa facilitar o acesso a arquivos históricos para pesquisadores e estudantes.</label>
 
             {% if usuario.tipo_de_usuario == 'PE' %}
 
@@ -34,24 +35,16 @@
                     <li class="project">
                         <h3>{{list_projetos.pro_titulo}}</h3>
                         <p>{{list_projetos.pro_desc}}</p>
-                        <span>
-                            <i class="far fa-calendar-alt"></i>
-                            <label>09/06/2020</label>
-                        </span>
                         <div class="links">
-
-                      <a href="edi_projetos/{{ list_projetos.id }}">
-                                Editar
+                            <a class="btn-edit" href="edi_projetos/{{ list_projetos.id }}">
+                                Editar projeto
                             </a>
-                      <a href="ver_projetos/{{ list_projetos.id }}">
-
-                                ver projeto
+                            <a href="ver_projetos/{{ list_projetos.id }}">
+                                Ver projeto
                             </a>
                         </div>
                     </li>
                 {% endfor %}
-
-
             </ul>
         </div>
     </body>

@@ -16,7 +16,11 @@ body {
     padding: 48px 80px;
 
     color: #fff;
-    background: linear-gradient(90deg, rgba(95, 48, 225, 0.82) 0%, rgba(89, 40, 255, 0.81) 100%);
+    background-image: linear-gradient(90deg, rgba(95, 48, 225, 0.82) 0%, rgba(89, 40, 255, 0.81) 100%), url('../assets/book.svg');
+    /* background: linear-gradient(90deg, rgba(95, 48, 225, 0.82) 0%, rgba(89, 40, 255, 0.81) 100%); */
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
 }
 
 .banner label {
@@ -76,25 +80,25 @@ body {
 }
 
 .container-projects .project h3 {
-    font-size: 14px;
+    font-size: 18px;
     color: #323232;
     text-transform: uppercase;
 }
 
 .container-projects .project p, span {
     color: #585858;
-    margin-top: 6px;
+    margin: 8px 0px;
 }
 
 .container-projects .project .links {
-    margin-top: 6px;
+    margin: 16px 0 8px;
 }
 
-.container-projects .project a {
+.container-projects .project .links a {
     color: #fff;
     background: #023589;
     margin-top: 6px;
-    padding: 4px 8px;
+    padding: 8px 16px;
     text-decoration: none;
     border-radius: 4px;
 
@@ -107,4 +111,21 @@ body {
 
 .container-projects .project a:hover {
     background-color: #012d74;
+}
+
+.container-projects .project a.btn-edit {
+    background: #5516e9;
+}
+
+.container-projects .project a.btn-edit:hover {
+    background: #490fcf;
+}
+
+@media (max-width: 1200px) {
+    .banner {
+        margin: 32px 20px;
+    }
+    .container-projects {
+        margin: 32px 20px;
+    }
 }

@@ -16,17 +16,185 @@ body {
 }
 
 .container .description {
+  margin-top: 32px;
+}
+
+.container .pending {
   margin: 32px 0;
+}
+
+.participants form input {
+  padding: 8px 16px;
+  max-width: 400px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgb(149, 149, 149);
+}
+
+.participants form button {
+  border-radius: 8px;
+  color: #ffffff;
+  background-color: #126aa5;
+  border: 0;
+  width: 100px;
+  height: 42px;
+  font-weight: bold;
+  
+  transition: all 0.2s;
+}
+
+.new {
+  margin: 8px 16px;
+
+}
+
+.list-bolsistas {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #ffff;
+  border-radius: 8px;
+  margin: 4px;
+}
+
+.card img {
+  width: 56px;
+  height: 56;
+  border-radius: 8px;
+}
+
+.card-info {
+  margin: 0 12px;
+}
+
+.card a {
+  color: #023589;
+  background: transparent;
+  border: 1px solid #023589;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+
+  transition: all 0.2s;
+}
+
+.card a:hover {
+  color: #fff;
+  background: #023589;
+}
+
+.card a.cancel {
+  color: #e66114;
+  border: 1px solid #e66114;
+}
+
+.card a.cancel:hover {
+  color: #fff;
+  background: #e66114;
+}
+
+.type {
+  text-align: center;
+  padding: 4px 8px;
+  color: #fff;
+  background: #0296a0;
+  border-radius: 8px;
 }
 
 .container .files header {
   display: flex;
+  align-items: center;
 }
 
-.container .files header a {
-  margin-left: 50px;
+.container .files header a.btn-new {
+  margin-left: 100px;
+  color: #fff;
+  background: #023589;
+  margin-top: 6px;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+
+  transition: all 0.2s;
 }
 
 .container .files {
   margin: 32px 0;
+}
+
+.container .list {
+  margin: 32px 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.files .file {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  min-width: 340px;
+  padding: 20px;
+
+  margin: 8px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.files .file .btn {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.files .file .btn a {
+  text-align: right;
+  color: #fff;
+  background: #5516e9;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+
+  transition: all 0.2s;
+}
+
+.files .file .btn a:hover {
+  background-color: #490fcf;
+}
+
+.file .public {
+  font-size: 18px;
+  color: #13d865;
+}
+
+.file .private {
+  font-size: 18px;
+  color: #bb340b;
+}
+
+span {
+  display: block;
+  margin-top: 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    margin: 64px 32px;
+  }
+}
+
+@media (max-width: 650px) {
+  .container {
+    margin: 64px 8px;
+  }
 }

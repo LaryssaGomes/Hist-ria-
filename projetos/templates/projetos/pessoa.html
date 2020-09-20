@@ -2,25 +2,21 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-     <title>Index</title>
-     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>  
 </head>
 <body>
     <div class="container">
         <h1>Projetos</h1>
-
     </div>
     <ul>
         {% for pessoas in pessoa %}
         <li>
             <span><a href="/templates/{{pessoas.id}}">{{pessoas.nome}}</a></span>
             <span class="fas fa-trash"></span>
-            <a href="edi_projetos/{{projetos.id}}">edita</a>
-            
+            <a href="edi_projetos/{{projetos.id}}">editar</a>
         </li>
-        
         {% endfor %}
     </ul>
-    
 </body>
 </html>
