@@ -246,7 +246,7 @@ def ver_projetos(request, id):
     
     if aceito or recusado:
        aceito_projeto(aceito, request, recusado)
-   # Verifica se o projeto tem arquivos
+    # Verifica se o projeto tem arquivos
    
     if len(arquivos) > 0:
         context['list_arquivos'] = arquivos

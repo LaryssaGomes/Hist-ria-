@@ -18,9 +18,28 @@
     <div class="content">
       <h1>{{arquivos.arq_nome}}</h1>
 
-      <div class="group">
+      <div class="groupythonp">
         <strong>Descrição</strong>
-        <p>{{arquivos.arq_desc}}</p>
+        <br>
+        <br>
+        <p>Titulo: {{ arquivos.arq_nome }}</p>
+        <p>Cidade: {{ arquivos.arq_cidade }}</p>
+        <p>Estado: {{ arquivos.arq_estado }}</p>
+        <p>Nome do Emitente: {{ arquivos.arq_emitente }}</p>
+        <p>Cargo do Emitente: {{ arquivos.arq_cargo_emi }}</p>
+        <p>Nome do Destinatario: {{ arquivos.arq_destinatario }}</p>
+        <p>Cargo do Destinatario: {{ arquivos.arq_cargo_des }}</p>
+        <p>Local de Emissão: {{ arquivos.arq_local_emissao }}</p>
+        <p>Assunto: {{ arquivos.arq_assunto }}</p>
+        <p>Idioma: {{ arquivos.arq_idioma }}</p>
+        <p>Data: {{ arquivos.arq_data }}</p>
+        <p>Data de publicação: {{ arquivos.arq_data_de_registro }}</p>
+        <p>Localização do acervo: {{ arquivos.arq_localizacao_do_acervo }}</p>
+        <p>Instituição de custodia: {{ arquivos.arq_custodia }}</p> <!--Alterei aqui-->
+        <p>Tipo de formato: {{ arquivos.arq_tipo_de_formato }}</p>
+        <p>Numero de CDD: {{ arquivos.arq_cdd }}</p>
+<!--    upload do documento
+        transcrição-->
       </div>
 
       <img class="result-image" src="../../../media/{{arquivos.arq_imagem}}" />

@@ -25,7 +25,7 @@ class CustomUsuarioCreateForm(UserCreationForm):  # Esse é o formulario para ad
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        # user.email = self.cleaned_data["username"]
+        user.email = self.cleaned_data["username"]
         if commit:
             user.save()
         return user
@@ -58,8 +58,6 @@ class UsuarioComumForm(UserCreationForm):
     class Meta:
         model = UsuarioComum
         fields = ('nome',
-                  # 'instituicao',
-                  'salvar_instituicao',
                   'cpf',
                   'rg',
                   'rg_expedidor',
@@ -67,8 +65,7 @@ class UsuarioComumForm(UserCreationForm):
                   'foto',
                   'telefone',
                   'email',
-                  'tipo_de_usuario',
-                  'codigo')
+                  'tipo_de_usuario')
 
         labels = {'username': 'Username/E-mail'}
 
