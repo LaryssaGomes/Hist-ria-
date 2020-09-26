@@ -84,4 +84,6 @@ def validar_email_usuario(request):
     context = {
         'form': form
     }
+
     return render(request, 'validar_email_usuario.html', context)
+

@@ -65,4 +65,6 @@ class ArquivoForm(forms.ModelForm):
                   'arq_local_emissao',
                   'arq_tipo_de_formato',
                   'arq_estado',
-                  'arq_cidade')
+                  'arq_cidade',
+                  'arq_palavras_chaves',
+)

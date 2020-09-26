@@ -3,6 +3,7 @@
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hemeroteca | Projetos</title>
         <link rel="stylesheet" href="../../../static/css/navbar-profile.css">
         <link rel="stylesheet" href="../../../static/css/global.css">
@@ -14,23 +15,6 @@
         <!-- Menu -->
         {% include 'projetos/navbar.html' %}
         <!-- Menu end -->
-        {% if apenasUmUsuario == 1 %}
-            Nome :{{ request.user.nome }}
-            Tipo : Pesquisador
-             
-        {% else %}
-            {% for usuario in listaDeUsuarios %}
-                Nome :{{ usuario.nome  }}
-                Tipo :
-                {% if usuario.tipo_de_usuario  == 'PE'%}
-                Pesquisador
-                <br>
-                {% else %}
-                Bolsista
-                <br>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
 
         <section class="container">
            <h2>Projeto: {{projeto.pro_titulo}}</h2>
@@ -39,39 +23,112 @@
                 <h3>Descrição</h3>
                 <p>{{ projeto.pro_desc }}</p>
             </div>
+
             {% if user.usuariocomum.tipo_de_usuario == 'PE' %}
-            {% for p in pendentes %}
-                Nome:{{ p.noti_bolsista.usuariocomum.nome }}
-                <a href='deletar_pedido/{{p.id}}'>Cancelar</a>
-                <button value="cancelar"> cancelar </button>
-            {% endfor %}
+
+            <div class="pending">
+                <h3>Solicitações pendentes</h3>
+                <ul class="list-bolsistas">
+                    {% for p in pendentes %}
+                        <li class="card">
+                            <img src={{p.noti_bolsista.usuariocomum.foto.url}} alt="">
+                            <div class="card-info">
+                                <strong>{{ p.noti_bolsista.usuariocomum.nome }}</strong>
+                                <span>Instituição: IFAL</span>
+                            </div>
+                            <a class="cancel" href='deletar_pedido/{{p.id}}'>Cancelar</a>
+                        </li> 
+                    {% endfor %} 
+                </ul>
+            </div>
+            
             <div class="participants">
                 <h3>Participantes</h3>
-                <form action="submit" method="GET">{% csrf_token %}
-                    <input name="nomeDoBolsista" type="text" >
-                    <button type="submit">Busca</button>
-                    {% if lista_bolsista %}
-                        {% for bolsista in lista_bolsista  %}
-                            Nome do Bolsista:{{ bolsista.nome }}<a href="adicionarBolsista/{{ bolsista.id}}">add_Bolsista</a>
-                            <br>
-                        {% endfor %}
+                <ul class="list-bolsistas">
+                    {% if apenasUmUsuario == 1 %}
+                        <li class="card">
+                            <img src={{request.user.foto.url}} alt="">
+                            <div class="card-info">
+                                <strong>{{ request.user.nome }}</strong>
+                                <span>Instituição: IFAL</span>
+                                <span class="type">Pesquisador</span>
+                            </div>
+                        </li>                        
                     {% else %}
-                            sem bolsistas encontrados
-                    {% endif %}
+                        {% for usuario in listaDeUsuarios %}
+                            <li class="card">
+                                <img src={{usuario.foto.url}} alt="">
+                                <div class="card-info">
+                                    <strong>{{ usuario.nome }}</strong>
+                                    <span>Instituição: IFAL</span>
+                                    <span class="type">
+                                        {% if usuario.tipo_de_usuario  == 'PE'%}
+                                        Pesquisador
+                                        {% else %}
+                                        Bolsista
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% endif %}      
+                </ul>
 
-                </form>
+                <div class="new">
+                    <h4>Adicionar novo bolsista</h4>
+                    <form action="submit" method="GET">
+                        {% csrf_token %}
+                        <input placeholder="Nome do bolsista" name="nomeDoBolsista" type="text" >
+                        <button type="submit">Buscar</button>
+
+                        <ul class="list-bolsistas">
+                            {% if lista_bolsista %}
+                                {% for bolsista in lista_bolsista  %}
+                                    <li class="card">
+                                        <img src={{bolsista.usuariocomum.foto.url}} alt="">
+                                        <div class="card-info">
+                                            <strong>{{ bolsista.nome }}</strong>
+                                            <span>Instituição: aqui</span>
+                                        </div>
+                                        <a href="adicionarBolsista/{{ bolsista.id}}">Adicionar bolsista</a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                sem bolsistas encontrados
+                            {% endif %}
+                        </ul>
+                    </form>
+                </div>
             </div>
             {% endif %}
             
             <div class="files">
                 <header>
                     <h3>Arquivos</h3>
-                    <a href="add_arquivo/">Novo arquivo</a>  
+                    <a class="btn-new" href="add_arquivo/">Novo arquivo</a>  
                 </header>
-                <ul>
+                <ul class="list">
                     {% for list_arquivos in list_arquivos %}
-                        <li>
-                            Nome do Arquivo: {{ list_arquivos.arq_nome }}
+                        <li class="file">
+                            <div>
+                                <div class="header">
+                                   <h3>Título: {{ list_arquivos.arq_nome }}</h3> 
+                                    {% if list_arquivos.arq_nivel_de_acesso == 'PU' %}
+                                        <strong class="public">Público</strong>
+                                    {% endif %}
+                                    {% if list_arquivos.arq_nivel_de_acesso == 'PR' %}
+                                        <strong class="private">Privado</strong>
+                                    {% endif %}
+                                </div>
+                                
+                                <span>Assunto: {{ list_arquivos.arq_assunto }}</span>
+                                <span>Tipo: {{ list_arquivos.arq_tipo_de_formato }}</span>
+                                <span>Data: {{ list_arquivos.arq_data }}</span>      
+
+                                <div class="btn">
+                                    <a href="adt_arquivo/{{ list_arquivos.id }}">Editar</a>                            
+                                </div>
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>

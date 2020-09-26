@@ -1,0 +1,116 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script> 
+        <script language="JavaScript" type="text/javascript" src="{% static 'js/tipoEspecificoGenerico.js' %}"></script>
+        <link rel="stylesheet" href="../../../../static/css/global.css">
+        <link rel="stylesheet" href="../../../../static/css/navbar-profile.css">
+        <link rel="stylesheet" href="../../../../static/css/add-arquivo.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+        <title>Aditar Arquivo</title>
+    </head>
+    <body>  
+        {% include 'arquivos/navbar.html' %}
+        <form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+           <h3>1. Cadastro do Documento</h3>
+                    <div class="box">
+                        Instituição de Custodia:{{form_arq.arq_custodia}}
+                    </div>
+                    <div class="box">
+                        Localização no Acervo:{{form_arq.arq_localizacao_do_acervo}}
+                    </div>
+                    <div class="box">
+                        Coleção:{{form_arq.arq_colecao}}
+                    </div>
+                     <div class="box">
+                        Nivel de acesso:{{form_arq.arq_nivel_de_acesso}}
+                    </div>
+                    <div class="box">
+                        Autenticação:{{form_arq.arq_autenticacao}}  
+                    </div>
+                    <div class="box">
+                        Idioma:{{form_arq.arq_idioma}}
+                    </div>
+                    <div class="box">
+                        Tipo de documento generico:
+                       
+                    </div>
+                    <div class="box">
+                        <div id="espeficos" style="display: none;">
+                            Tipo de documento especifico:
+                            
+                                      
+                        </div>
+                    </div>
+                    <div class="box">
+                        CDD:
+                        {{form_arq.arq_cdd}}
+                    </div>
+
+                    <h3>2. Dados do Documento</h3>
+                    
+                    <div class="box">
+                        Palavras Chave:
+                        {{form_arq.arq_palavras_chaves}}
+                        <span>adicione no máximo 5 Palavras</span>
+                        <span>exemplo: alagoas, escravidão, mortes</span>
+                    </div>
+                    <div class="box">
+                        Título:{{form_arq.arq_nome}}
+                    </div>
+                    <div class="box">
+                        Estado:
+                        <input type="text" id="id_arq_estado" value="{{form_arq.arq_estado.value}}" />
+                    </div>
+                    <div class="box">
+                        Cidade:
+                        <input type="text" id="id_arq_cidade" value="{{form_arq.arq_cidade.value}}" />
+                    </div>
+
+                    <script language="JavaScript" type="text/javascript" charset="utf-8">
+                        new dgCidadesEstados({
+                            cidade: document.getElementById('id_arq_cidade'),
+                            estado: document.getElementById('id_arq_estado'),
+                            change: true
+                        })
+                    </script>
+                    <div class="box">
+                        Nome Emitente:
+                        {{form_arq.arq_emitente}}
+                    </div>
+                    <div class="box">
+                        Cargo de Emitente:
+                        {{form_arq.arq_cargo_emi}}
+                    </div>
+                    <div class="box">
+                        Nome Destinatario:
+                        {{form_arq.arq_destinatario}} 
+                    </div>
+                    <div class="box">
+                        Cargo de Destinatario:
+                        {{form_arq.arq_cargo_des}}
+                    </div>
+                    <div class="box">
+                        Local de Assinatura:
+                        {{form_arq.arq_local_emissao}} 
+                    </div>
+                    <div class="box">
+                        Assunto:
+                        {{form_arq.arq_assunto}}
+                    </div>
+            {% bootstrap_form form %}
+            Patrimonio Cultural
+            {% bootstrap_form form_patrimonio_cultura %}
+            <button type="submit">Salvar</button>
+        </form>
+    </body>
+
+</html>

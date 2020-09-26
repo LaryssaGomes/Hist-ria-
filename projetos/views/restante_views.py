@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator  # Para poder realizar a paginação
 from django.contrib import messages
 
-from ..models import Projetos, Arquivo, ProjetosDosUsuarios, PalavrasChave, TiposDeDocumento, Notificacao
+from ..models import Projetos, Arquivo, ProjetosDosUsuarios, TiposDeDocumento, Notificacao, Audio, Fotos, Video, Documento, PatrimonioCultura
 from usuario.forms import UsuarioForm
 from collections import Counter
 from .. import urls
@@ -67,10 +67,6 @@ def salvandoPatrimonioCultural(arquivo, form_patrimonio):
             patrimonioCultura.save()
     
 
-def salvandoPalavrasChave(arquivo, Palavras):
-    for palavra in Palavras:
-        PalavrasChave.objects.create(pc_arq=arquivo, pc_palavras_chaves=palavra)
-
 @login_required
 def add_arquivo(request, id):
     
@@ -90,16 +86,14 @@ def add_arquivo(request, id):
             form_audio = AudioForm(request.POST, request.FILES)
             form_foto = FotosForm(request.POST, request.FILES)
             categoriaDeDocumento = request.POST.get('arq_documento_especifico')
-            palavrasChaves = request.POST.get('PalavraChave') 
+            palavrasChaves = request.POST.get('arq_palavras_chaves') 
             Palavras = palavrasChaves.split(','); 
-            # Sistema de bloqueio  
             tipoDeArquivo = request.POST.get('arq_tipo_de_formato') 
-            
+
             if form_arq.is_valid() and len(Palavras) < 6 and form_video.is_valid() and tipoDeArquivo == 'Video':
 
                 arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
-                salvandoPalavrasChave(arquivo, Palavras)
                 video = form_video.save()
                 video.vid_arq = arquivo
                 video.save()
@@ -110,7 +104,6 @@ def add_arquivo(request, id):
 
                 arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
-                salvandoPalavrasChave(arquivo, Palavras)
                 documento = form_documento.save()
                 documento.doc_arq = arquivo
                 documento.save()
@@ -121,7 +114,6 @@ def add_arquivo(request, id):
 
                 arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
-                salvandoPalavrasChave(arquivo, Palavras)
                 foto = form_foto.save()
                 foto.fot_arq = arquivo
                 foto.save()
@@ -132,7 +124,6 @@ def add_arquivo(request, id):
 
                 arquivo = salvandoArquivo(request, id, form_arq, categoriaDeDocumento)
                 arquivo.save()
-                salvandoPalavrasChave(arquivo, Palavras)
                 audio = form_audio.save()
                 audio.aud_arq = arquivo
                 audio.save()
@@ -347,4 +338,81 @@ def edi_perfil(request):
             return render(request,'usuario/perfil.html', context)
     else:
         return render(request,'usuario/perfil.html', context)
-
+# Tipo de documento
+def edi_arquivo(request, id_arquivo, id):
+    arquivo = get_object_or_404(Arquivo, pk=id_arquivo)
+   
+    form_arq = ArquivoForm(instance=arquivo)
+    
+    context ={
+        'form_arq': form_arq
+    }
+    
+    patrimonio_cultura = PatrimonioCultura.objects.filter(pc_arq=id_arquivo).first()
+    palavras_chaves = request.POST.get('arq_palavras_chaves') 
+    palavras = palavras_chaves.split(','); 
+    if patrimonio_cultura:
+        if request.method == 'POST' and len(palavras)<6:
+            form_patrimonio_cultura = PatrimonioCulturaForm(request.POST, request.FILES, instance=patrimonio_cultura)
+            if form_patrimonio_cultura.is_valid():
+                patrimonio_cultura.save()
+        form_patrimonio_cultura =  PatrimonioCulturaForm(instance=patrimonio_cultura)
+        context['form_patrimonio_cultura'] = form_patrimonio_cultura
+    else:
+        if request.method == 'POST' and len(palavras)<6:
+            form_patrimonio_cultura =  PatrimonioCulturaForm(request.POST, request.FILES)
+            if form_patrimonio_cultura.is_valid():
+                patrimonio_cultura = form_patrimonio_cultura.save()
+                patrimonio_cultura.pc_arq = arquivo
+                patrimonio_cultura.save() 
+        else:
+            context['form_patrimonio_cultura'] = PatrimonioCulturaForm()
+        
+    documento = Documento.objects.filter(doc_arq=id_arquivo).first()
+    if documento:  
+        if request.method == 'POST' and len(palavras)<6:
+            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+            form = DocumentoForm(request.POST, request.FILES, instance=documento)
+            if form.is_valid():
+                arquivo.save()
+                documento.save()
+                return redirect('/inicio_projeto/')
+        form_documento = DocumentoForm(instance=documento)
+        context['form'] = form_documento
+        return render(request, 'arquivos/adi_arquivo.html',context)
+    foto = Fotos.objects.filter(fot_arq=id_arquivo).first()
+    if foto:
+        if request.method == 'POST' and len(palavras)<6:
+            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+            form = FotosForm(request.POST, request.FILES, instance=foto)
+            if form.is_valid():
+                arquivo.save()
+                foto.save()
+                return redirect('/inicio_projeto/')
+        form_foto = FotosForm(instance=foto)
+        context['form'] = form_foto
+        return render(request, 'arquivos/adi_arquivo.html',context)
+    video = Video.objects.filter(vid_arq=id_arquivo).first()
+    if video:
+        if request.method == 'POST' and len(palavras)<6:
+            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+            form = VideoForm(request.POST, request.FILES, instance=video)
+            if form.is_valid():
+                arquivo.save()
+                video.save()
+                return redirect('/inicio_projeto/')
+        form_video = VideoForm(instance=video)
+        context['form'] = form_video
+        return render(request, 'arquivos/adi_arquivo.html',context)
+    else:
+        audio = Audio.objects.filter(aud_arq=id_arquivo).first()
+        if request.method == 'POST' and len(palavras)<6:
+            form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+            form = AudioForm(request.POST, request.FILES, instance=audio)
+            if form.is_valid():
+                arquivo.save()
+                audio.save()
+                return redirect('/inicio_projeto/')
+        form_audio = VideoForm(instance=audio)
+        context['form'] = form_audio
+        return render(request, 'arquivos/adi_arquivo.html',context)

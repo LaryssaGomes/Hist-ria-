@@ -1,6 +1,7 @@
 .header {
   /* background: linear-gradient(to right, #3554d1af, #2483bebe, #0a799bbe), url('../assets/login-background-img.jpg'); */
-  background: linear-gradient(to right, #24335ff1, #233277e8), url('../assets/login-background-img.jpg');
+  /* background: linear-gradient(to right, #24335fc5, #233277c5), url('../assets/login-background-img.jpg'); */
+  background: linear-gradient(to right, #2d48b6ea, #4c619bd3, #0c86acd0), url('../assets/login-background-img.jpg');;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -24,7 +25,7 @@
   margin-top: 60px;
 }
 
-.container-search {
+.container-main {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,21 +71,6 @@
   background-color: #ffa515;
   color: #fff;
   border-radius: 0px 5px 5px 0px;
-}
-
-.form-input {
-  padding: 8px 16px;
-  width: 95%;
-  height: 48px;
-  
-  color: #272727;
-  background: #f6f6f6;
-  border: 1px solid #c0c0c0;
-  border-radius: 5px 0px 0px 5px;
-}
-
-.form-input::placeholder {
-  color: #959595;
 }
 
 .title, .sub {
@@ -169,16 +155,8 @@
 
 /* Lista de resultados */
 
-.container h4 {
-  margin-bottom: 16px;
-}
-
-#myTable_wrapper .row:first-of-type {
-  display: none !important;
-}
-
-#myTable_wrapper thead {
-  display: none !important;
+.container h3 {
+  margin-bottom: 32px;
 }
 
 .project-item:hover {
@@ -253,13 +231,17 @@
 }
 
 footer {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
   position: relative;
   margin-top: 32px;
   color: #fff;
   background-color: #081870;
   
   width: 100%;
-  height: 300px;
+  min-height: 200px;
 }
 
 footer section {
@@ -269,20 +251,62 @@ footer section {
   width: 100%;
   font-size: 16px;
   text-align: center;
-  padding: 4px 0px;
   
   background-color: #07135c;
 }
 
 footer section p {
   margin: 0;
+  padding: 4px 0px;
 }
 
-@media (max-width: 650px) {
-  #menu, .container-search {
+footer div {
+  width: 100%;
+  padding: 20px 8px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+footer .logo {
+  max-width: 200px;
+}
+
+.dataTables_wrapper {
+  width: 100%; 
+}
+
+.dataTables_wrapper input {
+  padding: 4px 8px;
+  height: 42px;
+  
+  color: #272727;
+  background: #fcfdfd;
+  border: 2px solid #d1d1d1;
+  border-radius: 8px;
+}
+
+.dataTables_wrapper input::placeholder {
+  color: #7b7b7b;
+}
+
+.dataTables_wrapper input:focus {
+  border-color: #5580aa;
+}
+
+@media (max-width: 770px) {
+  #menu, .container-main {
     padding: 20px 20px;
   }
   .banner {
     flex-direction: column;
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .banner {
+    margin: 32px 20px;
   }
 }

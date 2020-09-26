@@ -8,7 +8,6 @@ from .models import (Instituicao,
                      Fotos, 
                      Video, 
                      Documento,
-                     PalavrasChave,
                      TiposDeDocumento,
                      PatrimonioCultura,
                      Notificacao,)
@@ -25,10 +24,6 @@ class PatrimonioCulturaAdmin(admin.ModelAdmin):
 class TiposDeDocumentoAdmin(admin.ModelAdmin): 
     list_display = ('tdd_geral',
                     'tdd_especifico')
-
-class PalavrasChaveAdmin(admin.ModelAdmin):
-    list_display = ('pc_arq',
-                    'pc_palavras_chaves')
 
 class DocumentoAdmin(admin.ModelAdmin):
     list_display = ('doc_documento',
@@ -49,7 +44,8 @@ class ArquivoAdmin(admin.ModelAdmin):
                     'arq_destinatario',
                     'arq_autenticacao',
                     'arq_emitente',
-                    'arq_texto')
+                    'arq_texto',
+                    'arq_palavras_chaves')
                     
 
 
@@ -70,7 +66,6 @@ admin.site.register(Arquivo, ArquivoAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(PatrimonioCultura, PatrimonioCulturaAdmin)
 admin.site.register(TiposDeDocumento, TiposDeDocumentoAdmin)
-admin.site.register(PalavrasChave, PalavrasChaveAdmin)
 admin.site.register(Documento, DocumentoAdmin)
 
 admin.site.register(Notificacao, NotificacaoAdmin)

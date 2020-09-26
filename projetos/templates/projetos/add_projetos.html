@@ -4,6 +4,7 @@
     <head>
         <title>Hemeroteca | Adicionar projeto</title>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% bootstrap_css %}
         <link rel="stylesheet" href="../../static/css/edit-profile.css">
         <link rel="stylesheet" href="../../static/css/global.css">
@@ -11,7 +12,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     </head>
-
     <body>
         <!-- Menu -->
         {% include 'projetos/navbar.html' %}
@@ -20,11 +20,12 @@
             <div class="col-6">
                 <h2>Adicionar projeto</h2>
 
-
-                <form method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
+                <form class="projeto-form" method="POST" class="projeto-form" autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- {{form_pro.as_p}} -->
-                    Titulo:{{ form_pro.pro_titulo }}
+                    {% bootstrap_form form_pro %}
+
+                    <!-- Titulo:{{ form_pro.pro_titulo }}
                     <br>
                     Imagem:{{ form_pro.pro_imagem }}
                     <br>
@@ -34,21 +35,20 @@
                     <br>
                     Financiamento:{{ form_pro.pro_financiamento }}
                     <br>
-                    Financiadora:{{ form_pro.pro_financiadora }}
-                    
+                    Financiadora:{{ form_pro.pro_financiadora }} -->
 
                     <button type="submit" class="btn btn-primary">
-                    {% if edi %}
-                    Editar
-                    {% else %}
-                    Adicionar Projeto
-                    {% endif %}
+                        {% if edi %}
+                        Salvar Alterações
+                        {% else %}
+                        Adicionar Projeto
+                        {% endif %}
                     </button>
-
                     <button type="button" class="btn btn-outline-danger">Cancelar</button> <!--redirecionar para dashboard de projetos-->
                 </form>
             </div>
         </div>
+        
     </body>
 
 </html>
