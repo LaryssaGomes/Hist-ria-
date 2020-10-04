@@ -19,7 +19,7 @@ from ..forms import (ProjetoForm,
                     FotosForm,
                     PatrimonioCulturaForm)
 
-
+# Verificando se tem notificação para o usuario logado
 def Noti(request):
     
     lista_de_notificacao = Notificacao.objects.filter(noti_bolsista=request.user.id)
@@ -28,7 +28,7 @@ def Noti(request):
         return (lista_de_notificacao)
     else:
         return(sem)
-
+#  Permitir que o usuario perquisador add um tipo de documento
 @login_required
 def novosTiposDeDocumentos(request):
     selecionaGenerico = request.POST.get('selecionaGenerico')
@@ -154,7 +154,7 @@ def add_arquivo(request, id):
                                                                     'form_patrimonio':form_patrimonio,
                                                                     },
                                                                     )     
-
+# Editar projeto ,chama função de Noti
 @login_required
 def edi_projetos(request, id):
     #if urls.path.name == 'add_projetos':
@@ -181,7 +181,7 @@ def edi_projetos(request, id):
 
 
 
-
+# lista os bolsistas em ver projeto
 def listaDosBolsista(request, lista, id):
 
     # Pesquise os bolsistas com esse nome
@@ -352,21 +352,20 @@ def edi_arquivo(request, id_arquivo, id):
     for projeto_do_usuario in projeto_do_usuarios:
         if projeto_do_usuario.pdu_usuarios.id == request.user.id:
             arquivo = get_object_or_404(Arquivo, pk=id_arquivo)
-           
+            tipo_do_documento = arquivo.arq_tdd_id
             form_arq = ArquivoForm(instance=arquivo)
-            listas_categorias = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
-            listas_categorias = set(listas_categorias)
-            apenas_um = False
+            listas_categorias_reptidas = TiposDeDocumento.objects.all().values_list('tdd_geral', flat=True)
+            listas_categorias = set(listas_categorias_reptidas)
+            listas_tipos_de_arquivo = TiposDeDocumento.objects.all().order_by('tdd_especifico')
+            
 
             context ={
                 'form_arq': form_arq,
                 'listas_categoria': listas_categorias,
+                'listas_tipos_de_arquivo': listas_tipos_de_arquivo,
+                'tipo_do_documento':tipo_do_documento,
             }
-            if(len(listas_categorias) == 1):
-                apenas_um = True
-            else:
-                apenas_um = False
-            context['apenas_um'] = apenas_um
+           
             patrimonio_cultura = PatrimonioCultura.objects.filter(pc_arq=id_arquivo).first()
             palavras_chaves = request.POST.get('arq_palavras_chaves') 
             if palavras_chaves:
@@ -391,11 +390,16 @@ def edi_arquivo(request, id_arquivo, id):
             documento = Documento.objects.filter(doc_arq=id_arquivo).first()
             if documento:  
                 if request.method == 'POST' and len(palavras)<6:
-                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
-                    form = DocumentoForm(request.POST, request.FILES, instance=documento)
-                    if form.is_valid():
+                    categoriaDeDocumento = request.POST.get('arq_documento_especifico')
+                    form_arq = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    form_documento = DocumentoForm(request.POST, request.FILES, instance=documento)
+                    if form_documento.is_valid() and form_arq.is_valid():
+                        arquivo = form_arq
+                        print(categoriaDeDocumento)
+                        arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
                         arquivo.save()
-                        documento.save()
+                        documento_arq = form_documento
+                        documento_arq.save()
                         return redirect('/inicio_projeto/')
                 form_documento = DocumentoForm(instance=documento)
                 context['form'] = form_documento
@@ -403,23 +407,32 @@ def edi_arquivo(request, id_arquivo, id):
             foto = Fotos.objects.filter(fot_arq=id_arquivo).first()
             if foto:
                 if request.method == 'POST' and len(palavras)<6:
-                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    categoriaDeDocumento = request.POST.get('arq_documento_especifico')
+                    form_arq = ArquivoForm(request.POST, request.FILES, instance=arquivo)
                     form = FotosForm(request.POST, request.FILES, instance=foto)
-                    if form.is_valid():
+                    if form.is_valid() and form_arq.is_valid():
+                        arquivo = form_arq.save(commit=False)
+                        arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
                         arquivo.save()
-                        foto.save()
+                        foto_arq = form.save(commit=False)
+                        foto_arq.save()
                         return redirect('/inicio_projeto/')
                 form_foto = FotosForm(instance=foto)
                 context['form'] = form_foto
                 return render(request, 'arquivos/adi_arquivo.html',context)
             video = Video.objects.filter(vid_arq=id_arquivo).first()
             if video:
+
                 if request.method == 'POST' and len(palavras)<6:
-                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    categoriaDeDocumento = request.POST.get('arq_documento_especifico')
+                    form_arq = ArquivoForm(request.POST, request.FILES, instance=arquivo)
                     form = VideoForm(request.POST, request.FILES, instance=video)
-                    if form.is_valid():
+                    if form.is_valid() and form_arq.is_valid():
+                        arquivo = form_arq.save(commit=False)
+                        arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
                         arquivo.save()
-                        video.save()
+                        video_arq = form.save(commit=False)
+                        video_arq.save()
                         return redirect('/inicio_projeto/')
                 form_video = VideoForm(instance=video)
                 context['form'] = form_video
@@ -427,11 +440,15 @@ def edi_arquivo(request, id_arquivo, id):
             else:
                 audio = Audio.objects.filter(aud_arq=id_arquivo).first()
                 if request.method == 'POST' and len(palavras)<6:
-                    form = ArquivoForm(request.POST, request.FILES, instance=arquivo)
+                    categoriaDeDocumento = request.POST.get('arq_documento_especifico')
+                    form_arq = ArquivoForm(request.POST, request.FILES, instance=arquivo)
                     form = AudioForm(request.POST, request.FILES, instance=audio)
-                    if form.is_valid():
+                    if form.is_valid() and form_arq.is_valid():
+                        arquivo = form_arq.save(commit=False)
+                        arquivo.arq_tdd_id = get_object_or_404(TiposDeDocumento, pk=categoriaDeDocumento)
                         arquivo.save()
-                        audio.save()
+                        audio_arq = form.save(commit=False)
+                        audio_arq.save()
                         return redirect('/inicio_projeto/')
                 form_audio = VideoForm(instance=audio)
                 context['form'] = form_audio

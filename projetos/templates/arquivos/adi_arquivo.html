@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta charset="UTF-8">
         <script language="JavaScript" type="text/javascript" src="{% static 'js/cidadesEstados.js' %}"></script> 
-        <script language="JavaScript" type="text/javascript" src="{% static 'js/tipoEspecificoGenerico.js' %}"></script>
+        <script language="JavaScript" type="text/javascript" src="{% static 'js/adiArquivo.js' %}"></script>
         <link rel="stylesheet" href="../../../../static/css/global.css">
         <link rel="stylesheet" href="../../../../static/css/navbar-profile.css">
         <link rel="stylesheet" href="../../../../static/css/add-arquivo.css">
@@ -15,7 +15,7 @@
 
         <title>Aditar Arquivo</title>
     </head>
-    <body>  
+    <body onload="tipoGenericoCarregada();">  
         {% include 'arquivos/navbar.html' %}
         <form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
             {% csrf_token %}
@@ -41,21 +41,51 @@
                     </div>
                     <div class="box">
                         Tipo de documento generico:
-        
                         <select name="arq_tipo_de_documento"  id="generico" onchange="tipoGenerico()">
-                        
+                            <option value="{{ tipo_do_documento.tdd_geral }}">{{ tipo_do_documento.tdd_geral }}</option>
+                            {% for tipo in listas_categoria %}  
+                                {% if tipo != tipo_do_documento.tdd_geral %}
+                                <option value="{{tipo}}">{{ tipo }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select> 
-                       
                     </div>
                     <div class="box">
                         <div id="espeficos">
                             Tipo de documento especifico:
-                            
+                            {% for tipo in listas_categoria %}  
+                            <div id={{tipo}}>
+                                <select name="arq_documento_especifico"  id="arq_documento_especifico">
+                                    {% if tipo == tipo_do_documento.tdd_geral %}
+                                        <option value="{{ tipo_do_documento.id }}">
+                                        {% if tipo_do_documento.tdd_especifico %}
+                                            {{ tipo_do_documento.tdd_especifico }}
+                                        {% else %}
+                                                -----------
+                                        {% endif %}
+                                        </option>
+                                    {% endif %}
+                                    {% for especifico in listas_tipos_de_arquivo %} 
+                                        {% if tipo == especifico.tdd_geral %} 
+                                            {% if tipo_do_documento.tdd_especifico != especifico.tdd_especifico %}
+                                                <option value="{{especifico.id}}">
+                                                    {% if especifico.tdd_especifico %}
+                                                    {{ especifico.tdd_especifico }}
+                                                    {% else %}
+                                                    -----------
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %} 
+                                </select>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="box">
                         Selecione o formato:
-                         <input type="text" id='id_arq_tipo_de_formato' value="{{form_arq.arq_tipo_de_formato.value}}" />
+                        {{form_arq.arq_tipo_de_formato}}"
                     </div>
         
                     <div class="box">
@@ -76,11 +106,11 @@
                     </div>
                     <div class="box">
                         Estado:
-                        <input type="text" id="id_arq_estado" value="{{form_arq.arq_estado.value}}" />
+                        <input type="text" name="arq_estado" id="id_arq_estado" value="{{form_arq.arq_estado.value}}" />
                     </div>
                     <div class="box">
                         Cidade:
-                        <input type="text" id="id_arq_cidade" value="{{form_arq.arq_cidade.value}}" />
+                        <input type="text" name="arq_cidade" id="id_arq_cidade" value="{{form_arq.arq_cidade.value}}" />
                     </div>
 
                     <script language="JavaScript" type="text/javascript" charset="utf-8">

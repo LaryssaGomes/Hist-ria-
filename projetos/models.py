@@ -87,7 +87,7 @@ class TiposDeDocumento(models.Model):
     tdd_especifico = models.CharField('Tipo de Documento Especifico:', max_length=100, null=True, blank=True)
 
 class Arquivo(models.Model):
-    arq_tdd_id = models.ForeignKey(TiposDeDocumento, on_delete=models.CASCADE, null=True,related_name='tipos')
+    arq_tdd_id = models.ForeignKey(TiposDeDocumento, on_delete=models.CASCADE, null=True)
     arq_pro_id = models.ForeignKey(Projetos, on_delete=models.CASCADE, null=True)  # Pegando o id da tabela Projetos
     arq_colecao = models.CharField('Colecao:', max_length=100, null=True, blank=True)
     NIVEL_DE_ACESSO = (

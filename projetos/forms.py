@@ -68,7 +68,6 @@ class ArquivoForm(forms.ModelForm):
                   'arq_estado',
                   'arq_cidade',
                   'arq_palavras_chaves',
-                  'arq_tdd_id',
 )
 
     
