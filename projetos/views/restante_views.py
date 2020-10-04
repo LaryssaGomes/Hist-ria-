@@ -237,6 +237,7 @@ def ver_projetos(request, id):
                 
         # Nome pesquisador
 
+
             # Retorna a lista de bolsistas pesquisada
             context['lista_bolsista'] = listaDosBolsista(request, listas, id)
             context['notificacoes'] = Noti(request)
@@ -252,6 +253,9 @@ def ver_projetos(request, id):
                 return render(request, 'projetos/ver_projetos.html', context)
             else:
                 return render(request, 'projetos/ver_projetos.html', context)
+
+    # Retorna a lista de bolsistas pesquisada
+ 
 
 
 @login_required

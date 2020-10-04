@@ -22,7 +22,7 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ckeditor/',include('ckeditor_uploader.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('projetos.urls')),
     path('login/', TemplateView.as_view(template_name='principal.html'), name='principal'),
     path('contas/', include('django.contrib.auth.urls')),

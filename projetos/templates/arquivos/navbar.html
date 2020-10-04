@@ -2,7 +2,7 @@
 <nav id="menu">
     <!--Criando navbar-->
     <div class="menu">
-        <a class="logo" href="#">
+        <a class="logo" href="{% url 'inicio_projeto' %}">
             <img src="../../../../static/assets/Hemerotecalogo.png" alt="Hemeroteca">
         </a>
         <div class="profile">
@@ -17,7 +17,7 @@
                     <a href="{% url 'logout' %}">sair</a>
                 </span>
                 <a href="{% url 'edi_perfil' %}">
-                    <img src="../../../media/{{user.foto}}" />
+                    <img src={{user.usuariocomum.foto.url}} />
                 </a>
             {% endif %}
         </div>
@@ -35,20 +35,28 @@
     {% if notificacoes %}
         {% for item in notificacoes %}
     <ul>
+        {% if notificacoes %}
+        {% for item in notificacoes %}
         <li class="notification">
        
-
                 <img src='{{item.noti_pesquisador.foto.url}}'/>
                 <div class="aside">
                 <p>
                     <b>Pesquisador:{{item.noti_pesquisador.nome}}</b> solicitou sua participação ao acervo do projeto <b>"Projeto:{{item.noti_arquivo.pro_titulo}}"</b>
+
                 </p>
                 <form action="" method="POST">
                 {% csrf_token %}
                     <button value={{item.id}} id='button_aceito' name='button_aceito'class="accept">Aceitar</button>
                     <button value={{item.id}} name='button_recusado' class="deny">Rejeitar</button>
                 </form>
-            </div>  
+            </div>
+            {% endfor %}
+    
+        {%else%}
+            Sem Notificações
+        {%endif%}
+           
         </li>
     
     </ul>

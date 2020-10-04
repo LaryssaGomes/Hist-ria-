@@ -18,7 +18,8 @@ def usuario(request):
         instituicoes = Instituicoes.objects.all()
         instituicao_id = request.POST.get('nome_instituicao')
         # print(f'olha aqui!!! {instituicao_id}')
-        # new_form = form.save(commit=False)
+        new_form = form.save(commit=False)
+        print(new_form.nome)
         if form.is_valid():
             valida_cpf = form.save(commit=False)
 
@@ -83,4 +84,6 @@ def validar_email_usuario(request):
     context = {
         'form': form
     }
+
     return render(request, 'validar_email_usuario.html', context)
+
